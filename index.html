@@ -31,6 +31,31 @@
   <!-- App Wrapper -->
   <div class="app-wrapper">
 
+    <!-- DEVELOPER CLI TERMINAL DRAWER (QUAKE STYLE) -->
+    <div id="terminal-drawer" class="terminal-drawer">
+      <div class="terminal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color: var(--emerald); font-weight: 800;">● JB-TERMINAL v4.2.0</span>
+          <span style="color: var(--cyan); font-size: 0.72rem; padding: 2px 6px; border: 1px solid rgba(96,239,255,0.3); border-radius: 4px;">WebGL 3D Core Active</span>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: center;">
+          <span style="font-size: 0.72rem; color: var(--text-dim);">Klaviaturada <code style="color: var(--emerald);">~</code> yoki <code style="color: var(--emerald);">ESC</code> bosing</span>
+          <button id="btn-close-terminal" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-family: var(--font-mono); font-size: 1.1rem; padding: 0 4px;" title="Yopish">✕</button>
+        </div>
+      </div>
+      <div id="terminal-output" class="terminal-output">
+JB INTELLIGENT Kiber-Laboratoriya Tizimiga Xush Kelibsiz.
+Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb yozing.
+      </div>
+      <div class="terminal-prompt-row">
+        <span class="terminal-prompt-user">visitor@jb-lab:~$</span>
+        <input type="text" id="terminal-input" class="terminal-input-field" placeholder="Masalan: help, projects, quote, benchmark, contact, clear" autocomplete="off" spellcheck="false" />
+      </div>
+    </div>
+
+    <!-- LIVE TELEMETRY SOCIAL PROOF STREAM -->
+    <div id="live-activity-stream" class="live-activity-stream"></div>
+
     <!-- ARCHITECTURAL NAVIGATION DOCK -->
     <header class="site-nav">
       <a href="#" class="brand-badge">
@@ -50,12 +75,18 @@
       <ul class="nav-links-deck">
         <li><a href="#showcase" class="nav-item-link" data-i18n="navProjects">Loyihalar</a></li>
         <li><a href="#services" class="nav-item-link" data-i18n="navServices">Xizmatlar</a></li>
+        <li><a href="#roi-section" class="nav-item-link" data-i18n="navRoi">ROI Kalkulyator</a></li>
         <li><a href="#order-section" class="nav-item-link" data-i18n="navCalculator">Zakaz Kalkulyatori</a></li>
         <li><a href="#workflow" class="nav-item-link" data-i18n="navWorkflow">Ishlash Tartibi</a></li>
         <li><a href="#faq" class="nav-item-link" data-i18n="navFaq">Savollar</a></li>
       </ul>
 
       <div class="nav-controls">
+        <!-- Developer CLI Toggle Button -->
+        <button id="btn-open-terminal" class="dev-cli-toggle-btn" title="Developer CLI Terminalni ochish (~)">
+          <span>&gt;_ CLI</span>
+        </button>
+
         <!-- Currency Pill -->
         <div class="pill-switcher" title="Valyutani tanlash">
           <button class="pill-btn active" data-curr-btn="usd">$</button>
@@ -260,6 +291,79 @@
           </div>
           <h3 class="service-name-text">CAD & Sanoat Optimizatorlari</h3>
           <p class="service-body-text">Shisha, metall va mebel sanoati uchun CNC dastgohlariga mos 2D/3D nesting algoritmlari, DXF tahrirlovchi va desktop vositalar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE ROI & SAVINGS CALCULATOR -->
+    <section id="roi-section" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag">INVESTITSIYA SAMARADORLIGI</span>
+        <h2 class="lead-title">Avtomatlashtirishdan <span class="gradient-headline">Tejamkorlik & ROI Kalkulyatori</span></h2>
+        <p class="lead-sub">Kompaniyangiz ko'lamini kiriting va JB Intelligent tizimlari har oy necha soat vaqt va qancha moliyaviy resurs tejashini hisoblab ko'ring.</p>
+      </div>
+
+      <div class="roi-card spotlight-card border-beam-card">
+        <div class="roi-inputs-column">
+          <div class="roi-slider-group">
+            <div class="roi-slider-header">
+              <span>Xodimlar soni (menejer, hisobchi, operator):</span>
+              <span id="roi-staff-val" class="roi-slider-val">8 kishi</span>
+            </div>
+            <input type="range" id="roi-staff-slider" class="roi-slider-input" min="1" max="50" value="8" step="1" />
+          </div>
+
+          <div class="roi-slider-group">
+            <div class="roi-slider-header">
+              <span>Bir xodimning o'rtacha oylik maoshi:</span>
+              <span id="roi-salary-val" class="roi-slider-val">7,000,000 UZS</span>
+            </div>
+            <input type="range" id="roi-salary-slider" class="roi-slider-input" min="3000000" max="25000000" value="7000000" step="500000" />
+          </div>
+
+          <div class="roi-slider-group">
+            <div class="roi-slider-header">
+              <span>Haftalik qo'lda bajariladigan muntazam ish soati:</span>
+              <span id="roi-hours-val" class="roi-slider-val">16 soat / hafta</span>
+            </div>
+            <input type="range" id="roi-hours-slider" class="roi-slider-input" min="4" max="40" value="16" step="1" />
+          </div>
+
+          <div style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; padding: 12px; background: rgba(0,255,135,0.04); border-left: 2px solid var(--emerald); border-radius: 4px;">
+            <strong style="color: var(--emerald);">Algoritmik Asos:</strong> JB Intelligent avtomatlashtirish arxitekturasi muntazam takrorlanuvchi operatsiyalarning o'rtacha 75% qismini avtonomlashtiradi va insoniy xatolik xavfini 0 ga tushiradi.
+          </div>
+        </div>
+
+        <div class="roi-results-column">
+          <div>
+            <div class="roi-metric-item">
+              <div class="roi-metric-label">Har Oyda Tejaladigan Inson-Soati:</div>
+              <div id="roi-result-hours" class="roi-metric-big">416+ soat</div>
+            </div>
+
+            <div class="roi-metric-item">
+              <div class="roi-metric-label">Har Oyda Iqtisod Qilinadigan Mablag':</div>
+              <div id="roi-result-savings" class="roi-metric-big" style="color: var(--cyan);">16,545,000 UZS</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border-subtle);">
+              <div>
+                <div class="roi-metric-label">O'zini Oqlash:</div>
+                <div id="roi-result-payback" style="font-family: var(--font-mono); font-weight: 800; font-size: 1.25rem; color: #f59e0b;">~ 2.1 oy</div>
+              </div>
+              <div>
+                <div class="roi-metric-label">ROI Samaradorligi:</div>
+                <div id="roi-result-roi" style="font-family: var(--font-mono); font-weight: 800; font-size: 1.25rem; color: var(--emerald);">+340%</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <a id="roi-btn-telegram" href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-cyber-primary" style="width: 100%; justify-content: center;">
+              <span>Ushbu Tejamkorlik Bo'yicha Maslahat Olish</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
         </div>
       </div>
     </section>

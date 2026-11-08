@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initI18nAndCurrency();
   initHeroHudConsole();
   initPortfolioShowcase();
+  initRoiCalculator();
+  initDevCliTerminal();
+  initLiveActivityFeed();
   initOrderEngine();
   initBudgetSlider();
   initFaqAccordion();
@@ -539,57 +542,69 @@ function initPortfolioShowcase() {
       let widgetHtml = "";
       if (p.id === "gymos") {
         widgetHtml = `
-          <div class="bento-widget-box">
+          <div class="bento-widget-box" id="widget-gymos-box">
             <div class="bento-widget-header">
               <span>HARDWARE TURNSTILE IOT GATEWAY</span>
-              <span class="bento-pulse-badge"><span class="led"></span> ONLINE &lt; 200ms</span>
+              <span class="bento-pulse-badge" id="gymos-led-badge"><span class="led"></span> ONLINE &lt; 200ms</span>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; color:var(--emerald);">
-              <span>QR Token: ACTIVE</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:var(--emerald); font-size:0.8rem; margin-bottom:8px;">
+              <span id="gymos-token-txt">QR Token: ACTIVE</span>
               <span>Turnstile: #TK-01</span>
               <span>Members: 10,000+</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="mini-sim-trigger" onclick="runGymOsTurnstileSim(this, event)">▶ QR Turniket Tekshiruvi</button>
             </div>
           </div>
         `;
       } else if (p.id === "apexcut") {
         widgetHtml = `
-          <div class="bento-widget-box">
+          <div class="bento-widget-box" id="widget-apexcut-box">
             <div class="bento-widget-header">
               <span>WASM GENETIC NESTING ENGINE</span>
               <span class="bento-pulse-badge" style="color:#60efff; background:rgba(96,239,255,0.12);"><span class="led" style="background:#60efff; box-shadow:0 0 8px #60efff;"></span> 96.4% YIELD</span>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; color:#60efff;">
-              <span>G-Code Gen: 0.2s</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:#60efff; font-size:0.8rem; margin-bottom:8px;">
+              <span id="apexcut-calc-txt">G-Code Gen: 0.2s</span>
               <span>DXF: READY</span>
-              <span>Saved: 28%</span>
+              <span id="apexcut-yield-txt">Saved: 28%</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="mini-sim-trigger" onclick="runApexCutNestingSim(this, event)">▶ Nesting Algoritmini Ishga Tushirish</button>
             </div>
           </div>
         `;
       } else if (p.id === "lumen-roof") {
         widgetHtml = `
-          <div class="bento-widget-box">
+          <div class="bento-widget-box" id="widget-lumen-box">
             <div class="bento-widget-header">
               <span>NATURAL LIGHTING SIMULATOR</span>
               <span class="bento-pulse-badge" style="color:#eab308; background:rgba(234,179,8,0.12);"><span class="led" style="background:#eab308; box-shadow:0 0 8px #eab308;"></span> 99 SPEED</span>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; color:#eab308;">
-              <span>CSS 3D Transforms</span>
-              <span>Sun Angles: Real-time</span>
-              <span>Warranty: 7 Yil</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:#eab308; font-size:0.8rem; margin-bottom:8px;">
+              <span id="lumen-mode-txt">Rejim: 12:00 (Quyosh Nuri)</span>
+              <span>3D Transforms</span>
+              <span>Kafolat: 7 Yil</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="mini-sim-trigger" onclick="toggleLumenDayNight(this, event)">▶ Kun/Tun Yorug'lik Rejimi</button>
             </div>
           </div>
         `;
       } else if (p.id === "ovozli-chat") {
         widgetHtml = `
-          <div class="bento-widget-box">
+          <div class="bento-widget-box" id="widget-voice-box">
             <div class="bento-widget-header">
               <span>REAL-TIME VOICE STREAMING</span>
               <span class="bento-pulse-badge" style="color:#a855f7; background:rgba(168,85,247,0.12);"><span class="led" style="background:#a855f7; box-shadow:0 0 8px #a855f7;"></span> &lt; 450ms</span>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; color:#a855f7;">
-              <span>Opus 48kHz</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:#a855f7; font-size:0.8rem; margin-bottom:8px;">
+              <span id="voice-status-txt">Opus 48kHz</span>
               <span>LLM Voice Agent</span>
               <span>24/7 Autonomy</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="mini-sim-trigger" onclick="playVoiceAgentAudioTest(this, event)">▶ Ovozli Agent Sintez Testi</button>
             </div>
           </div>
         `;
@@ -1321,3 +1336,397 @@ function showToast(text) {
     toast.classList.remove("show");
   }, 3200);
 }
+
+/* ==========================================================
+   17. AWWWARDS-TIER: DEVELOPER CLI TERMINAL (QUAKE-STYLE)
+   ========================================================== */
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatUzs(amount) {
+  return Math.round(amount).toLocaleString("uz-UZ");
+}
+
+function initDevCliTerminal() {
+  const terminal = document.getElementById("terminal-drawer");
+  const openBtn = document.getElementById("btn-open-terminal");
+  const closeBtn = document.getElementById("btn-close-terminal");
+  const outputEl = document.getElementById("terminal-output");
+  const inputEl = document.getElementById("terminal-input");
+
+  if (!terminal || !inputEl) return;
+
+  function toggleTerminal(force) {
+    const isOpen = force !== undefined ? force : !terminal.classList.contains("is-open");
+    if (isOpen) {
+      terminal.classList.add("is-open");
+      if (typeof playClickSound === "function") playClickSound(580);
+      setTimeout(() => inputEl.focus(), 80);
+    } else {
+      terminal.classList.remove("is-open");
+      if (typeof playClickSound === "function") playClickSound(420);
+    }
+  }
+
+  if (openBtn) openBtn.addEventListener("click", () => toggleTerminal(true));
+  if (closeBtn) closeBtn.addEventListener("click", () => toggleTerminal(false));
+
+  // Tilde (~) or ESC key shortcut
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "`" || e.key === "~") {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+      if (activeTag !== "input" && activeTag !== "textarea") {
+        e.preventDefault();
+        toggleTerminal();
+      }
+    } else if (e.key === "Escape" && terminal.classList.contains("is-open")) {
+      toggleTerminal(false);
+    }
+  });
+
+  const history = [];
+  let historyIdx = -1;
+
+  function printLine(html) {
+    if (!outputEl) return;
+    outputEl.innerHTML += `\n${html}`;
+    outputEl.scrollTop = outputEl.scrollHeight;
+  }
+
+  inputEl.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") {
+      if (history.length > 0) {
+        if (historyIdx === -1) historyIdx = history.length - 1;
+        else if (historyIdx > 0) historyIdx--;
+        inputEl.value = history[historyIdx];
+      }
+      e.preventDefault();
+    } else if (e.key === "ArrowDown") {
+      if (history.length > 0 && historyIdx !== -1) {
+        if (historyIdx < history.length - 1) {
+          historyIdx++;
+          inputEl.value = history[historyIdx];
+        } else {
+          historyIdx = -1;
+          inputEl.value = "";
+        }
+      }
+      e.preventDefault();
+    } else if (e.key === "Enter") {
+      const rawCmd = inputEl.value.trim();
+      inputEl.value = "";
+      if (!rawCmd) return;
+
+      history.push(rawCmd);
+      historyIdx = -1;
+
+      printLine(`<span style="color:var(--emerald);">visitor@jb-lab:~$</span> ${escapeHtml(rawCmd)}`);
+      if (typeof playClickSound === "function") playClickSound(700);
+
+      const parts = rawCmd.split(/\s+/);
+      const cmd = parts[0].toLowerCase();
+      const arg = parts.slice(1).join(" ").toLowerCase();
+
+      switch (cmd) {
+        case "help":
+          printLine(`
+<span class="cmd-highlight">JB INTELLIGENT Terminal Buyruqlari:</span>
+  <span class="cmd-highlight">help</span>           - Barcha mavjud buyruqlar ro'yxati
+  <span class="cmd-highlight">projects</span>       - 8 ta ishlab chiqilgan jonli master-loyiha
+  <span class="cmd-highlight">quote &lt;turi&gt;</span>   - Loyiha smetasini tezkor hisoblash (saas, cad, ai, 3d, mobile)
+  <span class="cmd-highlight">benchmark</span>      - WebGL render FPS, xotira va hardware diagnostikasi
+  <span class="cmd-highlight">roi</span>            - Xarajat tejash va ROI kalkulyatoriga o'tish
+  <span class="cmd-highlight">contact</span>        - Bosh muhandis Javohirbek bilan Telegramda bog'lanish
+  <span class="cmd-highlight">clear</span>          - Terminal ekranini tozalash
+  <span class="cmd-highlight">exit</span>           - Terminal oynasini yopish
+          `);
+          break;
+
+        case "projects":
+          if (window.PROJECTS_DATA) {
+            let out = "<span class='cmd-highlight'>SHU OYDA YARATILGAN LOYIHALAR RO'YXATI:</span>\n";
+            window.PROJECTS_DATA.forEach((p, i) => {
+              out += `  [${i + 1}] <strong style="color:#ffffff;">${p.title}</strong> (${p.category.toUpperCase()}) - ${p.badge}\n      URL: ${p.liveUrl}\n`;
+            });
+            printLine(out);
+          } else {
+            printLine("Loyihalar ro'yxati topilmadi.");
+          }
+          break;
+
+        case "quote":
+          if (!arg) {
+            printLine(`
+<span style="color:#f59e0b;">Foydalanish:</span> quote &lt;saas | cad | ai | web3d | mobile&gt;
+Masalan: <span class="cmd-highlight">quote saas</span> yoki <span class="cmd-highlight">quote ai</span>
+            `);
+          } else {
+            let quoteText = "";
+            if (arg.includes("saas") || arg.includes("erp")) {
+              quoteText = `[SaaS / ERP Config]: 14-25 kun | Multi-tenant, PostgreSQL, Redis, Real-time Dashboard | Narx: ~ $1,800 - $3,500`;
+            } else if (arg.includes("cad") || arg.includes("cnc")) {
+              quoteText = `[CAD / CNC Nesting Engine]: 20-35 kun | WASM Genetic Nesting, DXF import/export, G-Code generation | Narx: ~ $2,500 - $5,000`;
+            } else if (arg.includes("ai") || arg.includes("bot")) {
+              quoteText = `[AI Voice/Chat Agents]: 7-14 kun | LLM Fine-Tuned, Opus Audio Streaming, CRM 2-way sync | Narx: ~ $900 - $2,200`;
+            } else if (arg.includes("3d") || arg.includes("web")) {
+              quoteText = `[3D Cyber-Luxury Web]: 10-18 kun | Three.js WebGL Core, Awwwards SOTD Grade Interactivity | Narx: ~ $1,200 - $2,800`;
+            } else {
+              quoteText = `[Universal Custom Engineering]: Har qanday murakkab arxitektura va loyiha`;
+            }
+            printLine(`
+${quoteText}
+Buyurtmani tasdiqlash: <a href="https://t.me/the_javohirbek" target="_blank" style="color:var(--emerald); text-decoration:underline;">@the_javohirbek ga Telegram orqali yozish</a>
+            `);
+          }
+          break;
+
+        case "benchmark":
+          const dpr = window.devicePixelRatio || 1;
+          const cores = navigator.hardwareConcurrency || "N/A";
+          const mem = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "High Performance";
+          const res = `${window.innerWidth}x${window.innerHeight} (Screen: ${window.screen.width}x${window.screen.height})`;
+          printLine(`
+<span class="cmd-highlight">--- HARDWARE & WEBGL DIAGNOSTIKA ---</span>
+[WebGL Engine]: Three.js r128 (3D Polyhedron, Neural Starfield, Torus Rings)
+[Target FPS]: ~ 60.0 FPS (GPU Acceleration Active)
+[Display]: ${res} @ ${dpr}x DPR
+[CPU Cores]: ${cores} Threads
+[Device Memory]: ~ ${mem}
+[Audio API]: Web Audio Context (Sine/Sawtooth synthesis)
+[Status]: Barcha tizimlar nominal va 100% tayyor.
+          `);
+          break;
+
+        case "roi":
+          const roiSec = document.getElementById("roi-section");
+          if (roiSec) {
+            roiSec.scrollIntoView({ behavior: "smooth" });
+            printLine("ROI & Tejamkorlik kalkulyatoriga o'tildi.");
+          }
+          break;
+
+        case "contact":
+          printLine(`
+<span class="cmd-highlight">BOSH MUHANDIS BILAN BOG'LANISH:</span>
+Telegram: <a href="https://t.me/the_javohirbek" target="_blank" style="color:var(--emerald); font-weight:700;">@the_javohirbek</a>
+Ism: Javohirbek Shavkatov (Lead Architect & Founder)
+Email: the_javohirbek@gmail.com
+Status: Buyurtmalar qabul qilinmoqda (2026 Q4)
+          `);
+          break;
+
+        case "clear":
+          outputEl.innerHTML = `JB INTELLIGENT Kiber-Laboratoriya Tizimi.\nBuyruqlar uchun <span class="cmd-highlight">'help'</span> deb yozing.`;
+          break;
+
+        case "exit":
+          toggleTerminal(false);
+          break;
+
+        default:
+          printLine(`Noma'lum buyruq: '${escapeHtml(rawCmd)}'. Mavjud buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb yozing.`);
+          break;
+      }
+    }
+  });
+}
+
+/* ==========================================================
+   18. INTERACTIVE ROI & SAVINGS CALCULATOR
+   ========================================================== */
+function initRoiCalculator() {
+  const staffSlider = document.getElementById("roi-staff-slider");
+  const salarySlider = document.getElementById("roi-salary-slider");
+  const hoursSlider = document.getElementById("roi-hours-slider");
+
+  const staffValEl = document.getElementById("roi-staff-val");
+  const salaryValEl = document.getElementById("roi-salary-val");
+  const hoursValEl = document.getElementById("roi-hours-val");
+
+  const resultHoursEl = document.getElementById("roi-result-hours");
+  const resultSavingsEl = document.getElementById("roi-result-savings");
+  const resultPaybackEl = document.getElementById("roi-result-payback");
+  const resultRoiEl = document.getElementById("roi-result-roi");
+  const telegramBtn = document.getElementById("roi-btn-telegram");
+
+  if (!staffSlider || !salarySlider || !hoursSlider) return;
+
+  function updateRoi() {
+    const staff = parseInt(staffSlider.value, 10);
+    const salary = parseInt(salarySlider.value, 10);
+    const hoursPerWeek = parseInt(hoursSlider.value, 10);
+
+    if (staffValEl) staffValEl.textContent = `${staff} kishi`;
+    if (salaryValEl) salaryValEl.textContent = `${formatUzs(salary)} UZS`;
+    if (hoursValEl) hoursValEl.textContent = `${hoursPerWeek} soat / hafta`;
+
+    // Monthly hours spent manually on routine tasks across team
+    const monthlyManualHours = staff * hoursPerWeek * 4.33;
+    // 75% automation yield
+    const hoursSaved = Math.round(monthlyManualHours * 0.75);
+
+    // Hourly rate per staff (assuming 176 monthly working hours)
+    const hourlyRate = salary / 176;
+    const monthlyMoneySaved = Math.round(hoursSaved * hourlyRate);
+
+    // Estimated standard investment ~ 35M UZS
+    const estimatedCost = 35000000;
+    const paybackMonths = Math.max(0.6, (estimatedCost / (monthlyMoneySaved || 1))).toFixed(1);
+    const roiMultiplier = Math.round(((monthlyMoneySaved * 12) / estimatedCost) * 100);
+
+    if (resultHoursEl) resultHoursEl.textContent = `${hoursSaved.toLocaleString()}+ soat`;
+    if (resultSavingsEl) resultSavingsEl.textContent = `${formatUzs(monthlyMoneySaved)} UZS`;
+    if (resultPaybackEl) resultPaybackEl.textContent = `~ ${paybackMonths} oy`;
+    if (resultRoiEl) resultRoiEl.textContent = `+${roiMultiplier}%`;
+
+    if (telegramBtn) {
+      const msg = `Assalomu alaykum Javohirbek! JB Intelligent saytidagi ROI kalkulyator orqali hisobladim:%0A- Xodimlar: ${staff} kishi%0A- O'rtacha maosh: ${formatUzs(salary)} UZS%0A- Haftalik qo'l mehnati: ${hoursPerWeek} soat%0A- Kutilayotgan oylik tejamkorlik: ${formatUzs(monthlyMoneySaved)} UZS (${hoursSaved} soat)%0ALoyihani avtomatlashtirish bo'yicha maslahat bermoqchimisiz?`;
+      telegramBtn.href = `https://t.me/the_javohirbek?text=${msg}`;
+    }
+  }
+
+  staffSlider.addEventListener("input", updateRoi);
+  salarySlider.addEventListener("input", updateRoi);
+  hoursSlider.addEventListener("input", updateRoi);
+
+  updateRoi();
+}
+
+/* ==========================================================
+   19. LIVE TELEMETRY SOCIAL PROOF STREAM
+   ========================================================== */
+function initLiveActivityFeed() {
+  const container = document.getElementById("live-activity-stream");
+  if (!container) return;
+
+  const activities = [
+    { city: "Toshkent", text: "GymOS 2 ta yangi turniket terminaliga ulandi", time: "2 daqiqa oldin", color: "var(--emerald)" },
+    { city: "Samarqand", text: "ApexCut CNC 42 ta detalni 96.8% unumdorlikda nesting qildi", time: "Hozirgina", color: "var(--cyan)" },
+    { city: "Buxoro", text: "Lumen Roof 3D vitrina orqali 38M so'mlik buyurtma rasmiylashtirildi", time: "5 daqiqa oldin", color: "#f59e0b" },
+    { city: "Navoiy", text: "AI Telegram Bot orqali 14 ta mijozga avtonom narx taqdim etildi", time: "8 daqiqa oldin", color: "#a855f7" },
+    { city: "Farg'ona", text: "Fitnes klubi uchun GymOS ERP integratsiyasi boshlandi", time: "11 daqiqa oldin", color: "var(--emerald)" },
+    { city: "Andijon", text: "Shisha zavodi uchun DXF nesting algoritmi sinovdan muvaffaqiyatli o'tdi", time: "15 daqiqa oldin", color: "var(--cyan)" }
+  ];
+
+  let currentIdx = 0;
+
+  function showNextActivity() {
+    const act = activities[currentIdx];
+    currentIdx = (currentIdx + 1) % activities.length;
+
+    container.innerHTML = `
+      <div class="activity-badge">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: ${act.color}; box-shadow: 0 0 8px ${act.color};"></span>
+        <strong style="color: #ffffff;">${act.city}:</strong>
+        <span>${act.text}</span>
+        <span style="color: var(--text-dim); font-size: 0.7rem;">(${act.time})</span>
+      </div>
+    `;
+
+    setTimeout(() => {
+      const badge = container.querySelector(".activity-badge");
+      if (badge) {
+        badge.style.transition = "opacity 0.6s ease";
+        badge.style.opacity = "0";
+      }
+    }, 7500);
+  }
+
+  showNextActivity();
+  setInterval(showNextActivity, 11000);
+}
+
+/* ==========================================================
+   20. IN-CARD MINI-SIMULATORS (BENTO CARDS INTERACTION)
+   ========================================================== */
+window.runGymOsTurnstileSim = function(btn, e) {
+  if (e) e.stopPropagation();
+  if (typeof playChimeSound === "function") playChimeSound();
+  btn.textContent = "⏳ Skanerlanmoqda...";
+  btn.disabled = true;
+
+  setTimeout(() => {
+    btn.textContent = "✓ Turniket Ochildi (#TK-01, 14ms)";
+    btn.style.background = "var(--emerald)";
+    btn.style.color = "#03140b";
+    showToast("GymOS IoT: Turniket ochildi! QR A'zolik tasdiqlandi (Javohirbek - VIP).");
+
+    setTimeout(() => {
+      btn.textContent = "▶ QR Turniket Tekshiruvi";
+      btn.style.background = "";
+      btn.style.color = "";
+      btn.disabled = false;
+    }, 4000);
+  }, 400);
+};
+
+window.runApexCutNestingSim = function(btn, e) {
+  if (e) e.stopPropagation();
+  if (typeof playClickSound === "function") playClickSound(800);
+  btn.textContent = "⏳ WASM Genetic Hisoblanmoqda (38%)...";
+  btn.disabled = true;
+
+  setTimeout(() => {
+    btn.textContent = "⏳ Optimallashtirilmoqda (94%)...";
+    if (typeof playClickSound === "function") playClickSound(1000);
+  }, 300);
+
+  setTimeout(() => {
+    if (typeof playSuccessChord === "function") playSuccessChord();
+    btn.textContent = "✓ Tayyor: 96.8% Yield (G-Code Chiqarildi)";
+    btn.style.background = "var(--cyan)";
+    btn.style.color = "#03140b";
+    showToast("ApexCut: 48 ta detal nesting qilindi, 28.4% xom-ashyo tejaldi!");
+
+    setTimeout(() => {
+      btn.textContent = "▶ Nesting Algoritmini Ishga Tushirish";
+      btn.style.background = "";
+      btn.style.color = "";
+      btn.disabled = false;
+    }, 4500);
+  }, 750);
+};
+
+window.toggleLumenDayNight = function(btn, e) {
+  if (e) e.stopPropagation();
+  if (typeof playClickSound === "function") playClickSound(520);
+  const isNight = btn.dataset.mode === "night";
+  if (isNight) {
+    btn.dataset.mode = "day";
+    btn.textContent = "☀ Rejim: Kunduzgi (12:00)";
+    btn.style.background = "rgba(234, 179, 8, 0.2)";
+    showToast("Lumen Roof 3D: Quyosh nuri 12:00 burchagi yuklandi.");
+  } else {
+    btn.dataset.mode = "night";
+    btn.textContent = "🌙 Rejim: Tungi (21:00)";
+    btn.style.background = "rgba(96, 239, 255, 0.2)";
+    showToast("Lumen Roof 3D: Kechki lyuminestsensiya rejimiga o'tildi.");
+  }
+};
+
+window.playVoiceAgentAudioTest = function(btn, e) {
+  if (e) e.stopPropagation();
+  if (typeof playSuccessChord === "function") playSuccessChord();
+  btn.textContent = "🎙 Ovoz Sintez Qilinmoqda...";
+  btn.disabled = true;
+
+  setTimeout(() => {
+    btn.textContent = "✓ Opus 48kHz: 'Assalomu alaykum!'";
+    btn.style.background = "#a855f7";
+    btn.style.color = "#ffffff";
+    showToast("AI Agent: Ovozli suhbat oqimi muvaffaqiyatli uzatildi (< 280ms).");
+
+    setTimeout(() => {
+      btn.textContent = "▶ Ovozli Agent Sintez Testi";
+      btn.style.background = "";
+      btn.style.color = "";
+      btn.disabled = false;
+    }, 4000);
+  }, 600);
+};
