@@ -1,742 +1,561 @@
 <!DOCTYPE html>
-<html lang="uz" data-theme="light">
+<html lang="uz">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JB INTELLIGENT — Dasturiy Muhandislik & Sun'iy Intellekt Studiyasi</title>
-  <meta name="description" content="JB Intelligent — Yuqori konversiyali SaaS platformalar, sanoat CAD dasturlari, 3D interaktiv saytlar va avtonom AI tizimlari. Onlayn smeta kalkulyatori va rasmiy buyurtma berish portali.">
-  <meta name="keywords" content="JB Intelligent, Javohirbek, the_javohirbek, veb sayt yasash, CRM tizim, SaaS, CAD dasturlar, Telegram bot, AI agent, buyurtma berish, O'zbekiston dasturlash">
+  <title>JB INTELLIGENT — Raqamli Muhandislik & AI Studio | Rasmiy Portal</title>
+  <meta name="description" content="JB Intelligent — Yuqori darajadagi SaaS platformalar, sanoat CAD dasturlari, 3D interaktiv saytlar va sun'iy intellekt agentlari ishlab chiqish studiyasi. Onlayn buyurtma berish va smeta kalkulyatori.">
+  <meta name="keywords" content="JB Intelligent, Javohirbek, the_javohirbek, veb sayt yasash, CRM tizim, SaaS, CAD dasturlar, Telegram bot, AI agent, buyurtma berish">
   <meta name="author" content="Javohirbek (JB Intelligent)">
-  <meta name="theme-color" content="#f8fafc">
+  <meta name="theme-color" content="#05070a">
 
-  <!-- Open Graph / Meta -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="JB INTELLIGENT — Dasturiy Muhandislik & Sun'iy Intellekt Studiyasi">
-  <meta property="og:description" content="G'oyadan production darajagacha: SaaS, ERP, 3D veb va sun'iy intellekt tizimlari.">
-  <meta property="og:url" content="https://jb-intelligent.vercel.app">
+  <meta property="og:title" content="JB INTELLIGENT — Raqamli Muhandislik & AI Studio">
+  <meta property="og:description" content="G'oyadan tayyor production darajagacha: SaaS, ERP, 3D veb va sun'iy intellekt yechimlari.">
   <meta property="og:site_name" content="JB Intelligent">
-
-  <!-- Favicon SVG -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Cpath d='M9 10h14v3H12v6h9v3H9V10z' fill='white'/%3E%3C/svg%3E">
-
-  <!-- Google Font: Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Ambient Light Reflection Layer -->
-  <div class="bg-ambient-layer"></div>
+  <!-- Background 3D Canvas -->
+  <canvas id="bg-canvas"></canvas>
 
-  <!-- Main Application Wrapper -->
+  <!-- Ambient Glow Spots -->
+  <div class="glow-spot glow-spot-1"></div>
+  <div class="glow-spot glow-spot-2"></div>
+  <div class="glow-spot glow-spot-3"></div>
+
+  <!-- App Wrapper -->
   <div class="app-wrapper">
 
-    <!-- Sticky Navigation Dock -->
-    <header class="site-header">
-      <div class="container nav-container">
-        <!-- Brand Link -->
-        <a href="#" class="brand-link" aria-label="JB Intelligent bosh sahifasi">
-          <div class="brand-icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-              <path d="M2 17l10 5 10-5"></path>
-              <path d="M2 12l10 5 10-5"></path>
-            </svg>
-          </div>
-          <div class="brand-name-group">
-            <span class="brand-name">JB INTELLIGENT</span>
-            <span class="brand-tag">DIGITAL STUDIO</span>
-          </div>
-        </a>
-
-        <!-- Desktop Navigation Links -->
-        <nav aria-label="Asosiy menyu">
-          <ul class="nav-menu">
-            <li><a href="#showcase" class="nav-link" data-i18n="navProjects">Loyihalar</a></li>
-            <li><a href="#services" class="nav-link" data-i18n="navServices">Xizmatlar</a></li>
-            <li><a href="#order-section" class="nav-link" data-i18n="navCalculator">Zakaz Kalkulyatori</a></li>
-            <li><a href="#workflow" class="nav-link" data-i18n="navWorkflow">Ishlash Tartibi</a></li>
-            <li><a href="#faq" class="nav-link" data-i18n="navFaq">Savollar</a></li>
-          </ul>
-        </nav>
-
-        <!-- Actions / Controls -->
-        <div class="nav-actions">
-          <!-- Currency Switcher -->
-          <div class="segmented-control" role="group" aria-label="Valyutani tanlash">
-            <button class="segmented-btn active" data-curr-btn="usd" title="AQSH Dollari ($)">$</button>
-            <button class="segmented-btn" data-curr-btn="uzs" title="O'zbekiston So'mi (UZS)">UZS</button>
-          </div>
-
-          <!-- Language Switcher -->
-          <div class="segmented-control" role="group" aria-label="Tilni tanlash">
-            <button class="segmented-btn active" data-lang-btn="uz">UZ</button>
-            <button class="segmented-btn" data-lang-btn="ru">RU</button>
-            <button class="segmented-btn" data-lang-btn="en">EN</button>
-          </div>
-
-          <!-- Dark / Light Theme Toggle -->
-          <button id="theme-toggle-btn" class="icon-btn" aria-label="Mavzuni almashtirish (Yorug'/Qorong'i)" title="Mavzuni almashtirish">
-            <!-- Sun Icon (shown in dark mode) -->
-            <svg id="theme-icon-sun" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <!-- Moon Icon (shown in light mode) -->
-            <svg id="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
-
-          <!-- Order Primary CTA Button -->
-          <a href="#order-section" class="btn btn-primary btn-sm">
-            <span data-i18n="navOrderBtn">Buyurtma Berish</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
+    <!-- ARCHITECTURAL NAVIGATION DOCK -->
+    <header class="site-nav">
+      <a href="#" class="brand-badge">
+        <div class="brand-symbol">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,4 93,25 93,75 50,96 7,75 7,25" stroke="#00ff87" stroke-width="6" fill="rgba(0,255,135,0.12)"/>
+            <path d="M38 32 H58 V48 C58 58 50 64 38 64 C30 64 26 58 26 58" stroke="#00ff87" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="68" cy="38" r="6" fill="#60efff"/>
+          </svg>
         </div>
+        <div class="brand-text-block">
+          <span class="brand-title">JB INTELLIGENT</span>
+          <span class="brand-tagline">STUDIO & AI LAB</span>
+        </div>
+      </a>
+
+      <ul class="nav-links-deck">
+        <li><a href="#showcase" class="nav-item-link" data-i18n="navProjects">Loyihalar</a></li>
+        <li><a href="#services" class="nav-item-link" data-i18n="navServices">Xizmatlar</a></li>
+        <li><a href="#order-section" class="nav-item-link" data-i18n="navCalculator">Zakaz Kalkulyatori</a></li>
+        <li><a href="#workflow" class="nav-item-link" data-i18n="navWorkflow">Ishlash Tartibi</a></li>
+        <li><a href="#faq" class="nav-item-link" data-i18n="navFaq">Savollar</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <!-- Currency Pill -->
+        <div class="pill-switcher" title="Valyutani tanlash">
+          <button class="pill-btn active" data-curr-btn="usd">$</button>
+          <button class="pill-btn" data-curr-btn="uzs">UZS</button>
+        </div>
+
+        <!-- Language Pill -->
+        <div class="pill-switcher" title="Tilni tanlash">
+          <button class="pill-btn active" data-lang-btn="uz">UZ</button>
+          <button class="pill-btn" data-lang-btn="ru">RU</button>
+          <button class="pill-btn" data-lang-btn="en">EN</button>
+        </div>
+
+        <!-- Sound Button with Audio Equalizer -->
+        <button id="sound-toggle-btn" class="audio-btn" title="Ovoz effektlarini yoqish/o'chirish">
+          <div class="eq-bars">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+          <span id="sound-btn-text">FX: OFF</span>
+        </button>
+
+        <a href="#order-section" class="btn-cyber-primary">
+          <span data-i18n="navOrderBtn">Buyurtma Berish</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="hero-section">
-      <div class="container">
-        <div class="hero-content">
-          <!-- Status Pill -->
-          <div class="hero-status-pill">
-            <span class="pulse-indicator"></span>
-            <span data-i18n="heroBadge">2026-YIL Q4 BUYURTMALARI QABUL QILINMOQDA</span>
+    <!-- HERO: SPLIT-SCREEN ARCHITECTURAL HUB -->
+    <section class="hero-deck">
+      <div class="hero-editorial">
+        <div class="hero-status-pill">
+          <span class="pulse-dot"></span>
+          <span data-i18n="heroBadge">2026-YIL Q4 BUYURTMALARI QABUL QILINMOQDA</span>
+        </div>
+
+        <h1 class="hero-main-title">
+          <span data-i18n="heroTitlePrefix">Biznesingizni Bir Necha Qadam Oldinga Olib Chiqadigan</span>
+          <span class="gradient-headline" data-i18n="heroTitleGradient">Intellektual Tizimlar</span>
+        </h1>
+
+        <p class="hero-statement" data-i18n="heroSub">
+          Yuqori konversiyali veb-platformalar, sanoat CAD dasturlari, murakkab SaaS/ERP tizimlari va avtonom sun'iy intellekt agentlari. G'oyadan boshlab 100% production darajasigacha.
+        </p>
+
+        <div class="hero-cta-strip">
+          <a href="#order-section" class="btn-cyber-primary" style="padding: 14px 28px; font-size: 0.95rem;">
+            <span data-i18n="heroCtaCalc">⚡ Loyihani Hisoblash & Zakaz Berish</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <a href="#showcase" class="btn-cyber-secondary">
+            <span data-i18n="heroCtaProjects">Jonli Loyihalar</span>
+          </a>
+          <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-cyber-secondary" style="border-color: rgba(0, 136, 204, 0.4); color: #38bdf8;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
+            <span data-i18n="heroCtaTelegram">Telegram: @the_javohirbek</span>
+          </a>
+        </div>
+
+        <!-- Telemetry Row -->
+        <div class="telemetry-row">
+          <div class="telemetry-col">
+            <div class="telemetry-val gradient-emerald">15+</div>
+            <div class="telemetry-lbl" data-i18n="statProjects">Ishga tushirilgan loyihalar</div>
           </div>
-
-          <!-- Main Headline -->
-          <h1 class="hero-headline">
-            <span data-i18n="heroTitlePrefix">Biznesingizni Bir Necha Qadam Oldinga Olib Chiqadigan</span>
-            <br>
-            <span class="text-gradient" data-i18n="heroTitleGradient">Intellektual Tizimlar</span>
-          </h1>
-
-          <!-- Subtitle -->
-          <p class="hero-subhead" data-i18n="heroSub">
-            Yuqori konversiyali veb-platformalar, sanoat CAD dasturlari, murakkab SaaS/ERP tizimlari va avtonom sun'iy intellekt agentlari. G'oyadan boshlab 100% production darajasigacha.
-          </p>
-
-          <!-- Action CTA Group -->
-          <div class="hero-cta-group">
-            <a href="#order-section" class="btn btn-primary btn-lg">
-              <span data-i18n="heroCtaCalc">Loyihani Hisoblash & Zakaz Berish</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </a>
-
-            <a href="#showcase" class="btn btn-secondary btn-lg">
-              <span data-i18n="heroCtaProjects">Jonli Loyihalar</span>
-            </a>
-
-            <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-lg" style="color: #0088cc; border-color: rgba(0, 136, 204, 0.3);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-              </svg>
-              <span data-i18n="heroCtaTelegram">Telegram: @the_javohirbek</span>
-            </a>
+          <div class="telemetry-col">
+            <div class="telemetry-val" style="color:#60efff;">99.8%</div>
+            <div class="telemetry-lbl" data-i18n="statUptime">Tizimlar barqarorligi</div>
           </div>
-
-          <!-- Telemetry Row -->
-          <div class="hero-telemetry-grid">
-            <div class="telemetry-item">
-              <span class="telemetry-num highlight-blue">15+</span>
-              <span class="telemetry-label" data-i18n="statProjects">Ishga tushirilgan loyihalar</span>
-            </div>
-            <div class="telemetry-item">
-              <span class="telemetry-num highlight-green">99.8%</span>
-              <span class="telemetry-label" data-i18n="statUptime">Tizimlar barqarorligi (Uptime)</span>
-            </div>
-            <div class="telemetry-item">
-              <span class="telemetry-num highlight-blue">&lt; 0.38s</span>
-              <span class="telemetry-label" data-i18n="statSpeed">O'rtacha sahifa tezligi</span>
-            </div>
-            <div class="telemetry-item">
-              <span class="telemetry-num highlight-green">96.4%</span>
-              <span class="telemetry-label" data-i18n="statSavings">Material & xarajat tejamkorligi</span>
-            </div>
+          <div class="telemetry-col">
+            <div class="telemetry-val" style="color:#a855f7;">&lt; 0.38s</div>
+            <div class="telemetry-lbl" data-i18n="statSpeed">Sahifa tezligi</div>
           </div>
+          <div class="telemetry-col">
+            <div class="telemetry-val" style="color:#f59e0b;">96.4%</div>
+            <div class="telemetry-lbl" data-i18n="statSavings">Material tejamkorligi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Interactive HUD Console -->
+      <div class="hero-hud-console">
+        <div class="hud-header">
+          <div class="hud-title-bar">
+            <span class="hud-status-led"></span>
+            <span>TERMINAL // JB-STUDIO-HUD v3.0</span>
+          </div>
+          <span class="mono" style="font-size:0.75rem; color:var(--emerald);">READY</span>
+        </div>
+
+        <div class="hud-project-tabs">
+          <button class="hud-tab-chip active" data-hud-project="gymos">GymOS ERP</button>
+          <button class="hud-tab-chip" data-hud-project="apexcut">ApexCut CAD</button>
+          <button class="hud-tab-chip" data-hud-project="lumen-roof">Lumen Roof 3D</button>
+          <button class="hud-tab-chip" data-hud-project="ovozli-chat">Ovozli Chat AI</button>
+        </div>
+
+        <div class="hud-preview-screen">
+          <h3 id="hud-project-title" class="hud-project-headline">GymOS — Fitness Club Management ERP</h3>
+          <p id="hud-project-desc" class="hud-project-desc">Fitnes klublari va sport majmualari uchun to'liq raqamli boshqaruv platformasi. Turniket integratsiyasi, QR a'zolik, real-vaqt moliya va mobil ilova.</p>
+          
+          <div id="hud-metrics-container" class="hud-metrics-strip"></div>
+        </div>
+
+        <div class="hud-action-row">
+          <a id="hud-btn-demo" href="https://gymos-app-five.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-cyber-primary" style="flex:1;">
+            <span>Jonli Sinash</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button id="hud-btn-sandbox" class="btn-cyber-secondary">
+            <span>🖥 Monitor Sandbox</span>
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- BENTO GRID SHOWCASE SECTION -->
-    <section id="showcase" class="section-wrapper">
-      <div class="container">
-        <!-- Section Lead -->
-        <div class="section-lead">
-          <span class="lead-badge">AMALIY NATIJALAR</span>
-          <h2 class="lead-title">Shu Oyda Ishga Tushirilgan <span class="text-gradient">Masterpiece Loyihalar</span></h2>
-          <p class="lead-desc">Biz faqat va'dalar bilan emas, real ishlayotgan, yuqori yuklamaga bardoshli va biznesga daromad keltirayotgan mahsulotlar bilan isbotlaymiz.</p>
-        </div>
-
-        <!-- Filter Tabs -->
-        <div class="filter-bar" role="tablist">
-          <button class="filter-pill active" data-filter="all" data-i18n="filterAll">Barchasi</button>
-          <button class="filter-pill" data-filter="saas" data-i18n="filterSaas">SaaS & ERP Tizimlar</button>
-          <button class="filter-pill" data-filter="cad" data-i18n="filterCad">Sanoat & CAD Dasturlar</button>
-          <button class="filter-pill" data-filter="web3d" data-i18n="filterWeb3d">3D & Yuqori Tajriba Veb</button>
-          <button class="filter-pill" data-filter="ai" data-i18n="filterAi">AI & Telegram Botlar</button>
-        </div>
-
-        <!-- Bento Grid Container (Populated dynamically by app.js) -->
-        <div id="bento-projects-grid" class="bento-grid"></div>
+    <!-- PORTFOLIO SHOWCASE SECTION -->
+    <section id="showcase" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag">AMALIY NATIJALAR</span>
+        <h2 class="lead-title">Shu Oyda Ishga Tushirilgan <span class="gradient-headline">Masterpiece Loyihalar</span></h2>
+        <p class="lead-sub">Biz so'z bilan emas, real ishlayotgan, yuqori yuklamaga bardoshli va biznesga foyda keltirayotgan mahsulotlar bilan isbotlaymiz.</p>
       </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs-strip">
+        <button class="filter-tab active" data-filter="all" data-i18n="filterAll">Barchasi (8)</button>
+        <button class="filter-tab" data-filter="saas" data-i18n="filterSaas">SaaS & ERP Tizimlar</button>
+        <button class="filter-tab" data-filter="cad" data-i18n="filterCad">Sanoat & CAD Dasturlar</button>
+        <button class="filter-tab" data-filter="web3d" data-i18n="filterWeb3d">3D & Yuqori Tajriba Veb</button>
+        <button class="filter-tab" data-filter="ai" data-i18n="filterAi">AI & Telegram Botlar</button>
+      </div>
+
+      <!-- Projects Deck Grid -->
+      <div id="portfolio-grid" class="projects-deck-grid"></div>
     </section>
 
-    <!-- CORE SERVICES SECTION -->
-    <section id="services" class="section-wrapper" style="background-color: var(--color-card-muted); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
-      <div class="container">
-        <div class="section-lead">
-          <span class="lead-badge">BIZNING IMKONIYATLAR</span>
-          <h2 class="lead-title">Muhandislik va Ishlab Chiqish <span class="text-gradient">Yo'nalishlari</span></h2>
-          <p class="lead-desc">Har bir loyiha individual arxitektura, eng so'nggi texnologiyalar va 100% toza manba kodi bilan tayyorlanadi.</p>
+    <!-- SERVICES ARSENAL SECTION -->
+    <section id="services" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag">XIZMATLAR ARSENALI</span>
+        <h2 class="lead-title">Biz Nimalarni <span class="gradient-headline">Yaratamiz?</span></h2>
+        <p class="lead-sub">Har bir loyiha uchun alohida arxitektura, toza kod va kelajakda kengaytirish uchun qulay poydevor quriladi.</p>
+      </div>
+
+      <div class="services-trio-grid">
+        <div class="service-feature-card">
+          <div class="service-icon-glyph">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <h3 class="service-name-text">Landing & Korporativ Veb</h3>
+          <p class="service-body-text">3D interaktiv elementlar, 99+ PageSpeed ko'rsatkichi, kuchli vizual iyerarxiya va yuqori savdo konversiyasi bilan boyitilgan zamonaviy saytlar.</p>
         </div>
 
-        <div class="services-grid">
-          <!-- Service 1 -->
-          <div class="service-card">
-            <div class="service-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="2" y1="12" x2="22" y2="12"></line>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-              </svg>
-            </div>
-            <h3 class="service-title">Landing & Korporativ Veb</h3>
-            <p class="service-desc">Kompaniyangiz obro'sini oshiruvchi, tezkor (99+ PageSpeed), to'liq moslashuvchan va yuqori konversiyali rasmiy saytlar.</p>
-            <ul class="service-features-list">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Figma asosida pikselma-piksel zamonaviy dizayn</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>SEO optimizatsiyasi va tezkor yuklanish</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Telegram va CRM ga to'g'ridan-to'g'ri integratsiya</span>
-              </li>
-            </ul>
+        <div class="service-feature-card">
+          <div class="service-icon-glyph" style="background:rgba(99,102,241,0.1); border-color:rgba(99,102,241,0.3); color:#818cf8;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
           </div>
+          <h3 class="service-name-text">SaaS, CRM & ERP Platformalar</h3>
+          <p class="service-body-text">Kompaniya ichki jarayonlarini to'liq avtomatlashtirish, a'zolar bazasi, kassa, xodimlar tahlili va to'lov tizimlari (Click/Payme/Stripe).</p>
+        </div>
 
-          <!-- Service 2 -->
-          <div class="service-card">
-            <div class="service-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                <path d="M2 17l10 5 10-5"></path>
-                <path d="M2 12l10 5 10-5"></path>
-              </svg>
-            </div>
-            <h3 class="service-title">SaaS, ERP & CRM Tizimlari</h3>
-            <p class="service-desc">Klublar, ishlab chiqarish sexlari va savdo korxonalari uchun jarayonlarni avtomatlashtiruvchi markazlashgan boshqaruv platformalari.</p>
-            <ul class="service-features-list">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Turniket, kassa va to'lov shlyuzlari (Click/Payme)</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Mijozlar bazasi, QR abonementlar va xodimlar nazorati</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Real-vaqt moliya va daromadlar analitikasi</span>
-              </li>
-            </ul>
+        <div class="service-feature-card">
+          <div class="service-icon-glyph" style="background:rgba(168,85,247,0.1); border-color:rgba(168,85,247,0.3); color:#c084fc;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+              <rect x="4" y="8" width="16" height="12" rx="2"></rect>
+              <path d="M2 14h2"></path>
+              <path d="M20 14h2"></path>
+              <line x1="9" y1="13" x2="9" y2="13.01"></line>
+              <line x1="15" y1="13" x2="15" y2="13.01"></line>
+            </svg>
           </div>
+          <h3 class="service-name-text">AI Agentlar & Telegram Botlar</h3>
+          <p class="service-body-text">Mijozlarga 24/7 javob beruvchi, sotuvlarni avtonom amalga oshiruvchi va ovozli suhbat quruvchi aqlli sun'iy intellekt botlari.</p>
+        </div>
 
-          <!-- Service 3 -->
-          <div class="service-card">
-            <div class="service-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="3" y1="9" x2="21" y2="9"></line>
-                <line x1="9" y1="21" x2="9" y2="9"></line>
-              </svg>
-            </div>
-            <h3 class="service-title">CAD, CNC & Sanoat Dasturlari</h3>
-            <p class="service-desc">Shisha, yog'och, metall va mebel ishlab chiqarish uchun 96%+ xom-ashyo tejovchi hisoblash va kesish dasturlari.</p>
-            <ul class="service-features-list">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>WebAssembly asosidagi ultra-tezkor nesting algoritmi</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>DXF chizma o'qish va G-Code generatsiyasi</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Qoldiq (remnants) materiallarni avtomatik hisobga olish</span>
-              </li>
-            </ul>
+        <div class="service-feature-card">
+          <div class="service-icon-glyph" style="background:rgba(96,239,255,0.1); border-color:rgba(96,239,255,0.3); color:#60efff;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
           </div>
-
-          <!-- Service 4 -->
-          <div class="service-card">
-            <div class="service-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 8V4H8"></path>
-                <rect width="16" height="12" x="4" y="8" rx="2"></rect>
-                <path d="M2 14h2"></path>
-                <path d="M20 14h2"></path>
-                <path d="M15 13v2"></path>
-                <path d="M9 13v2"></path>
-              </svg>
-            </div>
-            <h3 class="service-title">AI Agentlar & Telegram Botlar</h3>
-            <p class="service-desc">24/7 ishlovchi avtonom sotuv botlari, mijozlarga tabiiy tilda audio va matn bilan javob beruvchi sun'iy intellekt tizimlari.</p>
-            <ul class="service-features-list">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Real-vaqt ovozli muloqot (<450ms past kechikish)</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Buyurtmalarni qabul qilish va smeta hisoblash dialogi</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>CRM va bazalar bilan 100% ikki tomonlama sinxronizatsiya</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Service 5 -->
-          <div class="service-card">
-            <div class="service-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                <line x1="12" y1="18" x2="12.01" y2="18"></line>
-              </svg>
-            </div>
-            <h3 class="service-title">Mobil Ilovalar (iOS & Android)</h3>
-            <p class="service-desc">Flutter va zamonaviy kross-platforma asosida ishlab chiqilgan, qulay va tezkor mobil ilovalar.</p>
-            <ul class="service-features-list">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Yagona kod bazasida App Store va Google Play nashri</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Offline QR-kod va push-xabarnomalar tizimi</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Biometrik kirish (FaceID va barmoq izi)</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Service 6 -->
-          <div class="service-card">
-            <div class="service-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-              </svg>
-            </div>
-            <h3 class="service-title">3D Web & Interaktiv Konfiguratorlar</h3>
-            <p class="service-desc">Mijozlarni hayratga soluvchi 3D mahsulot ko'rgazmalari, material almashtiruvchi mebel va arxitektura konfiguratorlari.</p>
-            <ul class="service-features-list">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Three.js va WebGL orqali 60 FPS silliq render</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Kunduz/tun yorug'lik simulyatori va o'lcham hisobi</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Mijoz konfiguratsiyasini PDF smeta sifatida chiqarish</span>
-              </li>
-            </ul>
-          </div>
+          <h3 class="service-name-text">CAD & Sanoat Optimizatorlari</h3>
+          <p class="service-body-text">Shisha, metall va mebel sanoati uchun CNC dastgohlariga mos 2D/3D nesting algoritmlari, DXF tahrirlovchi va desktop vositalar.</p>
         </div>
       </div>
     </section>
 
-    <!-- ENGINEERING WORKFLOW -->
-    <section id="workflow" class="section-wrapper">
-      <div class="container">
-        <div class="section-lead">
-          <span class="lead-badge">ISHLASH TARTIBI</span>
-          <h2 class="lead-title">G'oyadan Tayyor <span class="text-gradient">Productiongacha</span></h2>
-          <p class="lead-desc">Har bir bosqich shaffof, oldindan kelishilgan muddat va aniq sifat nazorati bilan amalga oshiriladi.</p>
-        </div>
-
-        <div class="workflow-grid">
-          <!-- Step 1 -->
-          <div class="workflow-card">
-            <span class="workflow-step-num">01 / BOSQICH</span>
-            <h3 class="workflow-step-title">Tahlil & Texnik Vazifa</h3>
-            <p class="workflow-step-desc">Biznesingiz ehtiyojlari chuqur o'rganiladi, texnik arxitektura va aniq reja tuzilib, byudjet hamda muddat belgilab beriladi.</p>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="workflow-card">
-            <span class="workflow-step-num">02 / BOSQICH</span>
-            <h3 class="workflow-step-title">Interaktiv Prototip & UI</h3>
-            <p class="workflow-step-desc">Dastur yoki saytning to'liq interaktiv prototipi ishlab chiqiladi. Siz kod yozilishidan oldin tayyor mahsulotni ko'rasiz.</p>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="workflow-card">
-            <span class="workflow-step-num">03 / BOSQICH</span>
-            <h3 class="workflow-step-title">Production Dasturlash</h3>
-            <p class="workflow-step-desc">Zamonaviy stak (Next.js, Node.js, WASM, PostgreSQL) asosida xavfsiz, yuqori yuklamalarga chidamli toza kod yoziladi.</p>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="workflow-card">
-            <span class="workflow-step-num">04 / BOSQICH</span>
-            <h3 class="workflow-step-title">Deploy, Integratsiya & Kafolat</h3>
-            <p class="workflow-step-desc">Tizim serverga o'rnatiladi, to'lov va apparatlar ulanadi. 100% manba kodi topshiriladi va 1 yillik kafolat beriladi.</p>
-          </div>
-        </div>
+    <!-- ORDER ENGINE: LINEAR-GRADE CONFIGURATOR -->
+    <section id="order-section" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag">ZAKAZ VA SMETA KONSTRUKTORI</span>
+        <h2 class="lead-title">Loyihangizni <span class="gradient-headline">Moslashtiring & Buyurtma Bering</span></h2>
+        <p class="lead-sub">Kerakli parametrlarni tanlang — tizim narx va ishlab chiqish muddatini real-vaqtda hisoblab beradi. Buyurtmani to'g'ridan-to'g'ri Telegram yoki sayt orqali yuboring.</p>
       </div>
-    </section>
 
-    <!-- LINEAR/STRIPE GRADE ORDER CONFIGURATOR -->
-    <section id="order-section" class="section-wrapper order-section-bg">
-      <div class="container">
-        <!-- Lead -->
-        <div class="section-lead">
-          <span class="lead-badge">ONLAYN SMETA & BUYURTMA</span>
-          <h2 class="lead-title">Loyihangiz Narxi va Muddatini <span class="text-gradient">Hisoblang</span></h2>
-          <p class="lead-desc">Kerakli xizmat, hajm va modullarni tanlang. Jonli kalkulyator aniq smetani hisoblab beradi va arizangizni to'g'ridan-to'g'ri Telegramga yuboradi.</p>
-        </div>
+      <div class="order-studio-wrapper">
+        <div class="configurator-grid">
 
-        <!-- Calculator Layout -->
-        <div class="calculator-layout">
+          <!-- Left Column: Steps -->
+          <div class="config-steps-col">
 
-          <!-- Left Column: Step Configuration Form -->
-          <div class="calc-config-column">
+            <!-- Stage 1 -->
+            <div class="stage-title">
+              <span class="stage-number">1</span>
+              <span data-i18n="step1Title">1. Asosiy Yo'nalishni Tanlang</span>
+            </div>
 
-            <!-- Step 1: Select Service -->
-            <div class="config-step-block">
-              <div class="step-header">
-                <span class="step-badge">1</span>
-                <h3 class="step-heading" data-i18n="step1Title">1. Asosiy Yo'nalishni Tanlang</h3>
+            <div class="services-choice-list">
+              <div class="service-choice-card selected" data-service="landing">
+                <div class="choice-radio"></div>
+                <div class="choice-details">
+                  <div class="choice-name">Landing Page & Korporativ Veb</div>
+                  <div class="choice-sub">3D interaktivlik, tezkor yuklanish, yuqori konversiya</div>
+                </div>
+                <div class="choice-meta">
+                  <div class="choice-price">$350 dan</div>
+                  <div class="choice-time">5 ish kuni</div>
+                </div>
               </div>
 
-              <div class="service-cards-group">
-                <!-- Choice: Landing -->
-                <div class="service-choice-card selected" data-service="landing">
-                  <div class="choice-top-row">
-                    <span class="choice-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line></svg>
-                    </span>
-                    <span class="choice-price-tag">$350 dan</span>
-                  </div>
-                  <h4 class="choice-title">Landing & Korporativ Sayt</h4>
-                  <p class="choice-desc">Premium dizayn, 3D elementlar, 99+ tezlik</p>
+              <div class="service-choice-card" data-service="saas">
+                <div class="choice-radio"></div>
+                <div class="choice-details">
+                  <div class="choice-name">SaaS, CRM & ERP Boshqaruv Tizimi</div>
+                  <div class="choice-sub">Kassa, a'zolar bazasi, xodimlar, to'lovlar, hisobotlar</div>
                 </div>
-
-                <!-- Choice: SaaS / ERP -->
-                <div class="service-choice-card" data-service="saas">
-                  <div class="choice-top-row">
-                    <span class="choice-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
-                    </span>
-                    <span class="choice-price-tag">$850 dan</span>
-                  </div>
-                  <h4 class="choice-title">SaaS, ERP & CRM Tizimlari</h4>
-                  <p class="choice-desc">A'zolar, kassa, turniket, to'lov integratsiyasi</p>
+                <div class="choice-meta">
+                  <div class="choice-price">$850 dan</div>
+                  <div class="choice-time">14 ish kuni</div>
                 </div>
+              </div>
 
-                <!-- Choice: AI Bot -->
-                <div class="service-choice-card" data-service="ai_bot">
-                  <div class="choice-top-row">
-                    <span class="choice-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M12 8V4H8"></path></svg>
-                    </span>
-                    <span class="choice-price-tag">$380 dan</span>
-                  </div>
-                  <h4 class="choice-title">AI Agent & Telegram Botlar</h4>
-                  <p class="choice-desc">24/7 sotuv botlari, ovozli AI, aqlli javoblar</p>
+              <div class="service-choice-card" data-service="ai_bot">
+                <div class="choice-radio"></div>
+                <div class="choice-details">
+                  <div class="choice-name">AI Agent & Telegram Bot Ekotizimi</div>
+                  <div class="choice-sub">24/7 aqlli sotuv, ovozli muloqot, CRM integratsiyasi</div>
                 </div>
-
-                <!-- Choice: CAD / CNC -->
-                <div class="service-choice-card" data-service="cad_industry">
-                  <div class="choice-top-row">
-                    <span class="choice-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                    </span>
-                    <span class="choice-price-tag">$1,200 dan</span>
-                  </div>
-                  <h4 class="choice-title">CAD, CNC & Sanoat Dasturlari</h4>
-                  <p class="choice-desc">Nesting tejamkorligi, DXF/G-Code, Desktop</p>
+                <div class="choice-meta">
+                  <div class="choice-price">$380 dan</div>
+                  <div class="choice-time">5 ish kuni</div>
                 </div>
+              </div>
 
-                <!-- Choice: Mobile App -->
-                <div class="service-choice-card form-group-full" data-service="mobile_app">
-                  <div class="choice-top-row">
-                    <span class="choice-icon">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-                    </span>
-                    <span class="choice-price-tag">$950 dan</span>
-                  </div>
-                  <h4 class="choice-title">Mobil Ilova (iOS & Android)</h4>
-                  <p class="choice-desc">Flutter asosida kross-platforma, shaxsiy kabinet, QR token va push-xabarlar</p>
+              <div class="service-choice-card" data-service="cad_industry">
+                <div class="choice-radio"></div>
+                <div class="choice-details">
+                  <div class="choice-name">CAD, CNC & Sanoat Dasturi (Nesting)</div>
+                  <div class="choice-sub">2D/3D chizmachilik, DXF/G-code, tejamkor kesish algoritmi</div>
+                </div>
+                <div class="choice-meta">
+                  <div class="choice-price">$1,200 dan</div>
+                  <div class="choice-time">20 ish kuni</div>
+                </div>
+              </div>
+
+              <div class="service-choice-card" data-service="mobile_app">
+                <div class="choice-radio"></div>
+                <div class="choice-details">
+                  <div class="choice-name">Mobil Ilova (iOS & Android)</div>
+                  <div class="choice-sub">Flutter / React Native, zamonaviy UI/UX, tezkor ishlash</div>
+                </div>
+                <div class="choice-meta">
+                  <div class="choice-price">$950 dan</div>
+                  <div class="choice-time">18 ish kuni</div>
                 </div>
               </div>
             </div>
 
-            <!-- Step 2: Architecture Scope / Tier -->
-            <div class="config-step-block">
-              <div class="step-header">
-                <span class="step-badge">2</span>
-                <h3 class="step-heading" data-i18n="step2Title">2. Loyiha Ko'lamini Belgilang</h3>
+            <!-- Stage 2 -->
+            <div class="stage-title">
+              <span class="stage-number">2</span>
+              <span data-i18n="step2Title">2. Loyiha Ko'lamini Belgilang</span>
+            </div>
+
+            <div class="tiers-selector-row">
+              <div class="tier-card selected" data-mult="1.0" data-name="MVP / Start">
+                <div class="tier-title">MVP / Start</div>
+                <div class="tier-sub">Tezkor start va asosiy funksiyalar</div>
               </div>
-
-              <div class="tiers-group">
-                <div class="tier-card selected" data-mult="1.0" data-name="MVP / Boshlang'ich">
-                  <h4 class="tier-title">MVP Starter</h4>
-                  <p class="tier-sub">Bozorga tez chiqish, asosiy funksiyalar</p>
-                </div>
-
-                <div class="tier-card" data-mult="1.45" data-name="Business Pro">
-                  <h4 class="tier-title">Business Pro</h4>
-                  <p class="tier-sub">Kengaytirilgan boshqaruv, to'liq funksional</p>
-                </div>
-
-                <div class="tier-card" data-mult="2.1" data-name="Enterprise Custom">
-                  <h4 class="tier-title">Enterprise</h4>
-                  <p class="tier-sub">Yuqori yuklama, maxsus arxitektura & API</p>
-                </div>
+              <div class="tier-card" data-mult="1.3" data-name="Standart Biznes">
+                <div class="tier-title">Standart Biznes</div>
+                <div class="tier-sub">Kengaytirilgan modullar va integratsiyalar</div>
+              </div>
+              <div class="tier-card" data-mult="1.7" data-name="Enterprise / Yirik">
+                <div class="tier-title">Enterprise</div>
+                <div class="tier-sub">Katta yuklama, maxsus xavfsizlik va arxitektura</div>
               </div>
             </div>
 
-            <!-- Step 3: Add-on Capabilities -->
-            <div class="config-step-block">
-              <div class="step-header">
-                <span class="step-badge">3</span>
-                <h3 class="step-heading" data-i18n="step3Title">3. Qo'shimcha Imkoniyatlar (Add-ons)</h3>
+            <!-- Stage 3 -->
+            <div class="stage-title">
+              <span class="stage-number">3</span>
+              <span data-i18n="step3Title">3. Qo'shimcha Imkoniyatlar (Add-ons)</span>
+            </div>
+
+            <div class="addons-checklist">
+              <div class="addon-pill-row" data-addon="telegram_sync">
+                <div class="addon-left-box">
+                  <div class="addon-check-box">✔</div>
+                  <div>
+                    <div class="addon-title">Telegram Bot & Guruhga Xabarnoma</div>
+                    <div class="addon-subtitle">Barcha arizalar lahzada Telegramingizga keladi</div>
+                  </div>
+                </div>
+                <div class="addon-cost">+$80</div>
               </div>
 
-              <div class="addons-grid">
-                <!-- Addon 1 -->
-                <div class="addon-row" data-addon="telegram_sync">
-                  <div class="addon-left">
-                    <div class="addon-checkbox">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div>
-                      <div class="addon-name">Telegram Bot & Guruhga Xabarnoma</div>
-                      <div class="addon-desc">Barcha arizalar va buyurtmalar lahzada Telegramingizga keladi</div>
-                    </div>
+              <div class="addon-pill-row" data-addon="payments">
+                <div class="addon-left-box">
+                  <div class="addon-check-box">✔</div>
+                  <div>
+                    <div class="addon-title">To'lov Shlyuzlari (Click / Payme / Uzum)</div>
+                    <div class="addon-subtitle">Mijozlardan onlayn to'lovlarni qabul qilish</div>
                   </div>
-                  <span class="addon-price-tag">+$80</span>
                 </div>
+                <div class="addon-cost">+$140</div>
+              </div>
 
-                <!-- Addon 2 -->
-                <div class="addon-row" data-addon="payments">
-                  <div class="addon-left">
-                    <div class="addon-checkbox">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div>
-                      <div class="addon-name">To'lov Shlyuzlari (Click / Payme / Uzum)</div>
-                      <div class="addon-desc">Mijozlardan onlayn to'lovlarni qabul qilish va avtomatik chek berish</div>
-                    </div>
+              <div class="addon-pill-row" data-addon="ai_integration">
+                <div class="addon-left-box">
+                  <div class="addon-check-box">✔</div>
+                  <div>
+                    <div class="addon-title">Sun'iy Intellekt (AI Chatbot / Voice)</div>
+                    <div class="addon-subtitle">Mijozlarga o'zbek/rus/ingliz tilida aqlli javoblar</div>
                   </div>
-                  <span class="addon-price-tag">+$140</span>
                 </div>
+                <div class="addon-cost">+$180</div>
+              </div>
 
-                <!-- Addon 3 -->
-                <div class="addon-row" data-addon="ai_integration">
-                  <div class="addon-left">
-                    <div class="addon-checkbox">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div>
-                      <div class="addon-name">Sun'iy Intellekt (AI Chatbot / Ovozli Yordamchi)</div>
-                      <div class="addon-desc">Mijozlarga o'zbek/rus/ingliz tilida aqlli javoblar va audio maslahat</div>
-                    </div>
+              <div class="addon-pill-row" data-addon="admin_dash">
+                <div class="addon-left-box">
+                  <div class="addon-check-box">✔</div>
+                  <div>
+                    <div class="addon-title">Admin Boshqaruv Paneli (Dashboard)</div>
+                    <div class="addon-subtitle">Sayt va tizimni qulay boshqarish interfeysi</div>
                   </div>
-                  <span class="addon-price-tag">+$180</span>
                 </div>
+                <div class="addon-cost">+$160</div>
+              </div>
 
-                <!-- Addon 4 -->
-                <div class="addon-row" data-addon="admin_dash">
-                  <div class="addon-left">
-                    <div class="addon-checkbox">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div>
-                      <div class="addon-name">Admin Boshqaruv Paneli (CRM Dashboard)</div>
-                      <div class="addon-desc">Sayt, mahsulotlar va tushumlarni qulay boshqarish interfeysi</div>
-                    </div>
+              <div class="addon-pill-row" data-addon="multilang">
+                <div class="addon-left-box">
+                  <div class="addon-check-box">✔</div>
+                  <div>
+                    <div class="addon-title">Ko'p Tilli Tizim (O'zbek, Rus, Ingliz)</div>
+                    <div class="addon-subtitle">Saytni 3 ta tilda mukammal ishga tushirish</div>
                   </div>
-                  <span class="addon-price-tag">+$160</span>
                 </div>
+                <div class="addon-cost">+$70</div>
+              </div>
 
-                <!-- Addon 5 -->
-                <div class="addon-row" data-addon="multilang">
-                  <div class="addon-left">
-                    <div class="addon-checkbox">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div>
-                      <div class="addon-name">Ko'p Tilli Tizim (O'zbek, Rus, Ingliz)</div>
-                      <div class="addon-desc">Sayt va platformani 3 ta tilda mukammal ishga tushirish</div>
-                    </div>
+              <div class="addon-pill-row" data-addon="web3d_fx">
+                <div class="addon-left-box">
+                  <div class="addon-check-box">✔</div>
+                  <div>
+                    <div class="addon-title">3D Interaktiv Elementlar & Animatsiyalar</div>
+                    <div class="addon-subtitle">Mijozlarni hayratda qoldiruvchi vizual effektlar</div>
                   </div>
-                  <span class="addon-price-tag">+$70</span>
                 </div>
+                <div class="addon-cost">+$150</div>
+              </div>
 
-                <!-- Addon 6 -->
-                <div class="addon-row" data-addon="web3d_fx">
-                  <div class="addon-left">
-                    <div class="addon-checkbox">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div>
-                      <div class="addon-name">3D Interaktiv Elementlar & Visual FX</div>
-                      <div class="addon-desc">Mijozlarni hayratda qoldiruvchi 3D effektlar va interaktiv animatsiyalar</div>
-                    </div>
+              <div class="addon-pill-row" data-addon="vip_support">
+                <div class="addon-left-box">
+                  <div class="addon-check-box">✔</div>
+                  <div>
+                    <div class="addon-title">1 Yillik Kafolatlangan Texnik Ko'mak</div>
+                    <div class="addon-subtitle">Xavfsizlik, yangilanishlar va 24/7 monitoring</div>
                   </div>
-                  <span class="addon-price-tag">+$150</span>
                 </div>
-
-                <!-- Addon 7 -->
-                <div class="addon-row" data-addon="vip_support">
-                  <div class="addon-left">
-                    <div class="addon-checkbox">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div>
-                      <div class="addon-name">1 Yillik Kafolatlangan Texnik Ko'mak</div>
-                      <div class="addon-desc">Doimiy xavfsizlik yangilanishlari, monitoring va 24/7 yordam</div>
-                    </div>
-                  </div>
-                  <span class="addon-price-tag">+$120</span>
-                </div>
+                <div class="addon-cost">+$120</div>
               </div>
             </div>
 
-            <!-- Step 4: Contact & Project Brief -->
-            <div class="config-step-block">
-              <div class="step-header">
-                <span class="step-badge">4</span>
-                <h3 class="step-heading" data-i18n="step4Title">4. Aloqa va Loyiha Tavsifi</h3>
+            <!-- Stage 4 -->
+            <div class="stage-title">
+              <span class="stage-number">4</span>
+              <span data-i18n="step4Title">4. Aloqa va Loyiha Tavsifi</span>
+            </div>
+
+            <div class="contact-grid">
+              <div>
+                <label for="order-client-name" class="field-label">Ismingiz yoki Kompaniya Nomi *</label>
+                <input type="text" id="order-client-name" class="field-input" placeholder="Masalan: Sardor Komilov" required>
               </div>
 
-              <div class="form-grid">
-                <div>
-                  <label for="order-client-name" class="form-label">Ismingiz yoki Kompaniya nomi: *</label>
-                  <input type="text" id="order-client-name" class="form-input" placeholder="Masalan: Sardor Komilov" required autocomplete="name">
-                </div>
+              <div>
+                <label for="order-client-contact" class="field-label">Telefon yoki Telegram Username *</label>
+                <input type="text" id="order-client-contact" class="field-input" placeholder="@username yoki +998 90 123 45 67" required>
+              </div>
 
-                <div>
-                  <label for="order-client-contact" class="form-label">Telegram yoki Telefon raqam: *</label>
-                  <input type="text" id="order-client-contact" class="form-input" placeholder="@username yoki +998 90 123 45 67" required autocomplete="tel">
-                </div>
+              <div class="grid-col-full">
+                <label for="order-client-timing" class="field-label">Loyihani Boshlash Muddatini Tanlang</label>
+                <select id="order-client-timing" class="field-input">
+                  <option value="Zudlik bilan (1-2 kun ichida)">Zudlik bilan (1-2 kun ichida)</option>
+                  <option value="1 hafta ichida">1 hafta ichida</option>
+                  <option value="Shu oy davomida">Shu oy davomida</option>
+                  <option value="Hozircha konsultatsiya va smeta kerak">Hozircha konsultatsiya va smeta kerak</option>
+                </select>
+              </div>
 
-                <div class="form-group-full">
-                  <label for="order-client-timing" class="form-label">Loyiha boshlash vaqti:</label>
-                  <select id="order-client-timing" class="form-select">
-                    <option value="Zudlik bilan (1-2 kun ichida)">Zudlik bilan (1-2 kun ichida)</option>
-                    <option value="Shu oy ichida">Shu oy ichida</option>
-                    <option value="Keyingi oy boshida">Keyingi oy boshida</option>
-                    <option value="Hozircha faqat smeta hisoblash">Hozircha faqat smeta hisoblash</option>
-                  </select>
-                </div>
-
-                <div class="form-group-full">
-                  <label for="order-client-brief" class="form-label">Loyiha haqida qisqacha (istaklar, funksiyalar):</label>
-                  <textarea id="order-client-brief" class="form-textarea" rows="3" placeholder="Masalan: Bizga fitnes klub uchun a'zolik, turniket integratsiyasi va to'lov tizimiga ega platforma kerak..."></textarea>
-                </div>
+              <div class="grid-col-full">
+                <label for="order-client-brief" class="field-label">Loyiha Haqida Qisqacha (G'oya, Talablar yoki Havola)</label>
+                <textarea id="order-client-brief" class="field-input" placeholder="Masalan: Bizga mebel sexi uchun onlayn buyurtma olish va shisha o'lchamlarini hisoblash sayti kerak..."></textarea>
               </div>
             </div>
 
           </div>
 
-          <!-- Right Column: Sticky Summary & Instant Order Action -->
-          <div class="calc-summary-column">
-            <div class="sticky-summary-card">
-              <div class="summary-header-row">
-                <h3 class="summary-title" data-i18n="summaryTitle">Hisoblangan Smeta</h3>
-                <span class="summary-live-badge" data-i18n="summaryLiveTag">JONLI HISOB</span>
+          <!-- Right Column: Sticky Summary HUD -->
+          <div class="config-summary-col">
+            <div class="order-summary-hud">
+              <div class="summary-top-row">
+                <span data-i18n="summaryTitle">Hisoblangan Smeta</span>
+                <span class="live-beacon">
+                  <span class="pulse-dot" style="width:6px; height:6px;"></span>
+                  <span data-i18n="summaryLiveTag">JONLI HISOB</span>
+                </span>
+              </div>
+
+              <ul class="specs-ledger">
+                <li class="spec-line">
+                  <span class="spec-key" data-i18n="specServiceLbl">Tanlangan Xizmat:</span>
+                  <span id="spec-service-name" class="spec-val-badge">Landing Page & Veb</span>
+                </li>
+                <li class="spec-line">
+                  <span class="spec-key" data-i18n="specScaleLbl">Ko'lam:</span>
+                  <span id="spec-scale-name" class="spec-val-badge">MVP / Start</span>
+                </li>
+                <li class="spec-line">
+                  <span class="spec-key" data-i18n="specAddonsLbl">Qo'shimcha Modullar:</span>
+                  <span id="spec-addons-count" class="spec-val-badge">Standart</span>
+                </li>
+                <li class="spec-line">
+                  <span class="spec-key" data-i18n="specOwnershipLbl">Kafolat & Mulkchilik:</span>
+                  <span class="spec-val-badge" style="color:var(--emerald);" data-i18n="specOwnershipVal">100% Manba Kodi</span>
+                </li>
+              </ul>
+
+              <!-- Live Dynamic Architecture Flowchart -->
+              <div class="dynamic-stack-box">
+                <div class="stack-flow-title">Arxitektura Steki:</div>
+                <div id="live-stack-nodes" class="stack-nodes-stream"></div>
               </div>
 
               <!-- Price Box -->
-              <div class="price-display-box">
+              <div class="price-hero-box">
                 <div class="price-box-label" data-i18n="priceBoxTitle">Taxminiy Loyiha Qiymati</div>
-                <div id="calc-price-display" class="price-main-value">$350 – $420</div>
-                <div id="calc-days-display" class="delivery-estimate-row">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  <span>Taxminiy muddat: 5 ish kuni</span>
-                </div>
-              </div>
-
-              <!-- Specification details -->
-              <div class="summary-specs-list">
-                <div class="spec-line">
-                  <span class="spec-label" data-i18n="specServiceLbl">Tanlangan Xizmat:</span>
-                  <span id="spec-service-name" class="spec-val">Landing Page</span>
-                </div>
-                <div class="spec-line">
-                  <span class="spec-label" data-i18n="specScaleLbl">Ko'lam:</span>
-                  <span id="spec-scale-name" class="spec-val">MVP Starter</span>
-                </div>
-                <div class="spec-line">
-                  <span class="spec-label" data-i18n="specAddonsLbl">Qo'shimcha Modullar:</span>
-                  <span id="spec-addons-count" class="spec-val">Standart</span>
-                </div>
-                <div class="spec-line">
-                  <span class="spec-label" data-i18n="specOwnershipLbl">Kafolat & Mulkchilik:</span>
-                  <span class="spec-val" style="color: var(--color-success);" data-i18n="specOwnershipVal">100% Manba Kodi</span>
-                </div>
+                <div id="calc-price-display" class="price-box-val">$350 – $438</div>
+                <div id="calc-days-display" class="price-box-time">⏱ Taxminiy muddat: 5 ish kuni</div>
               </div>
 
               <!-- Actions -->
-              <div class="summary-actions-column">
-                <!-- Direct Dispatch to Telegram @the_javohirbek -->
-                <button id="btn-submit-telegram" class="btn btn-dispatch-telegram btn-lg" type="button">
+              <div class="dispatch-actions-deck">
+                <button id="btn-submit-telegram" class="btn-dispatch-telegram">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
                   </svg>
                   <span data-i18n="btnTelegramOrder">Buyurtmani Telegram orqali Yuborish</span>
                 </button>
 
-                <!-- Site ticket order -->
-                <button id="btn-submit-site" class="btn btn-secondary" type="button" data-i18n="btnSiteOrder">
-                  Sayt orqali Chipta Rasmiylashtirish
+                <button id="btn-submit-site" class="btn-dispatch-ticket">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span data-i18n="btnSiteOrder">Sayt orqali Chipta Rasmiylashtirish</span>
                 </button>
 
-                <!-- Print / Save Quote -->
-                <button id="btn-print-quote" class="btn btn-ghost btn-sm" type="button" data-i18n="btnPrintQuote">
-                  Tijoriy Taklifni Yuklab Olish (PDF)
+                <button id="btn-print-quote" class="btn-dispatch-quote">
+                  <span data-i18n="btnPrintQuote">📄 Tijoriy Taklifni Yuklab Olish (PDF)</span>
                 </button>
               </div>
 
-              <div class="summary-security-note">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span data-i18n="securityNote">Ma'lumotlaringiz xavfsizligi kafolatlanadi. Maxfiylik 100% himoyalangan.</span>
+              <div style="font-size:0.75rem; color:var(--text-dim); text-align:center; margin-top:14px;" data-i18n="securityNote">
+                🔒 Ma'lumotlaringiz xavfsizligi kafolatlanadi. Hech qanday spam yo'q.
               </div>
             </div>
           </div>
@@ -745,196 +564,241 @@
       </div>
     </section>
 
-    <!-- FAQ ACCORDION -->
-    <section id="faq" class="section-wrapper">
-      <div class="container">
-        <div class="section-lead">
-          <span class="lead-badge">SAVOLLAR & JAVOBLAR</span>
-          <h2 class="lead-title">Eng Ko'p Beriladigan <span class="text-gradient">Savollar</span></h2>
-          <p class="lead-desc">Hamkorlik shartlari, to'lovlar, kafolat va loyiha boshqaruvi bo'yicha aniq ma'lumotlar.</p>
+    <!-- WORKFLOW PROCESS SECTION -->
+    <section id="workflow" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag">MUHANDISLIK STANDARTI</span>
+        <h2 class="lead-title">Biz Qanday <span class="gradient-headline">Ishlaymiz?</span></h2>
+        <p class="lead-sub">Hech qanday noaniqlik va kechikishlarsiz — 5 bosqichli aniq ishlab chiqish tartibi.</p>
+      </div>
+
+      <div class="workflow-steps-deck">
+        <div class="workflow-step-node">
+          <div class="step-num-huge">01</div>
+          <h3 class="step-header-text">Chuqur Tahlil & TT</h3>
+          <p class="step-info-text">Biznes maqsadi, raqobatchilar va auditoriyani o'rganib, aniq texnik topshiriq tuzamiz.</p>
         </div>
 
-        <div class="faq-accordion-list">
-          <!-- FAQ 1 -->
-          <div class="faq-item">
-            <button class="faq-trigger" type="button" aria-expanded="false">
-              <span>To'lov qanday tartibda amalga oshiriladi?</span>
-              <svg class="faq-icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner-body">
-                To'lov odatda 30/40/30 yoki 50/50 bosqichli shaklda amalga oshiriladi: avval dastlabki reja va prototip tasdiqlanadi (oldindan to'lov), qolgan qismi esa mahsulot to'liq test qilinib, mijoz serveriga muvaffaqiyatli topshirilgach to'lanadi. Click, Payme, bank hisob raqami (yuridik shaxslar uchun shartnoma) va xalqaro to'lovlar qabul qilinadi.
-              </div>
-            </div>
-          </div>
+        <div class="workflow-step-node">
+          <div class="step-num-huge">02</div>
+          <h3 class="step-header-text">UI/UX Taste Dizayn</h3>
+          <p class="step-info-text">Shablonlardan xoli, mahsulotingiz xarakteriga mos keluvchi mukammal vizual uslub shakllantiriladi.</p>
+        </div>
 
-          <!-- FAQ 2 -->
-          <div class="faq-item">
-            <button class="faq-trigger" type="button" aria-expanded="false">
-              <span>Loyiha manba kodi (source code) kimga tegishli bo'ladi?</span>
-              <svg class="faq-icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner-body">
-                Loyiha 100% sizga tegishli bo'ladi! Hech qanday yashirin obunalar yoki litsenziya cheklovlari yo'q. Loyiha yakunida to'liq Git repository, ma'lumotlar bazasi sxemalari, API kalitlar va barcha dizayn fayllari to'liq sizning mulkingizga topshiriladi.
-              </div>
-            </div>
-          </div>
+        <div class="workflow-step-node">
+          <div class="step-num-huge">03</div>
+          <h3 class="step-header-text">Arxitektura & Kod</h3>
+          <p class="step-info-text">Next.js, React, WebGL yoki Rust WASM yordamida tezkor, xavfsiz va toza kod yoziladi.</p>
+        </div>
 
-          <!-- FAQ 3 -->
-          <div class="faq-item">
-            <button class="faq-trigger" type="button" aria-expanded="false">
-              <span>Tayyor loyihaga kafolat va texnik xizmat ko'rsatiladimi?</span>
-              <svg class="faq-icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner-body">
-                Ha, har bir topshirilgan loyihaga rasmiy 1 yillik texnik kafolat beriladi. Agar tizimda kutilmagan nosozlik, xatolik (bug) yoki server bilan bog'liq uzilish paydo bo'lsa, mutaxassisimiz zudlik bilan bepul bartaraf etadi.
-              </div>
-            </div>
-          </div>
+        <div class="workflow-step-node">
+          <div class="step-num-huge">04</div>
+          <h3 class="step-header-text">Qat'iy Testlash</h3>
+          <p class="step-info-text">Tezlik (PageSpeed 95+), turli ekranlar, qurilmalar va xavfsizlik ssenariylari bo'yicha to'liq tekshiruv.</p>
+        </div>
 
-          <!-- FAQ 4 -->
-          <div class="faq-item">
-            <button class="faq-trigger" type="button" aria-expanded="false">
-              <span>Loyiha qancha vaqtda tayyor bo'ladi va muddat kechikishi mumkinmi?</span>
-              <svg class="faq-icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner-body">
-                Landing page saytlar odatda 4–7 ish kuni, murakkab SaaS/ERP va sanoat CAD dasturlari esa 14–25 ish kunida tayyorlanadi. Muddat har bir topshiriq uchun qat'iy belgilanadi va har 2-3 kunda oraliq natijalar mijozga video yoki jonli namoyish qilib boriladi.
-              </div>
-            </div>
-          </div>
+        <div class="workflow-step-node">
+          <div class="step-num-huge">05</div>
+          <h3 class="step-header-text">Deploy & Monitoring</h3>
+          <p class="step-info-text">Vercel yoki Cloud serverlarga yuklab, barcha tizimlar sozlanadi va 100% kod topshiriladi.</p>
+        </div>
+      </div>
+    </section>
 
-          <!-- FAQ 5 -->
-          <div class="faq-item">
-            <button class="faq-trigger" type="button" aria-expanded="false">
-              <span>Shartnoma tuziladimi va yuridik shaxslar bilan ishlaysizmi?</span>
-              <svg class="faq-icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="faq-content">
-              <div class="faq-inner-body">
-                Albatta! O'zbekiston Respublikasi qonunchiligiga binoan rasmiy shartnoma, texnik topshiriq ilovasi (TOR) va bajarilgan ishlar dalolatnomasi (Akt) tuziladi. Hisob-fakturalar Didox / soliq tizimi orqali elektron taqdim etiladi.
-              </div>
-            </div>
+    <!-- TRUST & GUARANTEES SECTION -->
+    <section class="section-block">
+      <div class="trust-cards-cluster">
+        <div class="trust-pillar">
+          <div class="trust-pillar-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div class="trust-pillar-text">
+            <h4>100% Manba Kodi (Full Ownership)</h4>
+            <p>Barcha yaratilgan manba kodlari to'liq sizga tegishli bo'ladi. Hech qanday yashirin bog'liqliklar yo'q.</p>
+          </div>
+        </div>
+
+        <div class="trust-pillar">
+          <div class="trust-pillar-icon" style="background:rgba(96,239,255,0.1); color:#60efff;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <div class="trust-pillar-text">
+            <h4>0.38 Soniyalik Yuklanish Tezligi</h4>
+            <p>Google PageSpeed ko'rsatkichi 95+ ball. Foydalanuvchilar har bir soniyani kutmasdan ma'lumot oladi.</p>
+          </div>
+        </div>
+
+        <div class="trust-pillar">
+          <div class="trust-pillar-icon" style="background:rgba(168,85,247,0.1); color:#c084fc;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 14 14"></polyline>
+            </svg>
+          </div>
+          <div class="trust-pillar-text">
+            <h4>Belgilangan Muddat Kafolati</h4>
+            <p>Hisoblangan muddat shartnomada qat'iy belgilanadi va o'z vaqtida, sifat yo'qotilmasdan yetkaziladi.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ ACCORDION SECTION -->
+    <section id="faq" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag">MA'LUMOTLAR</span>
+        <h2 class="lead-title">Ko'p Beriladigan <span class="gradient-headline">Savollar</span></h2>
+        <p class="lead-sub">Biz bilan ishlash bo'yicha eng muhim savollarga ochiq va aniq javoblar.</p>
+      </div>
+
+      <div class="faq-accordion-group">
+        <div class="faq-card-unit open">
+          <div class="faq-card-query">
+            <span>Loyihani ishlab chiqish o'rtacha qancha vaqt oladi?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-card-reply">
+            Oddiy landing sahifa va taqdimot saytlari 4-7 ish kunida tayyorlanadi. Murakkab CRM tizimlar, SaaS platformalar yoki sanoat CAD algoritmlari ko'lamiga qarab 10 kundan 25 ish kunigacha vaqt oladi.
+          </div>
+        </div>
+
+        <div class="faq-card-unit">
+          <div class="faq-card-query">
+            <span>To'lov tartibi qanday amalga oshiriladi?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-card-reply">
+            Odatda standart tartib: 40% oldindan to'lov (loyihani rejalashtirish va dizayn tasdiqlanishi bilan), qolgan 60% esa loyiha to'liq tayyor bo'lib, testdan o'tib, serverga yuklangach to'lanadi.
+          </div>
+        </div>
+
+        <div class="faq-card-unit">
+          <div class="faq-card-query">
+            <span>Tayyor loyihani kim boshqaradi va tahrirlay oladi?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-card-reply">
+            Biz loyihaga qulay boshqaruv paneli (Dashboard) integratsiya qilib beramiz. Siz mahsulotlarni, matnlarni, narxlarni yoki mijozlar arizalarini hech qanday dasturlashni bilmasdan mustaqil boshqara olasiz.
+          </div>
+        </div>
+
+        <div class="faq-card-unit">
+          <div class="faq-card-query">
+            <span>Domen va server (xosting) sozlashda yordam berasizmi?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-card-reply">
+            Ha, albatta. Biz Vercel, Cloudflare, AWS yoki mahalliy serverlarga (masalan, .uz domeniga) ulab, SSL xavfsizlik sertifikatlari va 24/7 ish holatini to'liq bepul sozlab beramiz.
+          </div>
+        </div>
+
+        <div class="faq-card-unit">
+          <div class="faq-card-query">
+            <span>Keyinchalik yangi funksiyalar qo'shish imkoni bormi?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-card-reply">
+            Biz arxitekturani modulli (scalable) qilib quramiz. Istalgan vaqtda yangi to'lov turi, sun'iy intellekt botlari yoki mobil ilovani asosiy tizimga qiyinchiliksiz qo'shish mumkin.
           </div>
         </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="container">
-        <div class="footer-grid">
-          <!-- Brand bio -->
-          <div class="footer-brand-bio">
-            <div class="brand-link">
-              <div class="brand-icon-box" style="width:34px; height:34px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
-              </div>
-              <div class="brand-name-group">
-                <span class="brand-name" style="font-size:0.95rem;">JB INTELLIGENT</span>
-                <span class="brand-tag">DIGITAL STUDIO</span>
-              </div>
+    <footer class="footer-deck">
+      <div class="footer-quad">
+        <div>
+          <div class="brand-badge" style="margin-bottom: 8px;">
+            <div class="brand-symbol" style="width:34px; height:34px;">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,4 93,25 93,75 50,96 7,75 7,25" stroke="#00ff87" stroke-width="6" fill="rgba(0,255,135,0.12)"/>
+                <path d="M38 32 H58 V48 C58 58 50 64 38 64 C30 64 26 58 26 58" stroke="#00ff87" stroke-width="7" stroke-linecap="round"/>
+              </svg>
             </div>
-            <p class="footer-bio-text">
-              Yuqori yuklamali SaaS/ERP platformalari, sanoat CAD dasturlari va sun'iy intellekt agentlari ishlab chiqishga ixtisoslashgan mustaqil muhandislik studiyasi.
-            </p>
-            <div style="display:flex; gap:10px;">
-              <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="Telegram kanali yoki profili" title="Telegram: @the_javohirbek">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                </svg>
-              </a>
-              <a href="https://github.com/Javohirbek070" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="GitHub profili" title="GitHub: Javohirbek070">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-                </svg>
-              </a>
+            <div class="brand-text-block">
+              <span class="brand-title">JB INTELLIGENT</span>
             </div>
           </div>
-
-          <!-- Column 2: Navigation -->
-          <div>
-            <h4 class="footer-col-title">Tezkor Havolalar</h4>
-            <ul class="footer-nav-list">
-              <li><a href="#showcase" class="footer-nav-link">Loyihalar Ko'rgazmasi</a></li>
-              <li><a href="#services" class="footer-nav-link">Xizmatlar Kataloqi</a></li>
-              <li><a href="#order-section" class="footer-nav-link">Smeta Kalkulyatori</a></li>
-              <li><a href="#workflow" class="footer-nav-link">Ishlash Bosqichlari</a></li>
-              <li><a href="#faq" class="footer-nav-link">Savol-Javoblar</a></li>
-            </ul>
-          </div>
-
-          <!-- Column 3: Works -->
-          <div>
-            <h4 class="footer-col-title">Tanlangan Loyihalar</h4>
-            <ul class="footer-nav-list">
-              <li><a href="https://gymos-app-five.vercel.app" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GymOS ERP</a></li>
-              <li><a href="https://www.apexcut.store" target="_blank" rel="noopener noreferrer" class="footer-nav-link">ApexCut CAD</a></li>
-              <li><a href="https://lumen-roof-site.vercel.app" target="_blank" rel="noopener noreferrer" class="footer-nav-link">Lumen Roof 3D</a></li>
-              <li><a href="https://ovozli-chat-five.vercel.app" target="_blank" rel="noopener noreferrer" class="footer-nav-link">Ovozli Chat AI</a></li>
-              <li><a href="https://barber-flow-dun.vercel.app" target="_blank" rel="noopener noreferrer" class="footer-nav-link">Barber Flow OS</a></li>
-            </ul>
-          </div>
-
-          <!-- Column 4: Contact -->
-          <div>
-            <h4 class="footer-col-title">To'g'ridan-to'g'ri Aloqa</h4>
-            <ul class="footer-nav-list">
-              <li style="display:flex; align-items:center; gap:8px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="footer-nav-link">@the_javohirbek</a>
-              </li>
-              <li style="display:flex; align-items:center; gap:8px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                <span class="footer-nav-link">the_javohirbek@gmail.com</span>
-              </li>
-              <li style="margin-top:10px;">
-                <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="width:100%;">
-                  <span>Telegram orqali Bog'lanish</span>
-                </a>
-              </li>
-            </ul>
-          </div>
+          <p class="footer-mission">
+            Bizneslarni raqamlashtiruvchi, sanoat korxonalariga material va vaqt tejovchi intellektual dasturiy ta'minotlar studiyasi.
+          </p>
         </div>
 
-        <div class="footer-bottom-bar">
-          <div>&copy; 2026 JB INTELLIGENT. Barcha huquqlar himoyalangan. Muhandis: Javohirbek.</div>
-          <div style="display:flex; gap:16px;">
-            <a href="https://jb-intelligent.vercel.app" class="footer-nav-link">jb-intelligent.vercel.app</a>
-            <span>•</span>
-            <a href="https://github.com/Javohirbek070/jb-intelligent" target="_blank" rel="noopener noreferrer" class="footer-nav-link">GitHub Repo</a>
-          </div>
+        <div class="footer-column">
+          <h5>Navigatsiya</h5>
+          <ul class="footer-list">
+            <li><a href="#showcase">Loyihalar</a></li>
+            <li><a href="#services">Xizmatlar</a></li>
+            <li><a href="#order-section">Zakaz Kalkulyatori</a></li>
+            <li><a href="#workflow">Ishlash Tartibi</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
         </div>
+
+        <div class="footer-column">
+          <h5>Portfolio</h5>
+          <ul class="footer-list">
+            <li><a href="https://gymos-app-five.vercel.app" target="_blank" rel="noopener noreferrer">GymOS ERP</a></li>
+            <li><a href="https://www.apexcut.store" target="_blank" rel="noopener noreferrer">ApexCut CAD</a></li>
+            <li><a href="https://lumen-roof-site.vercel.app" target="_blank" rel="noopener noreferrer">Lumen Roof</a></li>
+            <li><a href="https://javohirbek-favorites.vercel.app" target="_blank" rel="noopener noreferrer">Javohirbek Favorites</a></li>
+            <li><a href="https://ovozli-chat-five.vercel.app" target="_blank" rel="noopener noreferrer">Ovozli Chat AI</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h5>To'g'ridan-to'g'ri Aloqa</h5>
+          <ul class="footer-list">
+            <li><a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" style="color:var(--emerald); font-weight:700;">Telegram: @the_javohirbek</a></li>
+            <li><a href="https://github.com/Javohirbek070" target="_blank" rel="noopener noreferrer">GitHub: @Javohirbek070</a></li>
+            <li><span style="color:var(--text-secondary); font-size:0.85rem;">Toshkent / Namangan / Global</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-sub-bar">
+        <div>© 2026 JB INTELLIGENT. Barcha huquqlar himoyalangan.</div>
+        <div class="mono" style="font-size:0.75rem;">Engineered with Anti-Slop High-Taste Precision.</div>
       </div>
     </footer>
 
   </div>
 
-  <!-- PROJECT DETAIL MODAL -->
-  <div id="project-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
-    <div class="modal-window">
-      <button class="modal-close-btn" onclick="closeModals()" aria-label="Modalni yopish">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-      <div id="project-modal-body"></div>
+  <!-- FLOATING QUICK DOCK -->
+  <div class="floating-glass-dock">
+    <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="dock-pill-btn telegram-glow">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+      <span>@the_javohirbek</span>
+    </a>
+    <div class="dock-separator"></div>
+    <button id="dock-calc-btn" class="dock-pill-btn">
+      <span>⚡ Smeta</span>
+    </button>
+    <div class="dock-separator"></div>
+    <button id="dock-sound-btn" class="dock-pill-btn">
+      <span>🔊 Ovoz</span>
+    </button>
+  </div>
+
+  <!-- MODAL: PROJECT DETAILS & SANDBOX -->
+  <div id="project-modal" class="modal-overlay-deck">
+    <div class="modal-shell">
+      <button class="modal-dismiss-btn" onclick="closeModals()" title="Yopish">✕</button>
+      <div id="project-modal-body" class="modal-inner-padding"></div>
     </div>
   </div>
 
-  <!-- RECEIPT TICKET MODAL -->
-  <div id="receipt-modal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-window">
-      <button class="modal-close-btn" onclick="closeModals()" aria-label="Modalni yopish">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-      <div id="receipt-modal-body"></div>
+  <!-- MODAL: ORDER RECEIPT TICKET -->
+  <div id="receipt-modal" class="modal-overlay-deck">
+    <div class="modal-shell">
+      <button class="modal-dismiss-btn" onclick="closeModals()" title="Yopish">✕</button>
+      <div id="receipt-modal-body" class="modal-inner-padding"></div>
     </div>
   </div>
-
-  <!-- TOAST CONTAINER -->
-  <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
   <!-- Scripts -->
   <script src="projects-data.js"></script>

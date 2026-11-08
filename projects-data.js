@@ -1,6 +1,5 @@
 // ==========================================================
 // JB INTELLIGENT — Data Repository & Multilingual Architecture
-// Master Design System Edition (ui-ux-pro-max compliant)
 // ==========================================================
 
 const USD_TO_UZS_RATE = 12850;
@@ -18,7 +17,7 @@ const I18N = {
     heroTitlePrefix: "Biznesingizni Bir Necha Qadam Oldinga Olib Chiqadigan",
     heroTitleGradient: "Intellektual Tizimlar",
     heroSub: "Yuqori konversiyali veb-platformalar, sanoat CAD dasturlari, murakkab SaaS/ERP tizimlari va avtonom sun'iy intellekt agentlari. G'oyadan boshlab 100% production darajasigacha.",
-    heroCtaCalc: "Loyihani Hisoblash & Zakaz Berish",
+    heroCtaCalc: "⚡ Loyihani Hisoblash & Zakaz Berish",
     heroCtaProjects: "Jonli Loyihalarni Ko'rish",
     heroCtaTelegram: "Telegram: @the_javohirbek",
     statProjects: "Ishga tushirilgan loyihalar",
@@ -45,16 +44,16 @@ const I18N = {
     specOwnershipLbl: "Kafolat & Mulkchilik:",
     specOwnershipVal: "100% Manba Kodi",
     priceBoxTitle: "Taxminiy Loyiha Qiymati",
-    daysPrefix: "Taxminiy muddat:",
+    daysPrefix: "⏱ Taxminiy muddat:",
     daysSuffix: "ish kuni",
     btnTelegramOrder: "Buyurtmani Telegram orqali Yuborish",
     btnSiteOrder: "Sayt orqali Chipta Rasmiylashtirish",
-    btnPrintQuote: "Tijoriy Taklifni Yuklab Olish (PDF)",
-    securityNote: "Ma'lumotlaringiz xavfsizligi kafolatlanadi. Maxfiylik 100% himoyalangan.",
+    btnPrintQuote: "📄 Tijoriy Taklifni Yuklab Olish (PDF)",
+    securityNote: "🔒 Ma'lumotlaringiz xavfsizligi kafolatlanadi. Hech qanday spam yo'q.",
     currencyPill: "Valyuta:",
     namePlaceholder: "Masalan: Sardor Komilov",
     contactPlaceholder: "@username yoki +998 90 123 45 67",
-    briefPlaceholder: "Masalan: Bizga fitnes klub uchun abonementlar, turniket integratsiyasi va to'lov tizimiga ega platforma kerak..."
+    briefPlaceholder: "Masalan: Bizga mebel sexi uchun onlayn buyurtma olish va shisha o'lchamlarini hisoblash sayti kerak..."
   },
   en: {
     navProjects: "Projects",
@@ -67,7 +66,7 @@ const I18N = {
     heroTitlePrefix: "Engineering Next-Generation",
     heroTitleGradient: "Intelligent Systems",
     heroSub: "High-impact SaaS platforms, industrial CAD engines, bespoke 3D interactive web experiences, and autonomous AI agents. From concept to battle-tested production.",
-    heroCtaCalc: "Estimate & Place Order",
+    heroCtaCalc: "⚡ Estimate & Place Order",
     heroCtaProjects: "Explore Live Portfolio",
     heroCtaTelegram: "Telegram: @the_javohirbek",
     statProjects: "Production Works Deployed",
@@ -94,12 +93,12 @@ const I18N = {
     specOwnershipLbl: "Code Ownership:",
     specOwnershipVal: "100% Full Source Code",
     priceBoxTitle: "Estimated Project Investment",
-    daysPrefix: "Delivery Estimate:",
+    daysPrefix: "⏱ Delivery Estimate:",
     daysSuffix: "business days",
     btnTelegramOrder: "Send Order via Telegram",
     btnSiteOrder: "Generate Digital Order Ticket",
-    btnPrintQuote: "Export Official Quote (PDF)",
-    securityNote: "Confidentiality guaranteed. Zero spam or third-party disclosures.",
+    btnPrintQuote: "📄 Export Official Quote (PDF)",
+    securityNote: "🔒 Confidentiality guaranteed. Zero spam or third-party disclosures.",
     currencyPill: "Currency:",
     namePlaceholder: "e.g. Alex Mercer / TechCorp",
     contactPlaceholder: "@username or +998 90 123 45 67",
@@ -116,7 +115,7 @@ const I18N = {
     heroTitlePrefix: "Создаем Надежные Цифровые Решения и",
     heroTitleGradient: "Интеллектуальные Системы",
     heroSub: "Высокоскоростные SaaS платформы, промышленные CAD решения, иммерсивные 3D сайты и автономные AI агенты. От идеи до 100% production уровня.",
-    heroCtaCalc: "Рассчитать & Заказать",
+    heroCtaCalc: "⚡ Рассчитать & Заказать",
     heroCtaProjects: "Смотреть Реальные Проекты",
     heroCtaTelegram: "Telegram: @the_javohirbek",
     statProjects: "Успешных проектов",
@@ -143,12 +142,12 @@ const I18N = {
     specOwnershipLbl: "Исходный код:",
     specOwnershipVal: "100% Полное Владение",
     priceBoxTitle: "Ориентировочная Стоимость",
-    daysPrefix: "Срок выполнения:",
+    daysPrefix: "⏱ Срок выполнения:",
     daysSuffix: "раб. дней",
     btnTelegramOrder: "Отправить Заказ в Telegram",
     btnSiteOrder: "Оформить Электронный Билет",
-    btnPrintQuote: "Скачать Коммерческое Предложение (PDF)",
-    securityNote: "Полная конфиденциальность данных. Никакого спама.",
+    btnPrintQuote: "📄 Скачать Коммерческое Предложение (PDF)",
+    securityNote: "🔒 Полная конфиденциальность данных. Никакого спама.",
     currencyPill: "Валюта:",
     namePlaceholder: "Например: Сардор Комилов / OOO Глобал",
     contactPlaceholder: "@username или +998 90 123 45 67",
@@ -165,7 +164,7 @@ const PROJECTS_DATA = [
     categoryLabel: "SaaS & ERP",
     badge: "Enterprise ERP",
     date: "Noyabr 2026",
-    summary: "Fitnes klublari va sport majmualari uchun to'liq raqamli boshqaruv platformasi. Turniket apparat integratsiyasi, QR a'zolik, real-vaqt moliya va mobil ilova.",
+    summary: "Fitnes klublari va sport majmualari uchun to'liq raqamli boshqaruv platformasi. Turniket integratsiyasi, QR a'zolik, real-vaqt moliya va mobil ilova.",
     description: "GymOS — O'zbekistondagi zamonaviy fitnes klublari uchun maxsus ishlab chiqilgan keng ko'lamli boshqaruv tizimi. Tizim a'zolar bazasini yuritish, abonementlarni avtomatik nazorat qilish, murabbiylar jadvali, FaceID/QR turniketlar bilan integratsiya hamda klub egasi uchun jonli analitika va moliyaviy hisobotlarni taqdim etadi.",
     architecture: [
       { name: "Frontend / Kassa", tech: "Next.js 15, React 19, Tailwind CSS" },
@@ -181,7 +180,7 @@ const PROJECTS_DATA = [
     tech: ["Next.js 15", "PostgreSQL", "Supabase", "Tailwind CSS", "Flutter", "Hardware API"],
     liveUrl: "https://gymos-app-five.vercel.app",
     featured: true,
-    accentColor: "#2563eb",
+    accentColor: "#10b981",
     highlights: [
       "Elektron QR va RFID turniket apparat integratsiyasi",
       "Kassani real-vaqtda boshqarish va to'lov tahlili (Click, Payme)",
@@ -212,7 +211,7 @@ const PROJECTS_DATA = [
     tech: ["React", "HTML5 Canvas 2D", "WebGL", "C++/Rust WASM", "DXF Parser", "Electron"],
     liveUrl: "https://www.apexcut.store",
     featured: true,
-    accentColor: "#0284c7",
+    accentColor: "#06b6d4",
     highlights: [
       "Interaktiv 2D CAD chizmachilik va parametrik shakllar",
       "2D Bin-Packing va Genetic nesting algoritmi",
@@ -225,7 +224,7 @@ const PROJECTS_DATA = [
     title: "Lumen Roof — Architectural Panoramic Roofs",
     category: "web3d",
     categoryLabel: "3D & Veb",
-    badge: "Arxitektura & Dizayn",
+    badge: "Luxury Architecture",
     date: "Noyabr 2026",
     summary: "Premium panoramik shisha tomlar va avtomatlashtirilgan surilma tizimlari uchun biofilik, yuqori konversiyali dizayn shousi.",
     description: "Lumen Roof loyihasi — zamonaviy arxitektura va hashamatli villalar uchun tabiiy yorug'lik simulyatori va avtomatik surilma tom tizimlarini namoyish etuvchi yuqori darajadagi estetik landing page. Dinamik kunduz/tun yorug'lik effektlari, 7 yillik kafolat kalkulyatori va interaktiv konfigurator bilan jihozlangan.",
@@ -242,7 +241,7 @@ const PROJECTS_DATA = [
     tech: ["Vanilla High-Performance JS", "CSS 3D Transforms", "GPU Light Shaders", "Responsive Grid"],
     liveUrl: "https://lumen-roof-site.vercel.app",
     featured: true,
-    accentColor: "#d97706",
+    accentColor: "#eab308",
     highlights: [
       "Interaktiv kunduz/tun yorug'lik va energiya tejamkorlik simulyatsiyasi",
       "Tabiiy quyosh burchaklariga moslashuvchan vizual render",
@@ -258,25 +257,25 @@ const PROJECTS_DATA = [
     badge: "3D Tajriba",
     date: "Noyabr 2026",
     summary: "Haqiqiy 3D fizika, bahor animatsiyalari va dinamik yorug'likka ega interaktiv retro kinoteka javoni.",
-    description: "Retro VHS kassetalari javoni ko'rinishidagi interaktiv 3D tajriba. Har bir kasseta kursorni kuzatadi, tebranish fizikasi bilan javondan tortib olinadi, ochilganda kinematografik modal orqali to'liq ma'lumotlarni ochib beradi.",
+    description: "Retro VHS kassetalari javoni ko'rinishidagi interaktiv 3D tajriba. Har bir kasseta kursorni kuzatadi, tebranish fizikasi bilan javondan tortib olinadi, ochilganda maxsus SVG siyoh effekti (ink-bleed) va kinematografik modal orqali to'liq ma'lumotlarni ochib beradi.",
     architecture: [
       { name: "Physics Engine", tech: "Spring Interpolation, Matrix3D Dynamic Transforms" },
-      { name: "Visual FX", tech: "SVG Filters & Depth Shaders" },
-      { name: "Audio Synth", tech: "Web Audio Synthesized Interface Dynamics" }
+      { name: "Visual FX", tech: "SVG Turbulence & Ink Bleed Filters" },
+      { name: "Audio Synth", tech: "Web Audio Synthesized Cassette Clicks" }
     ],
     metrics: [
       { label: "Render silliqligi", value: "60 FPS" },
       { label: "Fizik interaktivlik", value: "Spring 3D" },
       { label: "Fayl hajmi", value: "< 70 KB" }
     ],
-    tech: ["Modern CSS 3D", "Vanilla JS", "Spring Dynamics", "SVG Filters", "Web Audio"],
+    tech: ["Modern CSS 3D", "Vanilla JS", "Spring Dynamics", "SVG Ink Filters", "Web Audio"],
     liveUrl: "https://javohirbek-favorites.vercel.app",
     featured: true,
-    accentColor: "#4f46e5",
+    accentColor: "#6366f1",
     highlights: [
       "Haqiqiy 3D fazoda kursor ta'sirida burchak o'zgarishi",
       "Fizikaga asoslangan bahor (spring) interpolyatsiyasi",
-      "Retrofuturistik audio va vizual chuqurlik effektlari",
+      "Retrofuturistik audio va siyoh yoyilish effektlari",
       "IMDb bilan bog'langan interaktiv modal tizimi"
     ]
   },
@@ -302,7 +301,7 @@ const PROJECTS_DATA = [
     tech: ["WebRTC", "FastAudio Streaming", "Gemini / OpenAI Voice API", "Node.js", "Tailwind"],
     liveUrl: "https://ovozli-chat-five.vercel.app",
     featured: true,
-    accentColor: "#7c3aed",
+    accentColor: "#a855f7",
     highlights: [
       "Real-vaqt ovozli to'lqin vizualizatori (Web Audio Analyzer)",
       "O'zbek tilining fonetik nozikliklarini tushunuvchi moslashtirilgan LLM",
@@ -332,7 +331,7 @@ const PROJECTS_DATA = [
     tech: ["Next.js", "Tailwind CSS", "Telegram Bot API", "Server Actions", "Vercel"],
     liveUrl: "https://barber-flow-dun.vercel.app",
     featured: false,
-    accentColor: "#ea580c",
+    accentColor: "#f97316",
     highlights: [
       "Mijoz va usta uchun qulay interaktiv vaqt tanlash kalendari",
       "Navbat yaqinlashganda Telegram orqali avtomatik eslatma",
@@ -362,7 +361,7 @@ const PROJECTS_DATA = [
     tech: ["Node.js", "Telegraf API", "Express", "Vercel Serverless", "PostgreSQL"],
     liveUrl: "https://akfa-servis-bot.vercel.app",
     featured: false,
-    accentColor: "#2563eb",
+    accentColor: "#3b82f6",
     highlights: [
       "Ko'p bosqichli buyurtma berish va smeta hisoblash dialogi",
       "Rasm va geolokatsiyani qabul qilib ustaga marshrut chizish",
@@ -392,7 +391,7 @@ const PROJECTS_DATA = [
     tech: ["Three.js", "OrbitControls", "PBR Textures", "Vanilla JS", "GLTF Loader"],
     liveUrl: "#order-section",
     featured: false,
-    accentColor: "#db2777",
+    accentColor: "#ec4899",
     highlights: [
       "Real vaqtda fotorealistik materiallar va aks ettirish (reflections)",
       "O'lchamlarni dinamik o'zgartirish va narxni qayta hisoblash",
@@ -428,7 +427,7 @@ const SERVICES_CATALOG = [
     icon: "bot",
     basePrice: 380,
     baseDays: 5,
-    description: "24/7 avtonom sotuv botlari, LLM integratsiyasi, ovozli muloqot va CRM sinxronizatsiyasi.",
+    description: "24/7 avtonom sotuv botlari, ChatGPT / Claude / Gemini integratsiyasi, ovozli muloqot va CRM sinxronizatsiyasi.",
     recommendedFor: "Onlayn do'konlar, xizmat ko'rsatish va mijozlarni qabul qilish"
   },
   {
