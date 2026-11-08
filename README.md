@@ -1,59 +1,54 @@
-# JB INTELLIGENT — Digital Engineering & AI Studio
+# JB INTELLIGENT — Dasturiy Muhandislik & Sun'iy Intellekt Studiyasi
 
-Official Flagship & Interactive Order Engine for **JB Intelligent**, showcasing production-grade software platforms, CAD/CNC industrial tools, 3D interactive web experiences, and real-time AI solutions created by Javohirbek.
-
-![JB Intelligent Banner](https://raw.githubusercontent.com/Javohirbek070/jb-intelligent/main/preview.png)
-
-## ⚡ Live Deployments & Showcase
-- **JB Intelligent Official Portal:** [https://jb-intelligent.vercel.app](https://jb-intelligent.vercel.app)
-- **Telegram Contact:** [@the_javohirbek](https://t.me/the_javohirbek)
+Rasmiy portal va interaktiv buyurtma / smeta platformasi: **JB Intelligent** (Muhandis: Javohirbek).
+Sayt `ui-ux-pro-max` dizayn tizimi standartlari asosida to'liq qayta ishlab chiqilgan.
 
 ---
 
-## 🛠 Featured Production Works Highlighted
-
-| Project | Domain | Tech Stack | Status / Live URL |
-| :--- | :--- | :--- | :--- |
-| **GymOS** | Enterprise Fitness ERP & Turnstiles | Next.js 15, PostgreSQL, Flutter, Supabase | [gymos-app-five.vercel.app](https://gymos-app-five.vercel.app) |
-| **ApexCut CAD** | CNC Glass & Sheet Cutting Optimizer | React, WebGL, 2D Canvas, C++ WASM, Electron | [www.apexcut.store](https://www.apexcut.store) |
-| **Lumen Roof** | Luxury Architectural Glass & Roofs | Vanilla JS, CSS 3D, GPU Lighting | [lumen-roof-site.vercel.app](https://lumen-roof-site.vercel.app) |
-| **Javohirbek's Favorites** | 3D Interactive VHS Film Archive | CSS 3D, Spring Dynamics, SVG Ink Filter | [javohirbek-favorites.vercel.app](https://javohirbek-favorites.vercel.app) |
-| **Ovozli Chat AI** | Real-Time Voice Intelligence | WebRTC, Gemini Voice, Node.js, FastAudio | [ovozli-chat-five.vercel.app](https://ovozli-chat-five.vercel.app) |
-| **Barber Flow** | Smart Salon Booking & Queue OS | Next.js, Telegram Bot API, Tailwind | [barber-flow-dun.vercel.app](https://barber-flow-dun.vercel.app) |
-| **Akfa Servis Bot** | Automated Enterprise Customer Care | Node.js, Telegram API, Microservice | [akfa-servis-bot.vercel.app](https://akfa-servis-bot.vercel.app) |
+## ⚡ Jonli Havolalar
+- **Rasmiy Veb-Portal:** [https://jb-intelligent.vercel.app](https://jb-intelligent.vercel.app)
+- **Telegram Buyurtmalar:** [@the_javohirbek](https://t.me/the_javohirbek) (`https://t.me/the_javohirbek`)
+- **GitHub Kod Bazasi:** [https://github.com/Javohirbek070/jb-intelligent](https://github.com/Javohirbek070/jb-intelligent)
 
 ---
 
-## 🚀 Key Features of JB Intelligent
+## 🎨 UI/UX Pro Max Standartlari Asosida Amalga Oshirilgan Yechimlar
 
-1. **Interactive Order & Price Engine (Smeta & Zakaz Konstruktori):**
-   - Real-time price calculation based on service type, complexity tier (MVP, Business, Enterprise), and modular add-ons.
-   - Dynamic timeline estimator (in working days).
-   - Instant 1-click order submission to Telegram (`@the_javohirbek`) with formatted markdown specifications.
-   - Instant digital ticket generation with local storage persistence and clipboard copy.
+1. **Executive SaaS Estetikasi (Clean Modern Studio):**
+   - Noo'rin qorong'i, neon-yashil va o'yin terminallari olib tashlandi.
+   - Apple / Stripe / Linear uslubidagi toza, ishonchli va yuqori kontrastli yorug' interfeys (ixtiyoriy qorong'i rejim tugmasi bilan).
+   - 14:1+ yuqori matn kontrasti, zamonaviy **Plus Jakarta Sans** tipografiyasi.
+   - Emotikonlar (emojis) o'rniga faqat toza, professional inline **SVG piktogrammalar** qo'llanildi.
 
-2. **Anti-Slop High-Taste Design (`design-taste-frontend`):**
-   - Obsidian Slate & Cyber Emerald / Sapphire glowing aesthetic.
-   - Constellation neural network canvas with cursor repulsion & dynamic node connections.
-   - Web Audio synthesizer haptic feedback (toggleable sound effects without heavy external libraries).
-   - Project detail inspection modal with comprehensive technical specs.
-   - 100% mobile, tablet, and ultra-wide display responsiveness.
+2. **Bento Box Grid Ko'rgazmasi:**
+   - 12 ustunli Bento Grid arxitekturasi.
+   - Haqiqiy amaliy loyihalar (GymOS ERP, ApexCut CAD, Lumen Roof 3D, Ovozli Chat AI, Barber Flow OS, Akfa Bot).
+   - Har bir kartada jonli ko'rsatkichlar (metrikalar), texnologiya teglari va to'g'ridan-to'g'ri havolalar.
 
-3. **Performance Metrics:**
-   - 0 External build overhead (Zero runtime lag).
-   - < 0.4s initial paint and 60 FPS animations.
-   - Google PageSpeed 98+.
+3. **Linear/Stripe Darajasidagi Zakaz Kalkulyatori:**
+   - Xizmat yo'nalishini tanlash (Landing, SaaS/ERP, AI/Bot, CAD/CNC, Mobil ilova).
+   - Ko'lam darajasi (MVP Starter, Business Pro, Enterprise Custom).
+   - Qo'shimcha modullar (To'lov shlyuzlari, Telegram integratsiyasi, AI yordamchi, CRM dashboard).
+   - Real-vaqt dinamik narx (USD va UZS) hamda ish kuni muddatini hisoblash.
+   - **1-bosish bilan `@the_javohirbek` Telegramiga to'liq shakllantirilgan buyurtmani yuborish**.
+   - Rasmiy tijoriy taklifni (PDF / Chop etish) chiqarish.
+
+4. **Inklyuzivlik & Qulaylik (Accessibility / A11Y):**
+   - 44px+ sensor nishonlar (touch targets).
+   - Aniq ko'rinadigan fokus indikatorlari (keyboard navigation).
+   - Kamaytirilgan harakat (prefers-reduced-motion) to'liq qo'llab-quvvatlanadi.
+   - Barcha ekranga mos (Mobile, Tablet, Desktop).
 
 ---
 
-## 💻 Tech Stack
-- **Frontend:** Semantic HTML5, High-Craft Modern CSS3 (Grid, Flexbox, Custom Properties, Glassmorphism).
-- **Interactive Core:** Vanilla ES6+ JavaScript, Web Audio API, Canvas 2D Context.
-- **Typography:** Plus Jakarta Sans, JetBrains Mono.
-- **Deployment:** Vercel Global Edge Network.
+## 🛠 Muhandislik Steki
+- **Frontend:** Semantic HTML5, Modern CSS3 (CSS Custom Properties, Bento Grid, Flexbox).
+- **Core Controller:** Pure High-Performance JavaScript (Zero external framework bloat, 60 FPS).
+- **Fonts:** Plus Jakarta Sans, JetBrains Mono.
+- **Hosting & CI/CD:** Vercel Global Edge Network, GitHub.
 
 ---
 
-## 📄 License & Credits
-Designed and engineered by **Javohirbek** (JB Intelligent).
-Private © 2026 JB Intelligent. All rights reserved.
+## 📄 Mualliflik Huquqi
+Muallif va muhandis: **Javohirbek** (JB Intelligent).
+Barcha huquqlar himoyalangan © 2026.
