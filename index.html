@@ -15,7 +15,8 @@
   <meta property="og:description" content="G'oyadan tayyor production darajagacha: SaaS, ERP, 3D veb va sun'iy intellekt yechimlari.">
   <meta property="og:site_name" content="JB Intelligent">
 
-  <!-- Stylesheet -->
+  <!-- Design System Tokens & Core Styles -->
+  <link rel="stylesheet" href="design-tokens.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -85,6 +86,7 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
         <li><a href="#roi-section" class="nav-item-link" data-i18n="navRoi">ROI Kalkulyator</a></li>
         <li><a href="#order-section" class="nav-item-link" data-i18n="navCalculator">Zakaz Kalkulyatori</a></li>
         <li><a href="#workflow" class="nav-item-link" data-i18n="navWorkflow">Ishlash Tartibi</a></li>
+        <li><a href="#design-system" class="nav-item-link" data-i18n="navDesignSystem">Dizayn Tizimi</a></li>
         <li><a href="#faq" class="nav-item-link" data-i18n="navFaq">Savollar</a></li>
       </ul>
 
@@ -838,6 +840,84 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
           <div class="arch-metric-item">
             <span class="arch-metric-label">TIZIM ISHONCHLILIGI:</span>
             <span class="arch-metric-val" style="color: var(--emerald);">99.98% Uptime</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UI DESIGN SYSTEM & TOKEN ARCHITECTURE (ui-design-system) -->
+    <section id="design-system" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag">DIZAYN ARXITEKTURASI</span>
+        <h2 class="lead-title">Matematik Aniqlikdagi <span class="gradient-headline">UI Design System & Tokenlar</span></h2>
+        <p class="lead-sub">Har bir loyiha <code>ui-design-system</code> spetsifikatsiyasi asosida barpo etiladi: 8pt modulli setka, 10-darajali rang palitrasi, hisoblangan tipografiya va developer handoff tokenlari.</p>
+      </div>
+
+      <div class="tokens-explorer-card spotlight-card border-beam-card">
+        <div class="tokens-tabs-row">
+          <button class="token-tab-btn active" data-token-view="colors">🎨 Rang Shkalasi (50-900)</button>
+          <button class="token-tab-btn" data-token-view="spacing">📐 8pt Spacing & Setka</button>
+          <button class="token-tab-btn" data-token-view="typography">🔤 Tipografiya Shkalasi</button>
+          <button class="token-tab-btn" data-token-view="export">📦 Handoff Export (CSS/JSON)</button>
+        </div>
+
+        <div id="tokens-display-area" class="tokens-content-body">
+          <!-- Live Interactive Swatches -->
+          <div class="token-swatches-grid">
+            <div class="token-swatch" style="background:#00321a;" onclick="copyTokenCode('--colors-primary-900', '#00321a')">
+              <span class="swatch-label">900</span>
+              <span class="swatch-hex">#00321a</span>
+            </div>
+            <div class="token-swatch" style="background:#076639;" onclick="copyTokenCode('--colors-primary-800', '#076639')">
+              <span class="swatch-label">800</span>
+              <span class="swatch-hex">#076639</span>
+            </div>
+            <div class="token-swatch" style="background:#17995c;" onclick="copyTokenCode('--colors-primary-700', '#17995c')">
+              <span class="swatch-label">700</span>
+              <span class="swatch-hex">#17995c</span>
+            </div>
+            <div class="token-swatch" style="background:#2fcc82;" onclick="copyTokenCode('--colors-primary-600', '#2fcc82')">
+              <span class="swatch-label">600</span>
+              <span class="swatch-hex">#2fcc82</span>
+            </div>
+            <div class="token-swatch active-brand" style="background:#00ff87; color:#03140b;" onclick="copyTokenCode('--colors-primary-DEFAULT', '#00ff87')">
+              <span class="swatch-label" style="font-weight:900;">BRAND</span>
+              <span class="swatch-hex" style="font-weight:800;">#00ff87</span>
+            </div>
+            <div class="token-swatch" style="background:#4fffac; color:#03140b;" onclick="copyTokenCode('--colors-primary-500', '#4fffac')">
+              <span class="swatch-label">500</span>
+              <span class="swatch-hex">#4fffac</span>
+            </div>
+            <div class="token-swatch" style="background:#71f2b5; color:#03140b;" onclick="copyTokenCode('--colors-primary-300', '#71f2b5')">
+              <span class="swatch-label">300</span>
+              <span class="swatch-hex">#71f2b5</span>
+            </div>
+            <div class="token-swatch" style="background:#a0f2cb; color:#03140b;" onclick="copyTokenCode('--colors-primary-50', '#a0f2cb')">
+              <span class="swatch-label">50</span>
+              <span class="swatch-hex">#a0f2cb</span>
+            </div>
+          </div>
+
+          <div class="token-details-strip">
+            <div class="token-detail-box">
+              <div class="token-box-title">8pt Spacing Scale</div>
+              <div class="token-box-val">4px / 8px / 16px / 24px / 40px / 72px</div>
+            </div>
+            <div class="token-detail-box">
+              <div class="token-box-title">Border Radius Architecture</div>
+              <div class="token-box-val">4px (sm) · 8px (DEFAULT) · 16px (lg) · 24px (xl) · 9999px</div>
+            </div>
+            <div class="token-detail-box">
+              <div class="token-box-title">Animation Tokens</div>
+              <div class="token-box-val">150ms (fast) · 250ms (default) · cubic-bezier(0.16, 1, 0.3, 1)</div>
+            </div>
+            <div class="token-detail-box">
+              <div class="token-box-title">Handoff Files</div>
+              <div style="display:flex; gap:8px; margin-top:4px;">
+                <a href="design-tokens.css" target="_blank" class="mini-sim-trigger" style="text-decoration:none;">📄 design-tokens.css</a>
+                <a href="design-tokens.json" target="_blank" class="mini-sim-trigger" style="text-decoration:none; color:var(--cyan); border-color:rgba(96,239,255,0.3);">📄 design-tokens.json</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

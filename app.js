@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initDevCliTerminal();
   initLiveActivityFeed();
   initArchVisualizer();
+  initTokensExplorer();
   initOrderEngine();
   initBudgetSlider();
   initFaqAccordion();
@@ -1574,6 +1575,7 @@ function initDevCliTerminal() {
 <span class="cmd-highlight">JB INTELLIGENT Terminal Buyruqlari:</span>
   <span class="cmd-highlight">help</span>           - Barcha mavjud buyruqlar ro'yxati
   <span class="cmd-highlight">projects</span>       - 8 ta ishlab chiqilgan jonli master-loyiha
+  <span class="cmd-highlight">tokens</span>         - UI Design System tokenlari va eksport fayllari
   <span class="cmd-highlight">quote &lt;turi&gt;</span>   - Loyiha smetasini tezkor hisoblash (saas, cad, ai, 3d, mobile)
   <span class="cmd-highlight">benchmark</span>      - WebGL render FPS, xotira va hardware diagnostikasi
   <span class="cmd-highlight">roi</span>            - Xarajat tejash va ROI kalkulyatoriga o'tish
@@ -1581,6 +1583,35 @@ function initDevCliTerminal() {
   <span class="cmd-highlight">clear</span>          - Terminal ekranini tozalash
   <span class="cmd-highlight">exit</span>           - Terminal oynasini yopish
           `);
+          break;
+
+        case "tokens":
+          if (arg === "json") {
+            printLine(`
+<span class="cmd-highlight">--- UI DESIGN SYSTEM TOKENS (JSON) ---</span>
+Yuklab olish: <a href="design-tokens.json" target="_blank" style="color:var(--emerald); text-decoration:underline;">design-tokens.json</a>
+Primary: #00ff87 | Neutral: 50-900 | 8pt Spacing Grid
+Typography Scale: 10px - 61px (Ratio: 1.25 Modular)
+            `);
+          } else if (arg === "css") {
+            printLine(`
+<span class="cmd-highlight">--- UI DESIGN SYSTEM CSS CUSTOM PROPERTIES ---</span>
+Yuklab olish: <a href="design-tokens.css" target="_blank" style="color:var(--cyan); text-decoration:underline;">design-tokens.css</a>
+:root {
+  --colors-primary-DEFAULT: #00ff87;
+  --spacing-1: 4px; --spacing-2: 8px; --spacing-4: 16px;
+  --borders-radius-xl: 24px; --shadows-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+            `);
+          } else {
+            printLine(`
+<span class="cmd-highlight">--- UI DESIGN SYSTEM (ui-design-system toolkit) ---</span>
+Dizayn Tizimi: Modern Cyber-Luxury v1.0.0
+Asosiy Rang: <span style="color:#00ff87; font-weight:800;">#00ff87 (Cyber Emerald)</span>
+Shkala: 10 ta rang darajasi (50-900), 8pt Spacing Scale, 6 ta Border-Radius, 7 ta Shadows.
+Eksport: <span class="cmd-highlight">tokens css</span> yoki <span class="cmd-highlight">tokens json</span> deb yozing.
+            `);
+          }
           break;
 
         case "projects":
@@ -1997,6 +2028,181 @@ function initArchVisualizer() {
           <span class="arch-metric-val" style="color:var(--emerald);">${data.uptime}</span>
         </div>
       `;
+    });
+  });
+}
+
+/* ==========================================================
+   22. UI DESIGN SYSTEM TOKENS EXPLORER (ui-design-system)
+   ========================================================== */
+window.copyTokenCode = function(tokenName, hexVal) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(`var(${tokenName})`);
+  }
+  if (typeof playClickSound === "function") playClickSound(750);
+  showToast(`✓ Nusxalandi: var(${tokenName}) [${hexVal}]`);
+};
+
+function initTokensExplorer() {
+  const tabBtns = document.querySelectorAll(".token-tab-btn");
+  const displayArea = document.getElementById("tokens-display-area");
+  if (!tabBtns.length || !displayArea) return;
+
+  const views = {
+    colors: `
+      <div class="token-swatches-grid">
+        <div class="token-swatch" style="background:#00321a;" onclick="copyTokenCode('--colors-primary-900', '#00321a')">
+          <span class="swatch-label">900</span>
+          <span class="swatch-hex">#00321a</span>
+        </div>
+        <div class="token-swatch" style="background:#076639;" onclick="copyTokenCode('--colors-primary-800', '#076639')">
+          <span class="swatch-label">800</span>
+          <span class="swatch-hex">#076639</span>
+        </div>
+        <div class="token-swatch" style="background:#17995c;" onclick="copyTokenCode('--colors-primary-700', '#17995c')">
+          <span class="swatch-label">700</span>
+          <span class="swatch-hex">#17995c</span>
+        </div>
+        <div class="token-swatch" style="background:#2fcc82;" onclick="copyTokenCode('--colors-primary-600', '#2fcc82')">
+          <span class="swatch-label">600</span>
+          <span class="swatch-hex">#2fcc82</span>
+        </div>
+        <div class="token-swatch active-brand" style="background:#00ff87; color:#03140b;" onclick="copyTokenCode('--colors-primary-DEFAULT', '#00ff87')">
+          <span class="swatch-label" style="font-weight:900;">BRAND</span>
+          <span class="swatch-hex" style="font-weight:800;">#00ff87</span>
+        </div>
+        <div class="token-swatch" style="background:#4fffac; color:#03140b;" onclick="copyTokenCode('--colors-primary-500', '#4fffac')">
+          <span class="swatch-label">500</span>
+          <span class="swatch-hex">#4fffac</span>
+        </div>
+        <div class="token-swatch" style="background:#71f2b5; color:#03140b;" onclick="copyTokenCode('--colors-primary-300', '#71f2b5')">
+          <span class="swatch-label">300</span>
+          <span class="swatch-hex">#71f2b5</span>
+        </div>
+        <div class="token-swatch" style="background:#a0f2cb; color:#03140b;" onclick="copyTokenCode('--colors-primary-50', '#a0f2cb')">
+          <span class="swatch-label">50</span>
+          <span class="swatch-hex">#a0f2cb</span>
+        </div>
+      </div>
+      <div class="token-details-strip">
+        <div class="token-detail-box">
+          <div class="token-box-title">8pt Spacing Scale</div>
+          <div class="token-box-val">4px / 8px / 16px / 24px / 40px / 72px</div>
+        </div>
+        <div class="token-detail-box">
+          <div class="token-box-title">Border Radius Architecture</div>
+          <div class="token-box-val">4px (sm) · 8px (DEFAULT) · 16px (lg) · 24px (xl) · 9999px</div>
+        </div>
+        <div class="token-detail-box">
+          <div class="token-box-title">Animation Tokens</div>
+          <div class="token-box-val">150ms (fast) · 250ms (default) · cubic-bezier(0.16, 1, 0.3, 1)</div>
+        </div>
+        <div class="token-detail-box">
+          <div class="token-box-title">Handoff Files</div>
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <a href="design-tokens.css" target="_blank" class="mini-sim-trigger" style="text-decoration:none;">📄 design-tokens.css</a>
+            <a href="design-tokens.json" target="_blank" class="mini-sim-trigger" style="text-decoration:none; color:var(--cyan); border-color:rgba(96,239,255,0.3);">📄 design-tokens.json</a>
+          </div>
+        </div>
+      </div>
+    `,
+    spacing: `
+      <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; width:110px; color:var(--text-dim);">space-1 (4px):</span>
+          <div style="height:12px; width:4px; background:var(--emerald); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; width:110px; color:var(--text-dim);">space-2 (8px):</span>
+          <div style="height:12px; width:8px; background:var(--emerald); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; width:110px; color:var(--text-dim);">space-3 (12px):</span>
+          <div style="height:12px; width:12px; background:var(--emerald); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; width:110px; color:var(--text-dim);">space-4 (16px):</span>
+          <div style="height:12px; width:16px; background:var(--emerald); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; width:110px; color:var(--text-dim);">space-6 (24px):</span>
+          <div style="height:12px; width:24px; background:var(--emerald); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; width:110px; color:var(--text-dim);">space-7 (32px):</span>
+          <div style="height:12px; width:32px; background:var(--emerald); border-radius:2px;"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; width:110px; color:var(--text-dim);">space-8 (40px):</span>
+          <div style="height:12px; width:40px; background:var(--emerald); border-radius:2px;"></div>
+        </div>
+      </div>
+      <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim);">
+        * 8pt Grid standarti asosida barcha elementlar margin va padding oralig'i qat'iy matematik nisbatda o'rnatilgan.
+      </div>
+    `,
+    typography: `
+      <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:20px;">
+        <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
+          <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-dim);">H1 Display (48px / Bold / Syne)</span>
+          <div style="font-family:var(--font-display); font-size:2rem; font-weight:800; color:#ffffff;">Intellektual Tizimlar</div>
+        </div>
+        <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
+          <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-dim);">H2 Section Lead (36px / SemiBold)</span>
+          <div style="font-family:var(--font-display); font-size:1.5rem; font-weight:700; color:#ffffff;">Biz Nimalarni Yaratamiz?</div>
+        </div>
+        <div style="border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
+          <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-dim);">Body Regular (16px / Plus Jakarta Sans)</span>
+          <div style="font-size:1rem; color:var(--text-secondary); line-height:1.6;">Har bir loyiha uchun alohida arxitektura, toza kod va kelajakda kengaytirish uchun qulay poydevor quriladi.</div>
+        </div>
+        <div>
+          <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-dim);">Mono Telemetry (13px / JetBrains Mono)</span>
+          <div style="font-family:var(--font-mono); font-size:0.85rem; color:var(--emerald);">const latency = "&lt; 14ms"; // 60 FPS WebGL Engine Active</div>
+        </div>
+      </div>
+    `,
+    export: `
+      <div style="background:rgba(0,0,0,0.5); border:1px solid var(--border-subtle); border-radius:var(--radius-mid); padding:18px; margin-bottom:18px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span style="font-family:var(--font-mono); font-size:0.8rem; color:var(--emerald);">// design-tokens.css (:root)</span>
+          <a href="design-tokens.css" download class="mini-sim-trigger" style="text-decoration:none;">Yuklab Olish (.css)</a>
+        </div>
+        <pre style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-secondary); max-height:180px; overflow-y:auto; line-height:1.5;">:root {
+  --meta-version: 1.0.0;
+  --meta-style: modern;
+  --colors-primary-DEFAULT: #00ff87;
+  --colors-primary-700: #17995c;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-4: 16px;
+  --spacing-8: 40px;
+  --borders-radius-DEFAULT: 8px;
+  --borders-radius-xl: 24px;
+  --borders-radius-full: 9999px;
+  --shadows-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}</pre>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <a href="design-tokens.json" target="_blank" class="btn-cyber-primary" style="flex:1; justify-content:center; text-decoration:none;">
+          <span>JSON Tokenlarni Ko'rish</span>
+        </a>
+        <a href="design-tokens.css" target="_blank" class="btn-cyber-secondary" style="flex:1; justify-content:center; text-decoration:none;">
+          <span>CSS Variablelarni Ochish</span>
+        </a>
+      </div>
+    `
+  };
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      if (typeof playClickSound === "function") playClickSound(560);
+
+      const view = btn.dataset.tokenView;
+      if (views[view]) {
+        displayArea.innerHTML = views[view];
+      }
     });
   });
 }

@@ -6,22 +6,28 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
 
 :root {
-  /* Color Palette */
+  /* UI Design System Mapping (ui-design-system) */
   --bg-dark: #05070a;
   --bg-surface: #0a0d14;
   --bg-card: rgba(13, 17, 27, 0.75);
   --bg-card-hover: rgba(19, 26, 42, 0.9);
   --bg-glass: rgba(255, 255, 255, 0.03);
   
-  --emerald: #00ff87;
-  --emerald-deep: #059669;
+  --emerald: var(--colors-primary-DEFAULT, #00ff87);
+  --emerald-deep: var(--colors-primary-700, #17995c);
+  --emerald-light: var(--colors-primary-300, #71f2b5);
+  --emerald-50: var(--colors-primary-50, #a0f2cb);
+  --emerald-600: var(--colors-primary-600, #2fcc82);
+  --emerald-800: var(--colors-primary-800, #076639);
+  --emerald-900: var(--colors-primary-900, #00321a);
+
   --cyan: #60efff;
   --indigo: #6366f1;
   --purple: #a855f7;
   
-  --text-main: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-dim: #64748b;
+  --text-main: var(--colors-neutral-50, #f8fafc);
+  --text-secondary: var(--colors-neutral-400, #94a3b8);
+  --text-dim: var(--colors-neutral-500, #64748b);
   
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-medium: rgba(255, 255, 255, 0.14);
@@ -30,20 +36,33 @@
   --glow-emerald: rgba(0, 255, 135, 0.25);
   --glow-cyan: rgba(96, 239, 255, 0.2);
 
-  /* Typography */
-  --font-display: "Syne", "Plus Jakarta Sans", sans-serif;
-  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* Typography Scale from ui-design-system */
+  --font-display: "Syne", var(--typography-fontFamily-sans, "Plus Jakarta Sans"), sans-serif;
+  --font-body: var(--typography-fontFamily-sans, "Plus Jakarta Sans"), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--typography-fontFamily-mono, "JetBrains Mono"), monospace;
 
-  /* Concentric Radius Architecture */
-  --radius-outer: 24px;
-  --radius-mid: 16px;
-  --radius-inner: 10px;
-  --radius-pill: 9999px;
+  /* Concentric Radius Architecture mapped to Design Tokens */
+  --radius-outer: var(--borders-radius-xl, 24px);
+  --radius-mid: var(--borders-radius-lg, 16px);
+  --radius-inner: var(--borders-radius-DEFAULT, 8px);
+  --radius-pill: var(--borders-radius-full, 9999px);
 
-  /* Easing */
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  /* 8pt Spacing Scale Tokens */
+  --space-1: var(--spacing-1, 4px);
+  --space-2: var(--spacing-2, 8px);
+  --space-3: var(--spacing-3, 12px);
+  --space-4: var(--spacing-4, 16px);
+  --space-5: var(--spacing-5, 20px);
+  --space-6: var(--spacing-6, 24px);
+  --space-7: var(--spacing-7, 32px);
+  --space-8: var(--spacing-8, 40px);
+
+  /* Easing & Timing Tokens */
+  --ease-spring: var(--animation-easing-spring, cubic-bezier(0.16, 1, 0.3, 1));
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: var(--animation-duration-fast, 150ms);
+  --duration-normal: var(--animation-duration-DEFAULT, 250ms);
+  --duration-slow: var(--animation-duration-slow, 350ms);
 }
 
 *, *::before, *::after {
@@ -2793,4 +2812,132 @@ textarea.field-input {
   font-size: 1rem;
   font-weight: 800;
   color: var(--emerald);
+}
+
+/* ==========================================================
+   UI DESIGN SYSTEM TOKENS EXPLORER (ui-design-system)
+   ========================================================== */
+.tokens-explorer-card {
+  background: rgba(13, 17, 27, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-outer);
+  padding: 32px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+}
+
+.tokens-tabs-row {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.token-tab-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.token-tab-btn:hover {
+  color: #ffffff;
+  border-color: var(--emerald);
+}
+
+.token-tab-btn.active {
+  background: rgba(0, 255, 135, 0.15);
+  border-color: var(--emerald);
+  color: var(--emerald);
+  box-shadow: 0 0 12px rgba(0, 255, 135, 0.2);
+}
+
+.token-swatches-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 991px) {
+  .token-swatches-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .token-swatches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.token-swatch {
+  height: 90px;
+  border-radius: var(--radius-mid);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.token-swatch:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.token-swatch.active-brand {
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 20px rgba(0, 255, 135, 0.5);
+}
+
+.swatch-label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.swatch-hex {
+  font-size: 0.8rem;
+}
+
+.token-details-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  background: rgba(5, 8, 14, 0.65);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-mid);
+  padding: 20px;
+}
+
+.token-detail-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.token-box-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.token-box-val {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--emerald);
+  font-weight: 600;
 }
