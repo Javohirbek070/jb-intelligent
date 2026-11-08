@@ -1,26 +1,29 @@
 /* ==========================================================
-   JB INTELLIGENT — Master Controller & Interactive Engine
+   JB INTELLIGENT — Master Controller & Interactive Engine v2.0
+   Anti-Slop, High-Craft Digital Architecture
    ========================================================== */
 
+let currentLang = localStorage.getItem("jb_lang") || "uz";
+let currentCurrency = localStorage.getItem("jb_currency") || "usd";
+
 document.addEventListener("DOMContentLoaded", () => {
-  initBackgroundCanvas();
+  init3DCoreCanvas();
   initSoundEngine();
+  initI18nAndCurrency();
   initPortfolioShowcase();
   initOrderEngine();
   initFaqAccordion();
+  initQuickDock();
 });
 
 /* ==========================================================
-   1. BACKGROUND NEURAL / CONSTELLATION CANVAS
+   1. 3D MATHEMATICAL WIREFRAME & NEURAL STARFIELD CANVAS
    ========================================================== */
-function initBackgroundCanvas() {
+function init3DCoreCanvas() {
   const canvas = document.getElementById("bg-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
   let width, height;
-  let particles = [];
-  const particleCount = window.innerWidth < 768 ? 35 : 70;
-  let mouse = { x: null, y: null, radius: 150 };
 
   function resize() {
     width = canvas.width = window.innerWidth;
@@ -29,148 +32,186 @@ function initBackgroundCanvas() {
   window.addEventListener("resize", resize);
   resize();
 
+  // 3D Icosahedron Vertices & Geometry
+  const phi = (1 + Math.sqrt(5)) / 2;
+  const rawVertices = [
+    [-1,  phi, 0], [ 1,  phi, 0], [-1, -phi, 0], [ 1, -phi, 0],
+    [ 0, -1,  phi], [ 0,  1,  phi], [ 0, -1, -phi], [ 0,  1, -phi],
+    [ phi, 0, -1], [ phi, 0,  1], [-phi, 0, -1], [-phi, 0,  1]
+  ];
+
+  const edges = [
+    [0, 11], [0, 5], [0, 1], [0, 7], [0, 10],
+    [1, 5], [1, 9], [1, 8], [1, 7],
+    [2, 11], [2, 10], [2, 6], [2, 4],
+    [3, 9], [3, 4], [3, 2], [3, 6], [3, 8],
+    [4, 9], [5, 9], [5, 11], [4, 11], [7, 8], [7, 6], [6, 8], [6, 10], [10, 11]
+  ];
+
+  let rotX = 0;
+  let rotY = 0;
+  let mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
+
   window.addEventListener("mousemove", (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
   });
 
-  window.addEventListener("mouseleave", () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.radius = Math.random() * 1.8 + 0.8;
-      this.baseAlpha = Math.random() * 0.4 + 0.2;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > width) this.vx *= -1;
-      if (this.y < 0 || this.y > height) this.vy *= -1;
-
-      // Mouse repulsion/attraction
-      if (mouse.x !== null) {
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < mouse.radius) {
-          const force = (mouse.radius - dist) / mouse.radius;
-          this.x -= (dx / dist) * force * 1.5;
-          this.y -= (dy / dist) * force * 1.5;
-        }
-      }
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(16, 185, 129, ${this.baseAlpha})`;
-      ctx.fill();
-    }
+  // Ambient Starfield
+  const starCount = window.innerWidth < 768 ? 40 : 80;
+  const stars = [];
+  for (let i = 0; i < starCount; i++) {
+    stars.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 1.5 + 0.6,
+      alpha: Math.random() * 0.5 + 0.2
+    });
   }
 
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-  }
-
-  function animate() {
+  function render() {
     ctx.clearRect(0, 0, width, height);
 
-    // Draw connections
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.hypot(dx, dy);
+    // Smooth mouse interpolation
+    mouse.x += (mouse.targetX - mouse.x) * 0.05;
+    mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
-        if (dist < 120) {
-          const alpha = (1 - dist / 120) * 0.15;
+    rotX += 0.003 + (mouse.y - height / 2) * 0.00001;
+    rotY += 0.004 + (mouse.x - width / 2) * 0.00001;
+
+    // Draw ambient starfield
+    for (let i = 0; i < stars.length; i++) {
+      const s = stars[i];
+      s.x += s.vx;
+      s.y += s.vy;
+      if (s.x < 0 || s.x > width) s.vx *= -1;
+      if (s.y < 0 || s.y > height) s.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(16, 185, 129, ${s.alpha})`;
+      ctx.fill();
+
+      // Connecting lines
+      for (let j = i + 1; j < stars.length; j++) {
+        const s2 = stars[j];
+        const dist = Math.hypot(s.x - s2.x, s.y - s2.y);
+        if (dist < 110) {
           ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(52, 211, 153, ${alpha})`;
-          ctx.lineWidth = 0.8;
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(s2.x, s2.y);
+          ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - dist / 110) * 0.12})`;
+          ctx.lineWidth = 0.6;
           ctx.stroke();
         }
       }
     }
 
-    particles.forEach((p) => {
-      p.update();
-      p.draw();
+    // 3D Wireframe projection in upper right corner / hero
+    const coreCenterX = width > 991 ? width * 0.8 : width * 0.5;
+    const coreCenterY = height * 0.28;
+    const scale = Math.min(width, height) * 0.12;
+
+    const projected = rawVertices.map(v => {
+      // Rotation around X
+      let y1 = v[1] * Math.cos(rotX) - v[2] * Math.sin(rotX);
+      let z1 = v[1] * Math.sin(rotX) + v[2] * Math.cos(rotX);
+
+      // Rotation around Y
+      let x2 = v[0] * Math.cos(rotY) + z1 * Math.sin(rotY);
+      let z2 = -v[0] * Math.sin(rotY) + z1 * Math.cos(rotY);
+
+      const fov = 3.5;
+      const p = fov / (fov + z2 * 0.5);
+      return {
+        x: coreCenterX + x2 * scale * p,
+        y: coreCenterY + y1 * scale * p,
+        z: z2
+      };
     });
 
-    requestAnimationFrame(animate);
+    // Draw 3D wireframe edges
+    edges.forEach(([i1, i2]) => {
+      const p1 = projected[i1];
+      const p2 = projected[i2];
+      const avgZ = (p1.z + p2.z) / 2;
+      const alpha = Math.max(0.08, Math.min(0.4, 0.25 + avgZ * 0.08));
+
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    });
+
+    // Draw glowing nodes on 3D vertices
+    projected.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = "#34d399";
+      ctx.shadowColor = "#10b981";
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+
+    requestAnimationFrame(render);
   }
-  animate();
+  render();
 }
 
 /* ==========================================================
-   2. SOUND SYNTHESIZER (WEB AUDIO API)
+   2. SOUND ENGINE v2 (MULTI-TONE SYNTHESIZER)
    ========================================================== */
 let audioCtx = null;
 let soundEnabled = false;
 
 function initSoundEngine() {
   const soundBtn = document.getElementById("sound-toggle-btn");
-  if (!soundBtn) return;
+  const quickSoundBtn = document.getElementById("dock-sound-btn");
 
   const savedSound = localStorage.getItem("jb_sound_enabled");
   if (savedSound === "true") {
-    enableSoundUI(soundBtn);
+    enableSoundUI();
   }
 
-  soundBtn.addEventListener("click", () => {
+  function toggleSound() {
     soundEnabled = !soundEnabled;
     localStorage.setItem("jb_sound_enabled", soundEnabled);
     if (soundEnabled) {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-      }
-      enableSoundUI(soundBtn);
-      playClickSound(580, 0.05);
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      enableSoundUI();
+      playChimeSound();
       showToast("Ovoz effektlari yoqildi 🔊");
     } else {
-      disableSoundUI(soundBtn);
+      disableSoundUI();
       showToast("Ovoz effektlari o'chirildi 🔇");
     }
-  });
+  }
+
+  if (soundBtn) soundBtn.addEventListener("click", toggleSound);
+  if (quickSoundBtn) quickSoundBtn.addEventListener("click", toggleSound);
 }
 
-function enableSoundUI(btn) {
+function enableSoundUI() {
   soundEnabled = true;
-  btn.classList.add("is-active");
-  btn.innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-    </svg>
-    <span>FX: ON</span>
-  `;
+  document.querySelectorAll(".sound-btn").forEach(btn => btn.classList.add("is-active"));
+  const label = document.getElementById("sound-btn-text");
+  if (label) label.textContent = "FX: ON";
 }
 
-function disableSoundUI(btn) {
+function disableSoundUI() {
   soundEnabled = false;
-  btn.classList.remove("is-active");
-  btn.innerHTML = `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-      <line x1="23" y1="9" x2="17" y2="15"></line>
-      <line x1="17" y1="9" x2="23" y2="15"></line>
-    </svg>
-    <span>FX: OFF</span>
-  `;
+  document.querySelectorAll(".sound-btn").forEach(btn => btn.classList.remove("is-active"));
+  const label = document.getElementById("sound-btn-text");
+  if (label) label.textContent = "FX: OFF";
 }
 
-function playClickSound(freq = 520, duration = 0.04) {
+function playClickSound(freq = 580, duration = 0.04) {
   if (!soundEnabled) return;
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -178,23 +219,101 @@ function playClickSound(freq = 520, duration = 0.04) {
     const gain = audioCtx.createGain();
     osc.type = "sine";
     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(freq * 0.4, audioCtx.currentTime + duration);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.35, audioCtx.currentTime + duration);
 
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.07, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
-
     osc.start();
     osc.stop(audioCtx.currentTime + duration);
-  } catch (e) {
-    // Audio context may be restricted
-  }
+  } catch (e) {}
+}
+
+function playChimeSound() {
+  if (!soundEnabled) return;
+  [520, 680, 840].forEach((freq, i) => {
+    setTimeout(() => playClickSound(freq, 0.08), i * 60);
+  });
+}
+
+function playSuccessChord() {
+  if (!soundEnabled) return;
+  [440, 554, 659, 880].forEach((freq, i) => {
+    setTimeout(() => playClickSound(freq, 0.14), i * 70);
+  });
 }
 
 /* ==========================================================
-   3. PORTFOLIO SHOWCASE RENDERING & FILTERING
+   3. I18N & CURRENCY CONTROLLER
+   ========================================================== */
+function initI18nAndCurrency() {
+  // Language buttons
+  document.querySelectorAll("[data-lang-btn]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentLang = btn.dataset.langBtn;
+      localStorage.setItem("jb_lang", currentLang);
+      document.querySelectorAll("[data-lang-btn]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      playClickSound(640);
+      applyTranslations();
+      recalculateOrder();
+    });
+  });
+
+  // Set active language button
+  const activeLangBtn = document.querySelector(`[data-lang-btn="${currentLang}"]`);
+  if (activeLangBtn) activeLangBtn.classList.add("active");
+
+  // Currency buttons
+  document.querySelectorAll("[data-curr-btn]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentCurrency = btn.dataset.currBtn;
+      localStorage.setItem("jb_currency", currentCurrency);
+      document.querySelectorAll("[data-curr-btn]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      playClickSound(700);
+      recalculateOrder();
+    });
+  });
+
+  // Set active currency button
+  const activeCurrBtn = document.querySelector(`[data-curr-btn="${currentCurrency}"]`);
+  if (activeCurrBtn) activeCurrBtn.classList.add("active");
+
+  applyTranslations();
+}
+
+function applyTranslations() {
+  const dict = I18N[currentLang] || I18N.uz;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (dict[key]) {
+      el.textContent = dict[key];
+    }
+  });
+
+  // Input placeholders
+  const nameInput = document.getElementById("order-client-name");
+  const contactInput = document.getElementById("order-client-contact");
+  const briefInput = document.getElementById("order-client-brief");
+
+  if (nameInput) nameInput.placeholder = dict.namePlaceholder;
+  if (contactInput) contactInput.placeholder = dict.contactPlaceholder;
+  if (briefInput) briefInput.placeholder = dict.briefPlaceholder;
+}
+
+function formatPrice(valInUsd) {
+  if (currentCurrency === "uzs") {
+    const uzs = Math.round((valInUsd * USD_TO_UZS_RATE) / 10000) * 10000;
+    return `${uzs.toLocaleString("uz-UZ")} so'm`;
+  }
+  return `$${valInUsd.toLocaleString()}`;
+}
+
+/* ==========================================================
+   4. PORTFOLIO SHOWCASE RENDERING & FILTERING
    ========================================================== */
 function initPortfolioShowcase() {
   const grid = document.getElementById("portfolio-grid");
@@ -206,6 +325,8 @@ function initPortfolioShowcase() {
     const filtered = filter === "all" 
       ? PROJECTS_DATA 
       : PROJECTS_DATA.filter(p => p.category === filter);
+
+    const dict = I18N[currentLang] || I18N.uz;
 
     filtered.forEach((p) => {
       const card = document.createElement("div");
@@ -244,20 +365,23 @@ function initPortfolioShowcase() {
           <div class="project-card-actions">
             ${p.liveUrl.startsWith("http") ? `
               <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-demo" onclick="playClickSound(640)">
-                <span>Jonli Ko'rish</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <span>${dict.liveDemoBtn}</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                   <polyline points="15 3 21 3 21 9"></polyline>
                   <line x1="10" y1="14" x2="21" y2="3"></line>
                 </svg>
               </a>
             ` : `
-              <a href="${p.liveUrl}" class="btn-demo" onclick="playClickSound(640)">
+              <a href="#order-section" class="btn-demo" onclick="playClickSound(640)">
                 <span>Konfigurator</span>
               </a>
             `}
+            <button class="btn-sandbox" onclick="openDeviceSandboxModal('${p.id}')">
+              <span>🖥 ${dict.sandboxBtn}</span>
+            </button>
             <button class="btn-detail" onclick="openProjectModal('${p.id}')">
-              Batafsil
+              ${dict.detailsBtn}
             </button>
           </div>
         </div>
@@ -294,7 +418,84 @@ function getProjectIconSvg(cat) {
 }
 
 /* ==========================================================
-   4. PROJECT DETAIL MODAL
+   5. DEVICE SANDBOX MODAL (LIVE MONITOR VIEWPORT)
+   ========================================================== */
+window.openDeviceSandboxModal = function(id) {
+  playChimeSound();
+  const project = PROJECTS_DATA.find(p => p.id === id);
+  if (!project) return;
+
+  const modal = document.getElementById("project-modal");
+  const modalContent = document.getElementById("project-modal-body");
+  if (!modal || !modalContent) return;
+
+  const archNodes = project.architecture ? project.architecture.map(a => `
+    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:10px 14px;">
+      <div style="font-size:0.75rem; font-family:var(--font-mono); color:var(--emerald-light); font-weight:700;">${a.name}</div>
+      <div style="font-size:0.85rem; color:var(--text-secondary);">${a.tech}</div>
+    </div>
+  `).join("") : "";
+
+  modalContent.innerHTML = `
+    <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:flex-start;">
+      <div>
+        <span class="visual-badge-top" style="position:static; display:inline-block; margin-bottom:8px;">${project.badge}</span>
+        <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2;">${project.title}</h2>
+      </div>
+      <span class="mono" style="color:var(--emerald-light); font-weight:700; font-size:0.9rem;">MONITOR v2.4</span>
+    </div>
+
+    <!-- Device Frame -->
+    <div class="device-mockup-frame">
+      <div class="device-top-bar">
+        <div class="device-dots">
+          <div class="device-dot" style="background:#ef4444;"></div>
+          <div class="device-dot" style="background:#eab308;"></div>
+          <div class="device-dot" style="background:#10b981;"></div>
+        </div>
+        <div class="device-url-bar">${project.liveUrl}</div>
+        <div style="font-size:0.7rem; color:var(--text-dim); font-family:var(--font-mono);">60 FPS</div>
+      </div>
+      ${project.liveUrl.startsWith("http") ? `
+        <iframe src="${project.liveUrl}" class="device-screen-view" title="${project.title}" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+      ` : `
+        <div style="height:360px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center;">
+          <div style="width:60px; height:60px; border-radius:50%; background:rgba(16,185,129,0.15); color:var(--emerald-light); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+            ${getProjectIconSvg(project.category)}
+          </div>
+          <h3 style="font-size:1.2rem; margin-bottom:8px;">${project.title}</h3>
+          <p style="font-size:0.9rem; color:var(--text-secondary); max-width:440px;">${project.summary}</p>
+        </div>
+      `}
+    </div>
+
+    <!-- Architecture Blueprint -->
+    <div style="margin-top:20px;">
+      <h4 style="font-size:0.85rem; font-family:var(--font-mono); color:var(--text-dim); text-transform:uppercase; margin-bottom:10px;">Arxitektura & Muhandislik Steki:</h4>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+        ${archNodes}
+      </div>
+    </div>
+
+    <div style="display:flex; gap:12px; margin-top:24px; padding-top:16px; border-top:1px solid var(--border-subtle);">
+      ${project.liveUrl.startsWith("http") ? `
+        <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="flex:1;">
+          <span>To'liq Ekran Rejimida Ochish</span>
+        </a>
+      ` : `
+        <a href="#order-section" class="btn-primary" style="flex:1;" onclick="closeModals()">
+          <span>Ushbu Loyihani Buyurtma Qilish</span>
+        </a>
+      `}
+      <button class="btn-secondary" onclick="closeModals()">Yopish</button>
+    </div>
+  `;
+
+  modal.classList.add("open");
+};
+
+/* ==========================================================
+   6. PROJECT DETAIL SPEC MODAL
    ========================================================== */
 window.openProjectModal = function(id) {
   playClickSound(520);
@@ -339,15 +540,10 @@ window.openProjectModal = function(id) {
       ${project.liveUrl.startsWith("http") ? `
         <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="flex:1;">
           <span>Jonli Saytni Ochish</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
         </a>
       ` : `
         <a href="#order-section" class="btn-primary" style="flex:1;" onclick="closeModals()">
-          <span>Ushbu Loyihaga O'xshash Buyurtma Berish</span>
+          <span>Buyurtma Berish</span>
         </a>
       `}
       <button class="btn-secondary" onclick="closeModals()">Yopish</button>
@@ -367,7 +563,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ==========================================================
-   5. ORDER ENGINE & REAL-TIME CALCULATOR
+   7. ORDER ENGINE & REAL-TIME CALCULATOR v2.0
    ========================================================== */
 let orderState = {
   serviceId: "landing",
@@ -392,6 +588,7 @@ function initOrderEngine() {
 
   const btnSubmitTelegram = document.getElementById("btn-submit-telegram");
   const btnSubmitSite = document.getElementById("btn-submit-site");
+  const btnPrintQuote = document.getElementById("btn-print-quote");
 
   // Service Selection
   serviceOptions.forEach(opt => {
@@ -439,17 +636,10 @@ function initOrderEngine() {
   if (timingSelect) timingSelect.addEventListener("change", (e) => orderState.timing = e.target.value);
   if (briefInput) briefInput.addEventListener("input", (e) => orderState.brief = e.target.value.trim());
 
-  // Submit via Telegram
-  if (btnSubmitTelegram) {
-    btnSubmitTelegram.addEventListener("click", handleTelegramOrder);
-  }
+  if (btnSubmitTelegram) btnSubmitTelegram.addEventListener("click", handleTelegramOrder);
+  if (btnSubmitSite) btnSubmitSite.addEventListener("click", handleSiteOrder);
+  if (btnPrintQuote) btnPrintQuote.addEventListener("click", generatePrintableQuotation);
 
-  // Submit via Site
-  if (btnSubmitSite) {
-    btnSubmitSite.addEventListener("click", handleSiteOrder);
-  }
-
-  // Initial Calculation
   recalculateOrder();
 }
 
@@ -473,9 +663,11 @@ function recalculateOrder() {
   const baseD = currentService.baseDays;
 
   // Calculation formula
-  const calculatedMin = Math.round(baseP * orderState.scaleMultiplier + addonPriceTotal);
-  const calculatedMax = Math.round(calculatedMin * 1.25);
+  const calculatedMinUsd = Math.round(baseP * orderState.scaleMultiplier + addonPriceTotal);
+  const calculatedMaxUsd = Math.round(calculatedMinUsd * 1.25);
   const calculatedDays = Math.round(baseD * (orderState.scaleMultiplier >= 1.5 ? 1.35 : 1.0) + addonDaysTotal);
+
+  const dict = I18N[currentLang] || I18N.uz;
 
   // Update DOM Elements
   const priceDisplay = document.getElementById("calc-price-display");
@@ -483,16 +675,38 @@ function recalculateOrder() {
   const specService = document.getElementById("spec-service-name");
   const specScale = document.getElementById("spec-scale-name");
   const specAddons = document.getElementById("spec-addons-count");
+  const stackNodesEl = document.getElementById("live-stack-nodes");
 
-  if (priceDisplay) priceDisplay.textContent = `$${calculatedMin} – $${calculatedMax}`;
-  if (daysDisplay) daysDisplay.textContent = `⏱ Taxminiy muddat: ${calculatedDays} ish kuni`;
+  if (priceDisplay) {
+    priceDisplay.textContent = `${formatPrice(calculatedMinUsd)} – ${formatPrice(calculatedMaxUsd)}`;
+  }
+  if (daysDisplay) {
+    daysDisplay.textContent = `${dict.daysPrefix} ${calculatedDays} ${dict.daysSuffix}`;
+  }
   if (specService) specService.textContent = currentService.name;
   if (specScale) specScale.textContent = orderState.scaleName;
-  if (specAddons) specAddons.textContent = orderState.addons.size > 0 ? `${orderState.addons.size} ta tanlandi` : "Tanlanmagan";
+  if (specAddons) {
+    specAddons.textContent = orderState.addons.size > 0 ? `${orderState.addons.size} ta tanlandi` : "Standart";
+  }
+
+  // Dynamic stack architecture generator
+  if (stackNodesEl) {
+    const stack = ["Client App", "Cloudflare Edge", "Next.js / Node.js"];
+    if (orderState.serviceId === "cad_industry") stack.push("C++ / WASM Core");
+    if (orderState.addons.has("ai_integration") || orderState.serviceId === "ai_bot") stack.push("LLM Voice Engine");
+    if (orderState.addons.has("payments")) stack.push("Payment Gateway");
+    if (orderState.addons.has("telegram_sync")) stack.push("Telegram Bot API");
+    stack.push("Database & Logs");
+
+    stackNodesEl.innerHTML = stack.map((node, i) => `
+      <span class="stack-node-pill">${node}</span>
+      ${i < stack.length - 1 ? '<span class="stack-node-arrow">➔</span>' : ''}
+    `).join("");
+  }
 
   // Store computed values in state
-  orderState.calculatedMin = calculatedMin;
-  orderState.calculatedMax = calculatedMax;
+  orderState.calculatedMin = calculatedMinUsd;
+  orderState.calculatedMax = calculatedMaxUsd;
   orderState.calculatedDays = calculatedDays;
   orderState.serviceName = currentService.name;
   orderState.addonNames = addonNames;
@@ -531,7 +745,7 @@ function generateOrderCode() {
 
 function handleTelegramOrder() {
   if (!validateInputs()) return;
-  playClickSound(680);
+  playSuccessChord();
 
   const code = generateOrderCode();
   const addonsText = orderState.addonNames.length > 0 ? orderState.addonNames.join(", ") : "Standart to'plam";
@@ -545,7 +759,7 @@ function handleTelegramOrder() {
 📦 Xizmat: ${orderState.serviceName}
 📊 Ko'lam: ${orderState.scaleName}
 ✨ Qo'shimchalar: ${addonsText}
-💰 Smeta: $${orderState.calculatedMin} – $${orderState.calculatedMax}
+💰 Smeta: ${formatPrice(orderState.calculatedMin)} – ${formatPrice(orderState.calculatedMax)}
 ⏱ Muddat: ${orderState.calculatedDays} ish kuni
 ⏳ Boshlash: ${orderState.timing}
 📝 Loyiha tavsifi: ${briefText}
@@ -557,16 +771,13 @@ Sayt: jb-intelligent.vercel.app`;
   const encodedMsg = encodeURIComponent(message);
   const telegramUrl = `https://t.me/the_javohirbek?text=${encodedMsg}`;
   
-  // Show confirmation modal as well
   openOrderReceiptModal(code, message);
-
-  // Open Telegram in new tab
   window.open(telegramUrl, "_blank");
 }
 
 function handleSiteOrder() {
   if (!validateInputs()) return;
-  playClickSound(680);
+  playSuccessChord();
 
   const code = generateOrderCode();
   const addonsText = orderState.addonNames.length > 0 ? orderState.addonNames.join(", ") : "Standart to'plam";
@@ -576,7 +787,7 @@ function handleSiteOrder() {
 Buyurtmachi: ${orderState.name}
 Aloqa: ${orderState.contact}
 Xizmat: ${orderState.serviceName} (${orderState.scaleName})
-Smeta: $${orderState.calculatedMin} – $${orderState.calculatedMax}
+Smeta: ${formatPrice(orderState.calculatedMin)} – ${formatPrice(orderState.calculatedMax)}
 Muddat: ${orderState.calculatedDays} ish kuni
 Qo'shimchalar: ${addonsText}
 Tavsif: ${briefText}`;
@@ -590,9 +801,7 @@ function saveOrderToStorage(code, data) {
     const list = JSON.parse(localStorage.getItem("jb_orders_history") || "[]");
     list.unshift({ code, date: new Date().toISOString(), data });
     localStorage.setItem("jb_orders_history", JSON.stringify(list));
-  } catch (e) {
-    console.warn("Storage save error", e);
-  }
+  } catch (e) {}
 }
 
 function openOrderReceiptModal(code, summaryText) {
@@ -642,7 +851,108 @@ window.copyReceiptText = function(encoded) {
 };
 
 /* ==========================================================
-   6. FAQ ACCORDION
+   8. PRINTABLE OFFICIAL COMMERCIAL QUOTE (PDF READY)
+   ========================================================== */
+function generatePrintableQuotation() {
+  playClickSound(640);
+  const code = generateOrderCode();
+  const addonsText = orderState.addonNames.length > 0 ? orderState.addonNames.join(", ") : "Standart to'plam";
+  const clientName = orderState.name || "Hurmatli Mijoz";
+  const contact = orderState.contact || "Ko'rsatilmagan";
+
+  const printWindow = window.open("", "_blank");
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="uz">
+    <head>
+      <meta charset="UTF-8">
+      <title>JB Intelligent — Rasmiy Tijoriy Taklif ${code}</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #111; padding: 40px; line-height: 1.6; }
+        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: 800; color: #0f172a; }
+        .logo span { color: #10b981; }
+        .meta { text-align: right; font-size: 14px; color: #64748b; }
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background: #f8fafc; font-weight: 700; }
+        .total-box { background: #f0fdf4; border: 2px solid #10b981; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .footer { margin-top: 50px; font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 20px; display: flex; justify-content: space-between; }
+        @media print { body { padding: 0; } }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div>
+          <div class="logo">JB <span>INTELLIGENT</span></div>
+          <div style="font-size:13px; color:#64748b;">Digital Engineering & AI Studio</div>
+          <div style="font-size:13px; color:#64748b;">Telegram: @the_javohirbek | jb-intelligent.vercel.app</div>
+        </div>
+        <div class="meta">
+          <div><strong>Hujjat №:</strong> ${code}</div>
+          <div><strong>Sana:</strong> ${new Date().toLocaleDateString("uz-UZ")}</div>
+          <div><strong>Mijoz:</strong> ${clientName}</div>
+          <div><strong>Aloqa:</strong> ${contact}</div>
+        </div>
+      </div>
+
+      <h2 style="font-size:20px; margin-bottom:10px;">TIJORIY TAKLIF VA XIZMATLAR SMETASI</h2>
+      <p style="color:#475569; font-size:14px;">Ushbu hujjat JB Intelligent tomonidan mijozning talablariga muvofiq ishlab chiqiladigan dasturiy ta'minot ko'lami va hisoblangan smetasini tasdiqlaydi.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Xizmat Nomi</th>
+            <th>Ko'lam / Standart</th>
+            <th>Qo'shimcha Imkoniyatlar</th>
+            <th>Ishlab Chiqish Muddati</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>${orderState.serviceName}</strong></td>
+            <td>${orderState.scaleName}</td>
+            <td>${addonsText}</td>
+            <td>${orderState.calculatedDays} ish kuni</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="total-box">
+        <div style="font-size:14px; text-transform:uppercase; color:#047857; font-weight:700;">Hisoblangan Loyiha Smeta Qiymati:</div>
+        <div style="font-size:28px; font-weight:800; color:#065f46; margin:6px 0;">${formatPrice(orderState.calculatedMin)} – ${formatPrice(orderState.calculatedMax)}</div>
+        <div style="font-size:13px; color:#047857;">* 100% Manba kodi (Full Source Code), 1 yillik kafolat va server sozlash bepul taqdim etiladi.</div>
+      </div>
+
+      <div class="footer">
+        <div>JB Intelligent Muhandislik Studiyasi</div>
+        <div>Tasdiqlandi: Javohirbek / Bosh Muhandis</div>
+      </div>
+
+      <script>
+        window.onload = function() { window.print(); }
+      </script>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+/* ==========================================================
+   9. QUICK FLOATING DOCK
+   ========================================================== */
+function initQuickDock() {
+  const dockCalcBtn = document.getElementById("dock-calc-btn");
+  if (dockCalcBtn) {
+    dockCalcBtn.addEventListener("click", () => {
+      playClickSound(520);
+      document.getElementById("order-section")?.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+}
+
+/* ==========================================================
+   10. FAQ ACCORDION
    ========================================================== */
 function initFaqAccordion() {
   const faqItems = document.querySelectorAll(".faq-item");
@@ -663,7 +973,7 @@ function initFaqAccordion() {
 }
 
 /* ==========================================================
-   7. TOAST NOTIFICATION
+   11. TOAST NOTIFICATION
    ========================================================== */
 function showToast(msg) {
   let toast = document.getElementById("site-toast");
