@@ -2482,3 +2482,315 @@ textarea.field-input {
     padding: 6px 8px;
   }
 }
+
+/* ==========================================================
+   AWWWARDS GRAND MASTERPIECE: CINEMATIC POLISH & 3D STUDIO LAB
+   ========================================================== */
+
+/* 1. Procedural Noise Grain Overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* 2. Custom Cyber Cursor & Magnetics */
+.cyber-cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--emerald);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px var(--emerald);
+  transition: opacity 0.2s ease, width 0.2s, height 0.2s;
+}
+
+.cyber-cursor-follower {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(0, 255, 135, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              height 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              background 0.2s ease, 
+              border-color 0.2s ease;
+}
+
+.cyber-cursor-follower.is-hovering {
+  width: 58px;
+  height: 58px;
+  background: rgba(0, 255, 135, 0.08);
+  border-color: var(--emerald);
+  box-shadow: 0 0 20px rgba(0, 255, 135, 0.25);
+}
+
+@media (pointer: coarse) {
+  .cyber-cursor, .cyber-cursor-follower {
+    display: none !important;
+  }
+}
+
+/* 3. Studio Operations Clock Pill */
+.studio-clock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(13, 17, 27, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.live-blink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 8px var(--emerald);
+  animation: pulseBlink 1.4s infinite;
+}
+
+@keyframes pulseBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.85); }
+}
+
+.clock-label {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.clock-val {
+  color: var(--emerald);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* 4. 3D WebGL Studio Lab Controller */
+.hud-3d-controller {
+  background: rgba(5, 8, 14, 0.75);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-mid);
+  padding: 14px 16px;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hud-3d-ctrl-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.hud-3d-fps {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--emerald);
+  background: rgba(0, 255, 135, 0.12);
+  border: 1px solid rgba(0, 255, 135, 0.3);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.hud-3d-btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hud-3d-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: var(--radius-inner);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hud-3d-chip:hover {
+  border-color: var(--emerald);
+  color: #ffffff;
+}
+
+.hud-3d-chip.active {
+  background: rgba(0, 255, 135, 0.14);
+  border-color: var(--emerald);
+  color: var(--emerald);
+  box-shadow: 0 0 10px rgba(0, 255, 135, 0.2);
+}
+
+.hud-3d-palette-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hud-color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.hud-color-dot:hover {
+  transform: scale(1.2);
+}
+
+.hud-color-dot.active {
+  border-color: #ffffff;
+  transform: scale(1.25);
+  box-shadow: 0 0 10px currentColor;
+}
+
+.hud-wireframe-toggle {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hud-wireframe-toggle:hover {
+  color: var(--emerald);
+  border-color: var(--emerald);
+}
+
+/* 5. Interactive Live System Architecture Visualizer */
+.arch-visualizer-container {
+  background: rgba(13, 17, 27, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-outer);
+  padding: 32px;
+  margin-top: 36px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+}
+
+.arch-visualizer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.arch-nodes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .arch-nodes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.arch-node-card {
+  background: rgba(5, 8, 14, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-mid);
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.arch-node-card:hover, .arch-node-card.active {
+  border-color: var(--emerald);
+  background: rgba(0, 255, 135, 0.05);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 255, 135, 0.12);
+}
+
+.arch-node-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.arch-node-name {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.arch-node-tech {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.arch-telemetry-box {
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid var(--border-subtle);
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: var(--radius-inner);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .arch-telemetry-box {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.arch-metric-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.arch-metric-label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+.arch-metric-val {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--emerald);
+}

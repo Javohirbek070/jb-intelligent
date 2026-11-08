@@ -7,6 +7,8 @@ let currentLang = localStorage.getItem("jb_lang") || "uz";
 let currentCurrency = localStorage.getItem("jb_currency") || "usd";
 
 document.addEventListener("DOMContentLoaded", () => {
+  initCyberCursor();
+  initStudioClock();
   init3DCoreCanvas();
   initSoundEngine();
   initI18nAndCurrency();
@@ -15,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initRoiCalculator();
   initDevCliTerminal();
   initLiveActivityFeed();
+  initArchVisualizer();
   initOrderEngine();
   initBudgetSlider();
   initFaqAccordion();
@@ -67,18 +70,18 @@ function init3DCoreCanvas() {
   updateCorePosition();
 
   // 1. Outer Wireframe Icosahedron
-  const outerGeom = new THREE.IcosahedronGeometry(4.2, 1);
-  const outerWireframe = new THREE.WireframeGeometry(outerGeom);
+  let outerGeom = new THREE.IcosahedronGeometry(4.2, 1);
+  let outerWireframe = new THREE.WireframeGeometry(outerGeom);
   const outerLineMat = new THREE.LineBasicMaterial({
     color: 0x00ff87,
     transparent: true,
     opacity: 0.75
   });
-  const outerMesh = new THREE.LineSegments(outerWireframe, outerLineMat);
+  let outerMesh = new THREE.LineSegments(outerWireframe, outerLineMat);
   coreGroup.add(outerMesh);
 
   // 2. Inner Quantum Dodecahedron Core
-  const innerGeom = new THREE.DodecahedronGeometry(2.6, 0);
+  let innerGeom = new THREE.DodecahedronGeometry(2.6, 0);
   const innerMat = new THREE.MeshStandardMaterial({
     color: 0x050a12,
     emissive: 0x00ff87,
@@ -86,12 +89,12 @@ function init3DCoreCanvas() {
     roughness: 0.15,
     metalness: 0.9
   });
-  const innerMesh = new THREE.Mesh(innerGeom, innerMat);
+  let innerMesh = new THREE.Mesh(innerGeom, innerMat);
   coreGroup.add(innerMesh);
 
   // 3. Inner Wireframe Overlay
   const innerWireMat = new THREE.LineBasicMaterial({ color: 0x60efff, transparent: true, opacity: 0.5 });
-  const innerWire = new THREE.LineSegments(new THREE.WireframeGeometry(innerGeom), innerWireMat);
+  let innerWire = new THREE.LineSegments(new THREE.WireframeGeometry(innerGeom), innerWireMat);
   coreGroup.add(innerWire);
 
   // 4. Orbiting Gyroscope Torus Rings
@@ -104,6 +107,82 @@ function init3DCoreCanvas() {
   const ring2 = new THREE.Mesh(ringGeom, new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.4 }));
   ring2.rotation.y = Math.PI / 3;
   coreGroup.add(ring2);
+
+  // Geometry & Color Control API
+  window.switch3DGeometry = function(geomType) {
+    coreGroup.remove(outerMesh);
+    if (outerMesh.geometry) outerMesh.geometry.dispose();
+
+    if (geomType === "knot") {
+      const knotGeom = new THREE.TorusKnotGeometry(2.8, 0.65, 100, 16);
+      outerMesh = new THREE.LineSegments(new THREE.WireframeGeometry(knotGeom), outerLineMat);
+    } else if (geomType === "octa") {
+      const octaGeom = new THREE.OctahedronGeometry(4.2, 1);
+      outerMesh = new THREE.LineSegments(new THREE.WireframeGeometry(octaGeom), outerLineMat);
+    } else {
+      const icoGeom = new THREE.IcosahedronGeometry(4.2, 1);
+      outerMesh = new THREE.LineSegments(new THREE.WireframeGeometry(icoGeom), outerLineMat);
+    }
+    coreGroup.add(outerMesh);
+    if (typeof playClickSound === "function") playClickSound(660);
+  };
+
+  window.switch3DColor = function(palette) {
+    let primaryHex = 0x00ff87;
+    let secondaryHex = 0x60efff;
+    if (palette === "cyan") {
+      primaryHex = 0x60efff;
+      secondaryHex = 0x38bdf8;
+    } else if (palette === "amethyst") {
+      primaryHex = 0xa855f7;
+      secondaryHex = 0xec4899;
+    } else if (palette === "gold") {
+      primaryHex = 0xf59e0b;
+      secondaryHex = 0xf97316;
+    }
+
+    outerLineMat.color.setHex(primaryHex);
+    innerMat.emissive.setHex(primaryHex);
+    innerWireMat.color.setHex(secondaryHex);
+    ring1.material.color.setHex(secondaryHex);
+    ring2.material.color.setHex(primaryHex);
+    lightEmerald.color.setHex(primaryHex);
+    lightCyan.color.setHex(secondaryHex);
+
+    if (typeof playClickSound === "function") playClickSound(580);
+  };
+
+  let wireframeVisible = true;
+  window.toggle3DWireframe = function() {
+    wireframeVisible = !wireframeVisible;
+    outerLineMat.opacity = wireframeVisible ? 0.75 : 0;
+    innerWireMat.opacity = wireframeVisible ? 0.5 : 0;
+    const btn = document.getElementById("btn-toggle-wireframe");
+    if (btn) btn.textContent = wireframeVisible ? "Karkas: YOQILGAN" : "Karkas: O'CHIRILGAN";
+    if (typeof playClickSound === "function") playClickSound(480);
+  };
+
+  // Wire up HUD 3D controller listeners
+  document.querySelectorAll(".hud-3d-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".hud-3d-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      if (window.switch3DGeometry) window.switch3DGeometry(btn.dataset["3dGeom"]);
+    });
+  });
+
+  document.querySelectorAll(".hud-color-dot").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".hud-color-dot").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      if (window.switch3DColor) window.switch3DColor(btn.dataset["3dColor"]);
+    });
+  });
+
+  const wireBtn = document.getElementById("btn-toggle-wireframe");
+  if (wireBtn) wireBtn.addEventListener("click", () => {
+    if (window.toggle3DWireframe) window.toggle3DWireframe();
+  });
 
   // 5. Deep Space Particle Constellation
   const particleCount = window.innerWidth < 768 ? 600 : 1400;
@@ -185,12 +264,25 @@ function init3DCoreCanvas() {
     updateCorePosition();
   });
 
-  // 60 FPS Render Loop
+  // 60 FPS Render Loop & Telemetry
   let clock = new THREE.Clock();
+  let frameCount = 0;
+  let lastTime = performance.now();
+  const fpsPill = document.getElementById("webgl-fps-pill");
+
   function animate() {
     requestAnimationFrame(animate);
 
     const elapsedTime = clock.getElapsedTime();
+
+    frameCount++;
+    const now = performance.now();
+    if (now - lastTime >= 800) {
+      const currentFps = Math.round((frameCount * 1000) / (now - lastTime));
+      if (fpsPill) fpsPill.textContent = `${Math.min(currentFps, 60)} FPS`;
+      frameCount = 0;
+      lastTime = now;
+    }
 
     // Damped mouse tracking
     mouse.x += (mouse.targetX - mouse.x) * 0.06;
@@ -300,6 +392,47 @@ function animateValue(obj, start, end, duration, prefix, suffix, decimals) {
    ========================================================== */
 let audioCtx = null;
 let soundEnabled = false;
+let ambientDroneOsc = null;
+let ambientGain = null;
+
+function startAmbientDrone() {
+  if (!audioCtx) return;
+  try {
+    if (ambientDroneOsc) return;
+    ambientDroneOsc = audioCtx.createOscillator();
+    const filter = audioCtx.createBiquadFilter();
+    ambientGain = audioCtx.createGain();
+
+    ambientDroneOsc.type = "sine";
+    ambientDroneOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(120, audioCtx.currentTime);
+
+    ambientGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    ambientGain.gain.exponentialRampToValueAtTime(0.012, audioCtx.currentTime + 2.5);
+
+    ambientDroneOsc.connect(filter);
+    filter.connect(ambientGain);
+    ambientGain.connect(audioCtx.destination);
+    ambientDroneOsc.start();
+  } catch (e) {}
+}
+
+function stopAmbientDrone() {
+  if (ambientGain && audioCtx) {
+    try {
+      ambientGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6);
+      setTimeout(() => {
+        if (ambientDroneOsc) {
+          ambientDroneOsc.stop();
+          ambientDroneOsc.disconnect();
+          ambientDroneOsc = null;
+        }
+      }, 700);
+    } catch (e) {}
+  }
+}
 
 function initSoundEngine() {
   const soundToggleBtn = document.getElementById("sound-toggle-btn");
@@ -318,9 +451,11 @@ function initSoundEngine() {
     if (dockSoundBtn) dockSoundBtn.style.color = soundEnabled ? "var(--emerald)" : "inherit";
 
     if (soundEnabled) {
+      startAmbientDrone();
       playChimeSound();
-      showToast("Ovoz effektlari yoqildi 🔊");
+      showToast("Ovoz effektlari & Ambient Drone yoqildi 🔊");
     } else {
+      stopAmbientDrone();
       showToast("Ovoz effektlari o'chirildi 🔇");
     }
   }
@@ -1730,3 +1865,138 @@ window.playVoiceAgentAudioTest = function(btn, e) {
     }, 4000);
   }, 600);
 };
+
+/* ==========================================================
+   21. AWWWARDS GRAND MASTERPIECE: CYBER CURSOR, CLOCK & ARCH TOPOLOGY
+   ========================================================== */
+function initCyberCursor() {
+  const cursor = document.getElementById("cyber-cursor");
+  const follower = document.getElementById("cyber-cursor-follower");
+  if (!cursor || !follower) return;
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let followerX = mouseX;
+  let followerY = mouseY;
+
+  window.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+  });
+
+  function updateFollower() {
+    followerX += (mouseX - followerX) * 0.15;
+    followerY += (mouseY - followerY) * 0.15;
+    follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+    requestAnimationFrame(updateFollower);
+  }
+  updateFollower();
+
+  const interactiveTargets = "a, button, input, textarea, .spotlight-card, .filter-tab, .pill-btn, .mini-sim-trigger, .hud-tab-chip, .hud-3d-chip, .hud-color-dot, .arch-node-card";
+  document.addEventListener("mouseover", (e) => {
+    if (e.target.closest(interactiveTargets)) {
+      follower.classList.add("is-hovering");
+    }
+  });
+  document.addEventListener("mouseout", (e) => {
+    if (e.target.closest(interactiveTargets)) {
+      follower.classList.remove("is-hovering");
+    }
+  });
+}
+
+function initStudioClock() {
+  const timeDisplay = document.getElementById("studio-time-display");
+  if (!timeDisplay) return;
+
+  function tick() {
+    const now = new Date();
+    // Toshkent is UTC+5
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const toshkentTime = new Date(utc + (3600000 * 5));
+    
+    const h = String(toshkentTime.getHours()).padStart(2, "0");
+    const m = String(toshkentTime.getMinutes()).padStart(2, "0");
+    const s = String(toshkentTime.getSeconds()).padStart(2, "0");
+    timeDisplay.textContent = `${h}:${m}:${s}`;
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+function initArchVisualizer() {
+  const nodeCards = document.querySelectorAll(".arch-node-card");
+  const telemetryDisplay = document.getElementById("arch-telemetry-display");
+  if (!nodeCards.length || !telemetryDisplay) return;
+
+  const nodeTelemetry = {
+    client: {
+      protocol: "HTTP/3 TLS 1.3",
+      latency: "< 14 ms",
+      throughput: "60 FPS (WebGL)",
+      uptime: "100% Client-side"
+    },
+    cdn: {
+      protocol: "Cloudflare Anycast",
+      latency: "< 28 ms (Edge)",
+      throughput: "320+ PoPs",
+      uptime: "99.99% Edge Shield"
+    },
+    backend: {
+      protocol: "FastAPI / Node.js 24",
+      latency: "22 ms",
+      throughput: "24,000 req/s",
+      uptime: "99.98% Compute"
+    },
+    cache: {
+      protocol: "Redis Cluster In-Memory",
+      latency: "0.8 ms",
+      throughput: "120,000 ops/s",
+      uptime: "99.99% Hit Ratio"
+    },
+    db: {
+      protocol: "PostgreSQL 16 ACID",
+      latency: "4.2 ms",
+      throughput: "8,500 queries/s",
+      uptime: "99.99% High Availability"
+    },
+    ai: {
+      protocol: "Telegram Bot API + LLM",
+      latency: "< 450 ms (Streaming)",
+      throughput: "1,200 concurrent chats",
+      uptime: "24/7 Autonomy"
+    }
+  };
+
+  nodeCards.forEach(card => {
+    card.addEventListener("click", () => {
+      nodeCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      if (typeof playClickSound === "function") playClickSound(620);
+
+      const nodeType = card.dataset.node;
+      const data = nodeTelemetry[nodeType] || nodeTelemetry.client;
+
+      telemetryDisplay.innerHTML = `
+        <div class="arch-metric-item">
+          <span class="arch-metric-label">XAVFSIZLIK & PROTOKOL:</span>
+          <span class="arch-metric-val">${data.protocol}</span>
+        </div>
+        <div class="arch-metric-item">
+          <span class="arch-metric-label">JAVOB TEZLIGI:</span>
+          <span class="arch-metric-val" style="color:var(--cyan);">${data.latency}</span>
+        </div>
+        <div class="arch-metric-item">
+          <span class="arch-metric-label">O'TKAZISH QOBILIYATI:</span>
+          <span class="arch-metric-val">${data.throughput}</span>
+        </div>
+        <div class="arch-metric-item">
+          <span class="arch-metric-label">TIZIM ISHONCHLILIGI:</span>
+          <span class="arch-metric-val" style="color:var(--emerald);">${data.uptime}</span>
+        </div>
+      `;
+    });
+  });
+}
