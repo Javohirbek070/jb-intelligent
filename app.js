@@ -2428,96 +2428,48 @@ window.reloadSandboxIframe = function() {
 
 
 /* ==========================================================
-   MYOS DESKTOP INTERACTIVE CONTROLLER
-   Javohir Kamalov — Framer WebOS Engine
+   MYOS PURE SINGLE SCREEN & STUDIO HUB CONTROLLER
+   Javohir Kamalov — Framer WebOS Integration
    ========================================================== */
-window.switchMyOSDevice = function(mode) {
-  const wrapper = document.getElementById("myos-screen-wrapper");
-  const notch = document.getElementById("myos-phone-notch");
-  const btnDesktop = document.getElementById("btn-myos-desktop");
-  const btnMobile = document.getElementById("btn-myos-mobile");
+function initStudioHubOverlay() {
+  const toggleBtn = document.getElementById("btn-toggle-studio-hub");
+  const closeBtn = document.getElementById("btn-close-studio-hub");
+  const overlay = document.getElementById("studio-hub-overlay");
 
-  if (!wrapper) return;
-  if (typeof playClickSound === "function") playClickSound(580);
+  if (!toggleBtn || !overlay) return;
 
-  if (mode === "mobile") {
-    wrapper.classList.add("device-mobile");
-    if (notch) notch.style.display = "block";
-    if (btnMobile) btnMobile.classList.add("active");
-    if (btnDesktop) btnDesktop.classList.remove("active");
-    showToast("MyOS: iPhone 16 Pro mobil ko'rinishiga o'tkazildi.");
-  } else {
-    wrapper.classList.remove("device-mobile");
-    if (notch) notch.style.display = "none";
-    if (btnDesktop) btnDesktop.classList.add("active");
-    if (btnMobile) btnMobile.classList.remove("active");
-    showToast("MyOS: MacBook Desktop keng ko'rinishiga qaytarildi.");
+  function openStudio() {
+    overlay.classList.add("open");
+    if (typeof playClickSound === "function") playClickSound(640);
+    showToast("JB Studio Hub ochildi. MyOS'ga qaytish uchun ESC bosing.");
   }
-};
 
-window.toggleMyOSFullscreen = function() {
-  const container = document.querySelector(".myos-container");
-  const fsBtn = document.getElementById("btn-myos-fs");
-  if (!container) return;
-
-  if (typeof playClickSound === "function") playClickSound(640);
-  const isFs = container.classList.toggle("fullscreen-mode");
-
-  if (isFs) {
-    if (fsBtn) fsBtn.textContent = "✕ Chiqish (ESC)";
-    showToast("MyOS: To'liq ekran rejimi faollashdi. Chiqish uchun ESC bosing.");
-  } else {
-    if (fsBtn) fsBtn.textContent = "⛶ To'liq Ekran";
-    showToast("MyOS: Standart ko'rinishga qaytildi.");
+  function closeStudio() {
+    overlay.classList.remove("open");
+    if (typeof playClickSound === "function") playClickSound(420);
+    showToast("MyOS Desktopga qaytildi.");
   }
-};
 
-window.reloadMyOSFrame = function() {
-  const iframe = document.getElementById("myos-embed-frame");
-  if (iframe) {
-    if (typeof playClickSound === "function") playClickSound(680);
-    const src = iframe.src;
-    iframe.src = "";
-    setTimeout(() => iframe.src = src, 120);
-    showToast("MyOS: Tizim darchasi qayta yuklandi.");
-  }
-};
-
-window.copyMyOSUrl = function() {
-  const url = "https://inquisitive-pineapple-360783.framer.app/";
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(() => {
-      if (typeof playClickSound === "function") playClickSound(720);
-      showToast("Nusxalandi: inquisitive-pineapple-360783.framer.app");
-    }).catch(() => {
-      prompt("Havolani nusxalang:", url);
-    });
-  } else {
-    prompt("Havolani nusxalang:", url);
-  }
-};
-
-window.minimizeMyOSFrame = function() {
-  const wrapper = document.getElementById("myos-screen-wrapper");
-  if (!wrapper) return;
-  if (typeof playClickSound === "function") playClickSound(420);
-  if (wrapper.style.display === "none") {
-    wrapper.style.display = "block";
-    showToast("MyOS: Darcha tiklandi.");
-  } else {
-    wrapper.style.display = "none";
-    showToast("MyOS: Darcha yig'ildi. Qayta ochish uchun sariq tugmani bosing.");
-  }
-};
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    const container = document.querySelector(".myos-container");
-    if (container && container.classList.contains("fullscreen-mode")) {
-      container.classList.remove("fullscreen-mode");
-      const fsBtn = document.getElementById("btn-myos-fs");
-      if (fsBtn) fsBtn.textContent = "⛶ To'liq Ekran";
-      showToast("MyOS: To'liq ekran yopildi.");
+  toggleBtn.addEventListener("click", () => {
+    if (overlay.classList.contains("open")) {
+      closeStudio();
+    } else {
+      openStudio();
     }
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeStudio);
   }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("open")) {
+      closeStudio();
+    }
+  });
+}
+
+// Ensure initStudioHubOverlay runs on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", () => {
+  initStudioHubOverlay();
 });
