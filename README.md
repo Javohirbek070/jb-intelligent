@@ -6,7 +6,7 @@ Official Flagship & Interactive Order Engine for **JB Intelligent**, showcasing 
 
 ## ⚡ Live Deployments & Showcase
 - **JB Intelligent Official Portal:** [https://jb-intelligent.vercel.app](https://jb-intelligent.vercel.app)
-- **Telegram Contact:** [@javohirbro](https://t.me/javohirbro)
+- **Telegram Contact:** [@the_javohirbek](https://t.me/the_javohirbek)
 
 ---
 
@@ -29,7 +29,7 @@ Official Flagship & Interactive Order Engine for **JB Intelligent**, showcasing 
 1. **Interactive Order & Price Engine (Smeta & Zakaz Konstruktori):**
    - Real-time price calculation based on service type, complexity tier (MVP, Business, Enterprise), and modular add-ons.
    - Dynamic timeline estimator (in working days).
-   - Instant 1-click order submission to Telegram (`@javohirbro`) with formatted markdown specifications.
+   - Instant 1-click order submission to Telegram (`@the_javohirbek`) with formatted markdown specifications.
    - Instant digital ticket generation with local storage persistence and clipboard copy.
 
 2. **Anti-Slop High-Taste Design (`design-taste-frontend`):**

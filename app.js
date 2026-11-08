@@ -555,7 +555,7 @@ Sayt: jb-intelligent.vercel.app`;
   saveOrderToStorage(code, message);
 
   const encodedMsg = encodeURIComponent(message);
-  const telegramUrl = `https://t.me/javohirbro?text=${encodedMsg}`;
+  const telegramUrl = `https://t.me/the_javohirbek?text=${encodedMsg}`;
   
   // Show confirmation modal as well
   openOrderReceiptModal(code, message);
@@ -623,8 +623,8 @@ function openOrderReceiptModal(code, summaryText) {
       <button class="btn-primary" onclick="copyReceiptText('${encodeURIComponent(summaryText)}')">
         <span>📋 Chiptani Nusxa Olish</span>
       </button>
-      <a href="https://t.me/javohirbro" target="_blank" rel="noopener noreferrer" class="btn-order-telegram" style="width:100%; text-decoration:none;">
-        <span>Telegramda Javohirbek bilan Bog'lanish</span>
+      <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-order-telegram" style="width:100%; text-decoration:none;">
+        <span>Telegramda Javohirbek bilan Bog'lanish (@the_javohirbek)</span>
       </a>
       <button class="btn-secondary" onclick="closeModals()">Yopish</button>
     </div>
