@@ -1,59 +1,60 @@
-# JB INTELLIGENT — Digital Engineering & AI Studio
+# JB INTELLIGENT — Dasturiy Muhandislik & AI Studio
 
-Official Flagship & Interactive Order Engine for **JB Intelligent**, showcasing production-grade software platforms, CAD/CNC industrial tools, 3D interactive web experiences, and real-time AI solutions created by Javohirbek.
-
-![JB Intelligent Banner](https://raw.githubusercontent.com/Javohirbek070/jb-intelligent/main/preview.png)
-
-## ⚡ Live Deployments & Showcase
-- **JB Intelligent Official Portal:** [https://jb-intelligent.vercel.app](https://jb-intelligent.vercel.app)
-- **Telegram Contact:** [@the_javohirbek](https://t.me/the_javohirbek)
+Rasmiy portal va interaktiv buyurtma / smeta ekotizimi: **JB Intelligent** (Muhandis: Javohirbek).
+Sayt **Three.js** 3D WebGL dvigateli va **21st.dev** dizayn tizimi komponentlari asosida jihozlangan.
 
 ---
 
-## 🛠 Featured Production Works Highlighted
-
-| Project | Domain | Tech Stack | Status / Live URL |
-| :--- | :--- | :--- | :--- |
-| **GymOS** | Enterprise Fitness ERP & Turnstiles | Next.js 15, PostgreSQL, Flutter, Supabase | [gymos-app-five.vercel.app](https://gymos-app-five.vercel.app) |
-| **ApexCut CAD** | CNC Glass & Sheet Cutting Optimizer | React, WebGL, 2D Canvas, C++ WASM, Electron | [www.apexcut.store](https://www.apexcut.store) |
-| **Lumen Roof** | Luxury Architectural Glass & Roofs | Vanilla JS, CSS 3D, GPU Lighting | [lumen-roof-site.vercel.app](https://lumen-roof-site.vercel.app) |
-| **Javohirbek's Favorites** | 3D Interactive VHS Film Archive | CSS 3D, Spring Dynamics, SVG Ink Filter | [javohirbek-favorites.vercel.app](https://javohirbek-favorites.vercel.app) |
-| **Ovozli Chat AI** | Real-Time Voice Intelligence | WebRTC, Gemini Voice, Node.js, FastAudio | [ovozli-chat-five.vercel.app](https://ovozli-chat-five.vercel.app) |
-| **Barber Flow** | Smart Salon Booking & Queue OS | Next.js, Telegram Bot API, Tailwind | [barber-flow-dun.vercel.app](https://barber-flow-dun.vercel.app) |
-| **Akfa Servis Bot** | Automated Enterprise Customer Care | Node.js, Telegram API, Microservice | [akfa-servis-bot.vercel.app](https://akfa-servis-bot.vercel.app) |
+## ⚡ Jonli Havolalar
+- **Rasmiy Veb-Portal:** [https://jb-intelligent.vercel.app](https://jb-intelligent.vercel.app)
+- **Telegram Buyurtmalar:** [@the_javohirbek](https://t.me/the_javohirbek) (`https://t.me/the_javohirbek`)
+- **GitHub Kod Bazasi:** [https://github.com/Javohirbek070/jb-intelligent](https://github.com/Javohirbek070/jb-intelligent)
 
 ---
 
-## 🚀 Key Features of JB Intelligent
+## 💎 Integratsiya Qilingan Asosiy Texnologiyalar & 21st.dev Komponentlari
 
-1. **Interactive Order & Price Engine (Smeta & Zakaz Konstruktori):**
-   - Real-time price calculation based on service type, complexity tier (MVP, Business, Enterprise), and modular add-ons.
-   - Dynamic timeline estimator (in working days).
-   - Instant 1-click order submission to Telegram (`@the_javohirbek`) with formatted markdown specifications.
-   - Instant digital ticket generation with local storage persistence and clipboard copy.
+1. **Three.js WebGL 3D Quantum Core (`mrdoob/three.js`):**
+   - Haqiqiy 60 FPS WebGL fazosi.
+   - Ko'p qatlamli kiber-kristall poliedr (Icosahedron & Dodecahedron) va aylanuvchi giroskop halqalari.
+   - 1,400+ yulduzli neyron fazoviy zarrachalar to'plami.
+   - Kursor harakati va sichqoncha bilan 3D burchakni interaktiv aylantirish (spring damping fizikasi bilan).
+   - Dinamik neftli zumrad (`#00ff87`) va moviy (`#60efff`) nuqtaviy yorug'lik manbalari.
 
-2. **Anti-Slop High-Taste Design (`design-taste-frontend`):**
-   - Obsidian Slate & Cyber Emerald / Sapphire glowing aesthetic.
-   - Constellation neural network canvas with cursor repulsion & dynamic node connections.
-   - Web Audio synthesizer haptic feedback (toggleable sound effects without heavy external libraries).
-   - Project detail inspection modal with comprehensive technical specs.
-   - 100% mobile, tablet, and ultra-wide display responsiveness.
+2. **21st.dev Dynamic Cursor Spotlight (Aceternity / 21st.dev):**
+   - Har bir loyiha va xizmat kartasida kursor koordinatalarini kuzatuvchi nozik radial yorug'lik va nurli hoshiya akslanishi (`--mouse-x`, `--mouse-y`).
 
-3. **Performance Metrics:**
-   - 0 External build overhead (Zero runtime lag).
-   - < 0.4s initial paint and 60 FPS animations.
-   - Google PageSpeed 98+.
+3. **21st.dev Border Beam Animatsiyasi (Magic UI / 21st.dev):**
+   - Flagman loyihalar va Jonli Smeta kartasi perimetri bo'ylab uzluksiz aylanuvchi lazer nuri (`@keyframes beamRotate`).
+
+4. **21st.dev Shimmer Tugmalari:**
+   - Asosiy harakat tugmalarida 45 graduslik uzluksiz oquvchi yorug'lik to'lqini.
+
+5. **21st.dev Asimmetrik Bento Grid & Mikro-Vidjetlar:**
+   - **GymOS ERP:** Jonli IoT Turniket telemetriyasi vidjeti (`ONLINE < 200ms`, `QR Sync: ACTIVE`).
+   - **ApexCut CAD:** Sanoat nesting optimizatori hisobi vidjeti (`96.4% Yield`, `0.2s WASM`).
+   - **Lumen Roof 3D:** Kunduz/tun yorug'lik simulyatori.
+   - **Ovozli Chat AI:** Real-vaqt ovozli to'lqin ekvalayzeri.
+
+6. **21st.dev Interaktiv Byudjet & Ko'lam Slayderi:**
+   - Zakaz studiyasida $350 dan $3,500+ gacha ko'lamni silliq tanlash imkonini beruvchi interaktiv progressiv slayder.
+
+7. **21st.dev Arxitektura Oqim Vizualizatori:**
+   - Foydalanuvchi tanlagan texnologiyalar o'rtasida harakatlanuvchi animatsion signallar (`Client Web` ➔ `Cloudflare Edge` ➔ `WASM Engine` ➔ `Telegram Dispatch`).
+
+8. **To'g'ridan-to'g'ri Telegram Integratsiyasi:**
+   - Barcha smeta va buyurtmalar to'liq tuzilgan holda **`@the_javohirbek`** (`https://t.me/the_javohirbek`) ga uzatiladi.
 
 ---
 
-## 💻 Tech Stack
-- **Frontend:** Semantic HTML5, High-Craft Modern CSS3 (Grid, Flexbox, Custom Properties, Glassmorphism).
-- **Interactive Core:** Vanilla ES6+ JavaScript, Web Audio API, Canvas 2D Context.
-- **Typography:** Plus Jakarta Sans, JetBrains Mono.
-- **Deployment:** Vercel Global Edge Network.
+## 🛠 Muhandislik Steki
+- **3D Graphics Engine:** Three.js (r128 WebGL Core).
+- **Frontend Architecture:** Semantic HTML5, CSS3 Custom Properties, Glassmorphism, 12-col Bento Grid.
+- **Audio Synthesizer:** Web Audio API (Haptic Feedback).
+- **Hosting & Edge:** Vercel Global Edge Network, GitHub.
 
 ---
 
-## 📄 License & Credits
-Designed and engineered by **Javohirbek** (JB Intelligent).
-Private © 2026 JB Intelligent. All rights reserved.
+## 📄 Mualliflik Huquqi
+Muallif va muhandis: **Javohirbek** (JB Intelligent).
+Barcha huquqlar himoyalangan © 2026.

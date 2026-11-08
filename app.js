@@ -1,6 +1,6 @@
 /* ==========================================================
-   JB INTELLIGENT — Master Controller & Interactive Engine v3.0
-   Award-Grade / Anti-Slop / Peak UX Controller
+   JB INTELLIGENT — Master Controller & Interactive Engine v3.5
+   Three.js WebGL Core & 21st.dev Design System Integration
    ========================================================== */
 
 let currentLang = localStorage.getItem("jb_lang") || "uz";
@@ -13,272 +13,415 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroHudConsole();
   initPortfolioShowcase();
   initOrderEngine();
+  initBudgetSlider();
   initFaqAccordion();
   initQuickDock();
+  init21stSpotlight();
+  initCounterAnimation();
 });
 
 /* ==========================================================
-   1. 3D MATHEMATICAL WIREFRAME & NEURAL STARFIELD CANVAS
+   1. THREE.JS 3D QUANTUM CORE & NEURAL STARFIELD (mrdoob/three.js)
+   Real WebGL 3D Polyhedron, Dynamic Neon Lighting & Spring Parallax
    ========================================================== */
 function init3DCoreCanvas() {
   const canvas = document.getElementById("bg-canvas");
   if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  let width, height;
 
-  function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+  // Fallback to 2D canvas if Three.js failed to load
+  if (typeof THREE === "undefined") {
+    console.warn("Three.js not loaded, falling back to 2D canvas");
+    initFallback2DCanvas(canvas);
+    return;
   }
-  window.addEventListener("resize", resize);
-  resize();
 
-  // 3D Icosahedron Geometry
-  const phi = (1 + Math.sqrt(5)) / 2;
-  const rawVertices = [
-    [-1,  phi, 0], [ 1,  phi, 0], [-1, -phi, 0], [ 1, -phi, 0],
-    [ 0, -1,  phi], [ 0,  1,  phi], [ 0, -1, -phi], [ 0,  1, -phi],
-    [ phi, 0, -1], [ phi, 0,  1], [-phi, 0, -1], [-phi, 0,  1]
-  ];
+  const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    alpha: true,
+    antialias: true,
+    powerPreference: "high-performance"
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
-  const edges = [
-    [0, 11], [0, 5], [0, 1], [0, 7], [0, 10],
-    [1, 5], [1, 9], [1, 8], [1, 7],
-    [2, 11], [2, 10], [2, 6], [2, 4],
-    [3, 9], [3, 4], [3, 2], [3, 6], [3, 8],
-    [4, 9], [5, 9], [5, 11], [4, 11], [7, 8], [7, 6], [6, 8], [6, 10], [10, 11]
-  ];
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 24;
 
-  let rotX = 0;
-  let rotY = 0;
-  let mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
+  // Cyber Crystal Core Group
+  const coreGroup = new THREE.Group();
+  scene.add(coreGroup);
 
-  window.addEventListener("mousemove", (e) => {
-    mouse.targetX = e.clientX;
-    mouse.targetY = e.clientY;
+  function updateCorePosition() {
+    if (window.innerWidth > 991) {
+      coreGroup.position.set(7.5, 3.2, 0);
+      coreGroup.scale.set(1.15, 1.15, 1.15);
+    } else {
+      coreGroup.position.set(0, 5, -5);
+      coreGroup.scale.set(0.85, 0.85, 0.85);
+    }
+  }
+  updateCorePosition();
+
+  // 1. Outer Wireframe Icosahedron
+  const outerGeom = new THREE.IcosahedronGeometry(4.2, 1);
+  const outerWireframe = new THREE.WireframeGeometry(outerGeom);
+  const outerLineMat = new THREE.LineBasicMaterial({
+    color: 0x00ff87,
+    transparent: true,
+    opacity: 0.75
+  });
+  const outerMesh = new THREE.LineSegments(outerWireframe, outerLineMat);
+  coreGroup.add(outerMesh);
+
+  // 2. Inner Quantum Dodecahedron Core
+  const innerGeom = new THREE.DodecahedronGeometry(2.6, 0);
+  const innerMat = new THREE.MeshStandardMaterial({
+    color: 0x050a12,
+    emissive: 0x00ff87,
+    emissiveIntensity: 0.35,
+    roughness: 0.15,
+    metalness: 0.9
+  });
+  const innerMesh = new THREE.Mesh(innerGeom, innerMat);
+  coreGroup.add(innerMesh);
+
+  // 3. Inner Wireframe Overlay
+  const innerWireMat = new THREE.LineBasicMaterial({ color: 0x60efff, transparent: true, opacity: 0.5 });
+  const innerWire = new THREE.LineSegments(new THREE.WireframeGeometry(innerGeom), innerWireMat);
+  coreGroup.add(innerWire);
+
+  // 4. Orbiting Gyroscope Torus Rings
+  const ringGeom = new THREE.TorusGeometry(5.2, 0.04, 16, 100);
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x60efff, transparent: true, opacity: 0.45 });
+  const ring1 = new THREE.Mesh(ringGeom, ringMat);
+  ring1.rotation.x = Math.PI / 3;
+  coreGroup.add(ring1);
+
+  const ring2 = new THREE.Mesh(ringGeom, new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.4 }));
+  ring2.rotation.y = Math.PI / 3;
+  coreGroup.add(ring2);
+
+  // 5. Deep Space Particle Constellation
+  const particleCount = window.innerWidth < 768 ? 600 : 1400;
+  const particleGeom = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+
+  const colorEmerald = new THREE.Color(0x00ff87);
+  const colorCyan = new THREE.Color(0x60efff);
+  const colorPurple = new THREE.Color(0x6366f1);
+
+  for (let i = 0; i < particleCount; i++) {
+    const i3 = i * 3;
+    positions[i3] = (Math.random() - 0.5) * 85;
+    positions[i3 + 1] = (Math.random() - 0.5) * 65;
+    positions[i3 + 2] = (Math.random() - 0.5) * 55;
+
+    const chosenColor = Math.random() > 0.6 ? colorEmerald : (Math.random() > 0.5 ? colorCyan : colorPurple);
+    colors[i3] = chosenColor.r;
+    colors[i3 + 1] = chosenColor.g;
+    colors[i3 + 2] = chosenColor.b;
+  }
+
+  particleGeom.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  particleGeom.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+  const particleMat = new THREE.PointsMaterial({
+    size: 0.22,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.75,
+    blending: THREE.AdditiveBlending
   });
 
-  // Ambient Starfield
-  const starCount = window.innerWidth < 768 ? 35 : 75;
-  const stars = [];
-  for (let i = 0; i < starCount; i++) {
-    stars.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      r: Math.random() * 1.5 + 0.6,
-      alpha: Math.random() * 0.5 + 0.2
-    });
-  }
+  const starfield = new THREE.Points(particleGeom, particleMat);
+  scene.add(starfield);
 
-  function render() {
-    ctx.clearRect(0, 0, width, height);
+  // 6. Dynamic Colored Lights
+  const lightEmerald = new THREE.PointLight(0x00ff87, 2.5, 45);
+  lightEmerald.position.set(10, 10, 10);
+  scene.add(lightEmerald);
 
-    mouse.x += (mouse.targetX - mouse.x) * 0.05;
-    mouse.y += (mouse.targetY - mouse.y) * 0.05;
+  const lightCyan = new THREE.PointLight(0x60efff, 2, 45);
+  lightCyan.position.set(-10, -5, 5);
+  scene.add(lightCyan);
 
-    rotX += 0.003 + (mouse.y - height / 2) * 0.00001;
-    rotY += 0.004 + (mouse.x - width / 2) * 0.00001;
+  const ambientLight = new THREE.AmbientLight(0x070b14, 1.5);
+  scene.add(ambientLight);
 
-    // Draw starfield
-    for (let i = 0; i < stars.length; i++) {
-      const s = stars[i];
-      s.x += s.vx;
-      s.y += s.vy;
-      if (s.x < 0 || s.x > width) s.vx *= -1;
-      if (s.y < 0 || s.y > height) s.vy *= -1;
+  // Mouse Parallax & Interaction
+  let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+  let isDragging = false;
+  let prevMousePos = { x: 0, y: 0 };
 
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 255, 135, ${s.alpha})`;
-      ctx.fill();
+  window.addEventListener("mousemove", (e) => {
+    mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+    if (isDragging) {
+      const deltaX = e.clientX - prevMousePos.x;
+      const deltaY = e.clientY - prevMousePos.y;
+      coreGroup.rotation.y += deltaX * 0.008;
+      coreGroup.rotation.x += deltaY * 0.008;
+      prevMousePos = { x: e.clientX, y: e.clientY };
+    }
+  });
 
-      // Connecting lines
-      for (let j = i + 1; j < stars.length; j++) {
-        const s2 = stars[j];
-        const dist = Math.hypot(s.x - s2.x, s.y - s2.y);
-        if (dist < 110) {
-          ctx.beginPath();
-          ctx.moveTo(s.x, s.y);
-          ctx.lineTo(s2.x, s2.y);
-          ctx.strokeStyle = `rgba(0, 255, 135, ${(1 - dist / 110) * 0.12})`;
-          ctx.lineWidth = 0.6;
-          ctx.stroke();
-        }
-      }
+  window.addEventListener("mousedown", (e) => {
+    if (e.target.closest(".hero-hud-console, .hero-editorial, header, .floating-glass-dock, .project-tile, .service-feature-card, .order-studio-wrapper")) return;
+    isDragging = true;
+    prevMousePos = { x: e.clientX, y: e.clientY };
+  });
+
+  window.addEventListener("mouseup", () => isDragging = false);
+
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    updateCorePosition();
+  });
+
+  // 60 FPS Render Loop
+  let clock = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+
+    const elapsedTime = clock.getElapsedTime();
+
+    // Damped mouse tracking
+    mouse.x += (mouse.targetX - mouse.x) * 0.06;
+    mouse.y += (mouse.targetY - mouse.y) * 0.06;
+
+    if (!isDragging) {
+      coreGroup.rotation.x += 0.004;
+      coreGroup.rotation.y += 0.007;
+      coreGroup.rotation.z = mouse.x * 0.15;
     }
 
-    // 3D Wireframe projection in background
-    const coreCenterX = width > 991 ? width * 0.82 : width * 0.5;
-    const coreCenterY = height * 0.28;
-    const scale = Math.min(width, height) * 0.11;
+    ring1.rotation.z += 0.012;
+    ring2.rotation.x += 0.009;
 
-    const projected = rawVertices.map(v => {
-      let y1 = v[1] * Math.cos(rotX) - v[2] * Math.sin(rotX);
-      let z1 = v[1] * Math.sin(rotX) + v[2] * Math.cos(rotX);
+    starfield.rotation.y = elapsedTime * 0.015;
+    starfield.rotation.x = mouse.y * 0.05;
 
-      let x2 = v[0] * Math.cos(rotY) + z1 * Math.sin(rotY);
-      let z2 = -v[0] * Math.sin(rotY) + z1 * Math.cos(rotY);
+    // Orbit point lights
+    lightEmerald.position.x = Math.sin(elapsedTime * 0.8) * 12;
+    lightEmerald.position.z = Math.cos(elapsedTime * 0.8) * 12;
 
-      const fov = 3.5;
-      const p = fov / (fov + z2 * 0.5);
-      return {
-        x: coreCenterX + x2 * scale * p,
-        y: coreCenterY + y1 * scale * p,
-        z: z2
-      };
-    });
+    lightCyan.position.y = Math.cos(elapsedTime * 0.6) * 10;
+    lightCyan.position.x = -Math.sin(elapsedTime * 0.6) * 10;
 
-    edges.forEach(([i1, i2]) => {
-      const p1 = projected[i1];
-      const p2 = projected[i2];
-      const avgZ = (p1.z + p2.z) / 2;
-      const alpha = Math.max(0.08, Math.min(0.4, 0.22 + avgZ * 0.08));
-
-      ctx.beginPath();
-      ctx.moveTo(p1.x, p1.y);
-      ctx.lineTo(p2.x, p2.y);
-      ctx.strokeStyle = `rgba(0, 255, 135, ${alpha})`;
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
-    });
-
-    projected.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#00ff87";
-      ctx.shadowColor = "#00ff87";
-      ctx.shadowBlur = 8;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    });
-
-    requestAnimationFrame(render);
+    renderer.render(scene, camera);
   }
-  render();
+  animate();
+}
+
+function initFallback2DCanvas(canvas) {
+  const ctx = canvas.getContext("2d");
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+  function loop() {
+    ctx.clearRect(0, 0, width, height);
+    requestAnimationFrame(loop);
+  }
+  loop();
 }
 
 /* ==========================================================
-   2. SOUND ENGINE v3
+   2. 21st.dev DYNAMIC SPOTLIGHT TRACKING (Aceternity / 21st.dev)
+   ========================================================== */
+function init21stSpotlight() {
+  const cards = document.querySelectorAll(".spotlight-card, .project-tile, .service-feature-card, .hero-hud-console, .order-quote-deck");
+  cards.forEach(card => {
+    card.classList.add("spotlight-card");
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    });
+  });
+}
+
+/* ==========================================================
+   3. 21st.dev NUMBER COUNTER ANIMATION (CountUp on Scroll)
+   ========================================================== */
+function initCounterAnimation() {
+  const telemetryElements = [
+    { el: document.querySelector(".telemetry-col:nth-child(1) .telemetry-val"), target: 15, suffix: "+" },
+    { el: document.querySelector(".telemetry-col:nth-child(2) .telemetry-val"), target: 99.8, suffix: "%", decimals: 1 },
+    { el: document.querySelector(".telemetry-col:nth-child(3) .telemetry-val"), target: 0.38, prefix: "< ", suffix: "s", decimals: 2 },
+    { el: document.querySelector(".telemetry-col:nth-child(4) .telemetry-val"), target: 96.4, suffix: "%", decimals: 1 }
+  ];
+
+  let animated = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !animated) {
+        animated = true;
+        telemetryElements.forEach(item => {
+          if (!item.el) return;
+          animateValue(item.el, 0, item.target, 1600, item.prefix || "", item.suffix || "", item.decimals || 0);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const telemetryRow = document.querySelector(".telemetry-row");
+  if (telemetryRow) observer.observe(telemetryRow);
+}
+
+function animateValue(obj, start, end, duration, prefix, suffix, decimals) {
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    const easeOutQuad = 1 - (1 - progress) * (1 - progress);
+    const current = (start + (end - start) * easeOutQuad).toFixed(decimals);
+    obj.textContent = `${prefix}${current}${suffix}`;
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  };
+  window.requestAnimationFrame(step);
+}
+
+/* ==========================================================
+   4. WEB AUDIO SOUND ENGINE (Toggleable Cyber Haptics)
    ========================================================== */
 let audioCtx = null;
 let soundEnabled = false;
 
 function initSoundEngine() {
-  const soundBtn = document.getElementById("sound-toggle-btn");
-  const quickSoundBtn = document.getElementById("dock-sound-btn");
-
-  const savedSound = localStorage.getItem("jb_sound_enabled");
-  if (savedSound === "true") {
-    enableSoundUI();
-  }
+  const soundToggleBtn = document.getElementById("sound-toggle-btn");
+  const dockSoundBtn = document.getElementById("dock-sound-btn");
+  const soundBtnText = document.getElementById("sound-btn-text");
 
   function toggleSound() {
+    if (!audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) audioCtx = new AudioContext();
+    }
     soundEnabled = !soundEnabled;
-    localStorage.setItem("jb_sound_enabled", soundEnabled);
+
+    if (soundToggleBtn) soundToggleBtn.classList.toggle("is-active", soundEnabled);
+    if (soundBtnText) soundBtnText.textContent = soundEnabled ? "FX: ON" : "FX: OFF";
+    if (dockSoundBtn) dockSoundBtn.style.color = soundEnabled ? "var(--emerald)" : "inherit";
+
     if (soundEnabled) {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === "suspended") audioCtx.resume();
-      enableSoundUI();
       playChimeSound();
       showToast("Ovoz effektlari yoqildi 🔊");
     } else {
-      disableSoundUI();
       showToast("Ovoz effektlari o'chirildi 🔇");
     }
   }
 
-  if (soundBtn) soundBtn.addEventListener("click", toggleSound);
-  if (quickSoundBtn) quickSoundBtn.addEventListener("click", toggleSound);
+  if (soundToggleBtn) soundToggleBtn.addEventListener("click", toggleSound);
+  if (dockSoundBtn) dockSoundBtn.addEventListener("click", toggleSound);
 }
 
-function enableSoundUI() {
-  soundEnabled = true;
-  document.querySelectorAll(".audio-btn, #dock-sound-btn").forEach(btn => btn.classList.add("is-active"));
-  const label = document.getElementById("sound-btn-text");
-  if (label) label.textContent = "FX: ON";
-}
-
-function disableSoundUI() {
-  soundEnabled = false;
-  document.querySelectorAll(".audio-btn, #dock-sound-btn").forEach(btn => btn.classList.remove("is-active"));
-  const label = document.getElementById("sound-btn-text");
-  if (label) label.textContent = "FX: OFF";
-}
-
-function playClickSound(freq = 580, duration = 0.04) {
-  if (!soundEnabled) return;
+function playClickSound(freq = 440) {
+  if (!soundEnabled || !audioCtx) return;
   try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "sine";
     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(freq * 0.35, audioCtx.currentTime + duration);
+    osc.frequency.exponentialRampToValueAtTime(freq * 0.5, audioCtx.currentTime + 0.05);
 
-    gain.gain.setValueAtTime(0.07, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + duration);
+    osc.stop(audioCtx.currentTime + 0.05);
   } catch (e) {}
 }
 
 function playChimeSound() {
-  if (!soundEnabled) return;
-  [520, 680, 840].forEach((freq, i) => {
-    setTimeout(() => playClickSound(freq, 0.08), i * 60);
-  });
+  if (!soundEnabled || !audioCtx) return;
+  try {
+    const now = audioCtx.currentTime;
+    [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, now + i * 0.06);
+
+      gain.gain.setValueAtTime(0.06, now + i * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.25);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + i * 0.06);
+      osc.stop(now + i * 0.06 + 0.25);
+    });
+  } catch (e) {}
 }
 
 function playSuccessChord() {
-  if (!soundEnabled) return;
-  [440, 554, 659, 880].forEach((freq, i) => {
-    setTimeout(() => playClickSound(freq, 0.14), i * 70);
-  });
+  if (!soundEnabled || !audioCtx) return;
+  try {
+    const now = audioCtx.currentTime;
+    [440, 554.37, 659.25, 880].forEach((freq) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.45);
+    });
+  } catch (e) {}
 }
 
 /* ==========================================================
-   3. I18N & CURRENCY CONTROLLER
+   5. MULTILINGUAL & CURRENCY SWITCHER
    ========================================================== */
 function initI18nAndCurrency() {
-  document.querySelectorAll("[data-lang-btn]").forEach(btn => {
+  const langBtns = document.querySelectorAll("[data-lang-btn]");
+  const currBtns = document.querySelectorAll("[data-curr-btn]");
+
+  langBtns.forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.langBtn === currentLang);
     btn.addEventListener("click", () => {
       currentLang = btn.dataset.langBtn;
       localStorage.setItem("jb_lang", currentLang);
-      document.querySelectorAll("[data-lang-btn]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      playClickSound(640);
-      applyTranslations();
+      langBtns.forEach(b => b.classList.toggle("active", b.dataset.langBtn === currentLang));
+      applyLanguage(currentLang);
+      playClickSound(580);
       recalculateOrder();
     });
   });
 
-  const activeLangBtn = document.querySelector(`[data-lang-btn="${currentLang}"]`);
-  if (activeLangBtn) activeLangBtn.classList.add("active");
-
-  document.querySelectorAll("[data-curr-btn]").forEach(btn => {
+  currBtns.forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.currBtn === currentCurrency);
     btn.addEventListener("click", () => {
       currentCurrency = btn.dataset.currBtn;
       localStorage.setItem("jb_currency", currentCurrency);
-      document.querySelectorAll("[data-curr-btn]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      playClickSound(700);
+      currBtns.forEach(b => b.classList.toggle("active", b.dataset.currBtn === currentCurrency));
+      playClickSound(620);
       recalculateOrder();
     });
   });
 
-  const activeCurrBtn = document.querySelector(`[data-curr-btn="${currentCurrency}"]`);
-  if (activeCurrBtn) activeCurrBtn.classList.add("active");
-
-  applyTranslations();
+  applyLanguage(currentLang);
 }
 
-function applyTranslations() {
-  const dict = I18N[currentLang] || I18N.uz;
+function applyLanguage(lang) {
+  const dict = I18N[lang] || I18N.uz;
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
     if (dict[key]) {
@@ -290,51 +433,51 @@ function applyTranslations() {
   const contactInput = document.getElementById("order-client-contact");
   const briefInput = document.getElementById("order-client-brief");
 
-  if (nameInput) nameInput.placeholder = dict.namePlaceholder;
-  if (contactInput) contactInput.placeholder = dict.contactPlaceholder;
-  if (briefInput) briefInput.placeholder = dict.briefPlaceholder;
+  if (nameInput && dict.namePlaceholder) nameInput.placeholder = dict.namePlaceholder;
+  if (contactInput && dict.contactPlaceholder) contactInput.placeholder = dict.contactPlaceholder;
+  if (briefInput && dict.briefPlaceholder) briefInput.placeholder = dict.briefPlaceholder;
 }
 
-function formatPrice(valInUsd) {
+function formatPrice(usdAmount) {
   if (currentCurrency === "uzs") {
-    const uzs = Math.round((valInUsd * USD_TO_UZS_RATE) / 10000) * 10000;
-    return `${uzs.toLocaleString("uz-UZ")} so'm`;
+    const uzs = Math.round(usdAmount * USD_TO_UZS_RATE);
+    return uzs.toLocaleString("uz-UZ") + " so'm";
   }
-  return `$${valInUsd.toLocaleString()}`;
+  return "$" + usdAmount.toLocaleString("en-US");
 }
 
 /* ==========================================================
-   4. HERO HUD CONSOLE CONTROLLER
+   6. HERO HUD CONSOLE CONTROLLER
    ========================================================== */
 function initHeroHudConsole() {
-  const tabs = document.querySelectorAll(".hud-tab-chip");
-  if (!tabs.length) return;
+  const tabs = document.querySelectorAll("[data-hud-project]");
+  if (!tabs.length || !window.PROJECTS_DATA) return;
 
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
-      playClickSound(620);
-      updateHeroHudProject(tab.dataset.hudProject);
+      playClickSound(520);
+      updateHudDisplay(tab.dataset.hudProject);
     });
   });
 
-  updateHeroHudProject("gymos");
+  updateHudDisplay("gymos");
 }
 
-function updateHeroHudProject(projectId) {
+function updateHudDisplay(projectId) {
   const p = PROJECTS_DATA.find(x => x.id === projectId) || PROJECTS_DATA[0];
-  const headline = document.getElementById("hud-project-title");
-  const desc = document.getElementById("hud-project-desc");
-  const metricsBox = document.getElementById("hud-metrics-container");
+  const titleEl = document.getElementById("hud-project-title");
+  const descEl = document.getElementById("hud-project-desc");
+  const metricsEl = document.getElementById("hud-metrics-container");
   const demoBtn = document.getElementById("hud-btn-demo");
   const sandboxBtn = document.getElementById("hud-btn-sandbox");
 
-  if (headline) headline.textContent = p.title;
-  if (desc) desc.textContent = p.summary;
+  if (titleEl) titleEl.textContent = p.title;
+  if (descEl) descEl.textContent = p.summary;
 
-  if (metricsBox && p.metrics) {
-    metricsBox.innerHTML = p.metrics.map(m => `
+  if (metricsEl) {
+    metricsEl.innerHTML = p.metrics.map(m => `
       <div class="hud-metric-box">
         <div class="hud-metric-val">${m.value}</div>
         <div class="hud-metric-lbl">${m.label}</div>
@@ -353,7 +496,7 @@ function updateHeroHudProject(projectId) {
 }
 
 /* ==========================================================
-   5. PORTFOLIO SHOWCASE RENDERING & FILTERING
+   7. 21st.dev BENTO GRID SHOWCASE & INTERACTIVE WIDGETS
    ========================================================== */
 function initPortfolioShowcase() {
   const grid = document.getElementById("portfolio-grid");
@@ -370,8 +513,19 @@ function initPortfolioShowcase() {
 
     filtered.forEach((p) => {
       const tile = document.createElement("div");
-      tile.className = "project-tile";
+      tile.className = "project-tile spotlight-card";
       tile.dataset.id = p.id;
+
+      // 21st.dev Bento Spans
+      if (filter === "all") {
+        if (p.id === "gymos" || p.id === "apexcut") {
+          tile.classList.add("bento-span-6", "border-beam-card");
+        } else {
+          tile.classList.add("bento-span-6");
+        }
+      } else {
+        tile.classList.add("bento-span-6");
+      }
 
       const techBadges = p.tech.map(t => `<span class="tile-tag-pill">${t}</span>`).join("");
       const metricsHtml = p.metrics.map(m => `
@@ -380,6 +534,66 @@ function initPortfolioShowcase() {
           <div class="tile-metric-lbl">${m.label}</div>
         </div>
       `).join("");
+
+      // Specific 21st.dev interactive micro-widget for each project
+      let widgetHtml = "";
+      if (p.id === "gymos") {
+        widgetHtml = `
+          <div class="bento-widget-box">
+            <div class="bento-widget-header">
+              <span>HARDWARE TURNSTILE IOT GATEWAY</span>
+              <span class="bento-pulse-badge"><span class="led"></span> ONLINE &lt; 200ms</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:var(--emerald);">
+              <span>QR Token: ACTIVE</span>
+              <span>Turnstile: #TK-01</span>
+              <span>Members: 10,000+</span>
+            </div>
+          </div>
+        `;
+      } else if (p.id === "apexcut") {
+        widgetHtml = `
+          <div class="bento-widget-box">
+            <div class="bento-widget-header">
+              <span>WASM GENETIC NESTING ENGINE</span>
+              <span class="bento-pulse-badge" style="color:#60efff; background:rgba(96,239,255,0.12);"><span class="led" style="background:#60efff; box-shadow:0 0 8px #60efff;"></span> 96.4% YIELD</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:#60efff;">
+              <span>G-Code Gen: 0.2s</span>
+              <span>DXF: READY</span>
+              <span>Saved: 28%</span>
+            </div>
+          </div>
+        `;
+      } else if (p.id === "lumen-roof") {
+        widgetHtml = `
+          <div class="bento-widget-box">
+            <div class="bento-widget-header">
+              <span>NATURAL LIGHTING SIMULATOR</span>
+              <span class="bento-pulse-badge" style="color:#eab308; background:rgba(234,179,8,0.12);"><span class="led" style="background:#eab308; box-shadow:0 0 8px #eab308;"></span> 99 SPEED</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:#eab308;">
+              <span>CSS 3D Transforms</span>
+              <span>Sun Angles: Real-time</span>
+              <span>Warranty: 7 Yil</span>
+            </div>
+          </div>
+        `;
+      } else if (p.id === "ovozli-chat") {
+        widgetHtml = `
+          <div class="bento-widget-box">
+            <div class="bento-widget-header">
+              <span>REAL-TIME VOICE STREAMING</span>
+              <span class="bento-pulse-badge" style="color:#a855f7; background:rgba(168,85,247,0.12);"><span class="led" style="background:#a855f7; box-shadow:0 0 8px #a855f7;"></span> &lt; 450ms</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; color:#a855f7;">
+              <span>Opus 48kHz</span>
+              <span>LLM Voice Agent</span>
+              <span>24/7 Autonomy</span>
+            </div>
+          </div>
+        `;
+      }
 
       tile.innerHTML = `
         <div class="tile-visual-banner">
@@ -394,6 +608,8 @@ function initPortfolioShowcase() {
           <h3 class="tile-title">${p.title}</h3>
           <p class="tile-summary">${p.summary}</p>
           
+          ${widgetHtml}
+
           <div class="tile-metrics-box">
             ${metricsHtml}
           </div>
@@ -404,7 +620,7 @@ function initPortfolioShowcase() {
 
           <div class="tile-actions-row">
             ${p.liveUrl.startsWith("http") ? `
-              <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="tile-btn-demo" onclick="playClickSound(640)">
+              <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="tile-btn-demo btn-shimmer" onclick="playClickSound(640)">
                 <span>${dict.liveDemoBtn}</span>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -428,6 +644,8 @@ function initPortfolioShowcase() {
       `;
       grid.appendChild(tile);
     });
+
+    init21stSpotlight();
   }
 
   renderProjects("all");
@@ -458,7 +676,7 @@ function getProjectIconSvg(cat) {
 }
 
 /* ==========================================================
-   6. DEVICE SANDBOX MODAL (LIVE MONITOR VIEWPORT)
+   8. DEVICE SANDBOX MODAL (LIVE MONITOR VIEWPORT)
    ========================================================== */
 window.openDeviceSandboxModal = function(id) {
   playChimeSound();
@@ -482,7 +700,7 @@ window.openDeviceSandboxModal = function(id) {
         <span class="tile-badge" style="position:static; display:inline-block; margin-bottom:8px;">${project.badge}</span>
         <h2 style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; line-height:1.2;">${project.title}</h2>
       </div>
-      <span class="mono" style="color:var(--emerald); font-weight:700; font-size:0.9rem;">MONITOR v3.0</span>
+      <span class="mono" style="color:var(--emerald); font-weight:700; font-size:0.9rem;">MONITOR v3.5</span>
     </div>
 
     <!-- Laptop Frame -->
@@ -535,7 +753,7 @@ window.openDeviceSandboxModal = function(id) {
 };
 
 /* ==========================================================
-   7. PROJECT DETAIL SPEC MODAL
+   9. PROJECT DETAIL SPEC MODAL
    ========================================================== */
 window.openProjectModal = function(id) {
   playClickSound(520);
@@ -603,7 +821,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ==========================================================
-   8. ORDER ENGINE: LINEAR-GRADE CONFIGURATOR
+   10. ORDER ENGINE: LINEAR-GRADE CONFIGURATOR
    ========================================================== */
 let orderState = {
   serviceId: "landing",
@@ -646,6 +864,17 @@ function initOrderEngine() {
       card.classList.add("selected");
       orderState.scaleMultiplier = parseFloat(card.dataset.mult);
       orderState.scaleName = card.dataset.name;
+      
+      // Sync slider
+      const slider = document.getElementById("order-budget-slider");
+      if (slider) {
+        if (orderState.scaleMultiplier >= 1.6) slider.value = "3";
+        else if (orderState.scaleMultiplier >= 1.25) slider.value = "2";
+        else slider.value = "1";
+        const bubble = document.getElementById("budget-slider-val");
+        if (bubble) bubble.textContent = orderState.scaleName;
+      }
+
       playClickSound(520);
       recalculateOrder();
     });
@@ -677,6 +906,43 @@ function initOrderEngine() {
   if (btnPrintQuote) btnPrintQuote.addEventListener("click", generatePrintableQuotation);
 
   recalculateOrder();
+}
+
+/* ==========================================================
+   11. 21st.dev INTERACTIVE ORDER BUDGET RANGE SLIDER
+   ========================================================== */
+function initBudgetSlider() {
+  const slider = document.getElementById("order-budget-slider");
+  const bubble = document.getElementById("budget-slider-val");
+  const scaleCards = document.querySelectorAll(".tier-card");
+  if (!slider) return;
+
+  const sliderMap = {
+    "1": { mult: 1.0, name: "MVP / Start", label: "$350 – $850 (Start)" },
+    "2": { mult: 1.3, name: "Standart Biznes", label: "$850 – $1,800 (Pro)" },
+    "3": { mult: 1.7, name: "Enterprise / Yirik", label: "$1,800 – $3,500+ (Enterprise)" }
+  };
+
+  slider.addEventListener("input", (e) => {
+    const val = e.target.value;
+    const data = sliderMap[val] || sliderMap["1"];
+    if (bubble) bubble.textContent = data.label;
+
+    orderState.scaleMultiplier = data.mult;
+    orderState.scaleName = data.name;
+
+    // Sync tier cards visually
+    scaleCards.forEach((c, idx) => {
+      if (idx + 1 === parseInt(val)) {
+        c.classList.add("selected");
+      } else {
+        c.classList.remove("selected");
+      }
+    });
+
+    playClickSound(500);
+    recalculateOrder();
+  });
 }
 
 function recalculateOrder() {
@@ -723,7 +989,7 @@ function recalculateOrder() {
     specAddons.textContent = orderState.addons.size > 0 ? `${orderState.addons.size} ta tanlandi` : "Standart";
   }
 
-  // Dynamic stack architecture generator
+  // Dynamic 21st.dev stack architecture flow generator
   if (stackNodesEl) {
     const stack = ["Client Web/App", "Cloudflare Edge", "Next.js / Node Core"];
     if (orderState.serviceId === "cad_industry") stack.push("C++ / Rust WASM");
@@ -733,8 +999,8 @@ function recalculateOrder() {
     stack.push("Database & Logs");
 
     stackNodesEl.innerHTML = stack.map((node, i) => `
-      <span class="stack-chip">${node}</span>
-      ${i < stack.length - 1 ? '<span class="stack-arrow">➔</span>' : ''}
+      <span class="flow-node-chip">${node}</span>
+      ${i < stack.length - 1 ? '<span class="flow-arrow-animated">➔</span>' : ''}
     `).join("");
   }
 
@@ -776,6 +1042,9 @@ function generateOrderCode() {
   return `JBI-2026-${rand}`;
 }
 
+/* ==========================================================
+   12. DIRECT TELEGRAM ROUTING TO @the_javohirbek
+   ========================================================== */
 function handleTelegramOrder() {
   if (!validateInputs()) return;
   playSuccessChord();
@@ -802,6 +1071,7 @@ Sayt: jb-intelligent.vercel.app`;
   saveOrderToStorage(code, message);
 
   const encodedMsg = encodeURIComponent(message);
+  // Strictly routes to @the_javohirbek
   const telegramUrl = `https://t.me/the_javohirbek?text=${encodedMsg}`;
   
   openOrderReceiptModal(code, message);
@@ -862,10 +1132,10 @@ function openOrderReceiptModal(code, summaryText) {
     </div>
 
     <div style="display:flex; gap:12px; flex-direction:column;">
-      <button class="btn-cyber-primary" onclick="copyReceiptText('${encodeURIComponent(summaryText)}')">
+      <button class="btn-cyber-primary btn-shimmer" onclick="copyReceiptText('${encodeURIComponent(summaryText)}')">
         <span>📋 Chiptani Nusxa Olish</span>
       </button>
-      <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-dispatch-telegram" style="width:100%; text-decoration:none;">
+      <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-dispatch-telegram btn-shimmer" style="width:100%; text-decoration:none;">
         <span>Telegramda Javohirbek bilan Bog'lanish (@the_javohirbek)</span>
       </a>
       <button class="btn-cyber-secondary" onclick="closeModals()">Yopish</button>
@@ -878,93 +1148,107 @@ function openOrderReceiptModal(code, summaryText) {
 window.copyReceiptText = function(encoded) {
   const text = decodeURIComponent(encoded);
   navigator.clipboard.writeText(text).then(() => {
-    playClickSound(720);
-    showToast("Buyurtma matni nusxalandi! 📋");
+    showToast("Chipta nusxa olindi! 📋");
+    playClickSound(600);
   });
 };
 
 /* ==========================================================
-   9. PRINTABLE OFFICIAL COMMERCIAL QUOTE (PDF READY)
+   13. PRINTABLE COMMERCIAL QUOTATION (PDF)
    ========================================================== */
 function generatePrintableQuotation() {
-  playClickSound(640);
+  playClickSound(480);
   const code = generateOrderCode();
-  const addonsText = orderState.addonNames.length > 0 ? orderState.addonNames.join(", ") : "Standart to'plam";
-  const clientName = orderState.name || "Hurmatli Mijoz";
-  const contact = orderState.contact || "Ko'rsatilmagan";
-
   const printWindow = window.open("", "_blank");
+  const dateStr = new Date().toLocaleDateString("uz-UZ");
+
+  const addonsList = orderState.addonNames.length > 0 
+    ? orderState.addonNames.map(a => `<li>${a}</li>`).join("")
+    : "<li>Standart to'plam</li>";
+
   printWindow.document.write(`
     <!DOCTYPE html>
     <html lang="uz">
     <head>
       <meta charset="UTF-8">
-      <title>JB Intelligent — Rasmiy Tijoriy Taklif ${code}</title>
+      <title>Tijoriy Taklif — ${code} | JB INTELLIGENT</title>
       <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #111; padding: 40px; line-height: 1.6; }
+        body { font-family: system-ui, sans-serif; padding: 40px; color: #0a0d14; line-height: 1.6; }
         .header { display: flex; justify-content: space-between; border-bottom: 2px solid #00ff87; padding-bottom: 20px; margin-bottom: 30px; }
-        .logo { font-size: 24px; font-weight: 800; color: #0f172a; }
-        .logo span { color: #00d26a; }
-        .meta { text-align: right; font-size: 14px; color: #64748b; }
-        table { width: 100%; border-collapse: collapse; margin: 25px 0; }
+        .brand { font-size: 24px; font-weight: 800; color: #000; }
+        .quote-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-bottom: 30px; }
+        .price-total { font-size: 28px; font-weight: 800; color: #059669; margin: 15px 0; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
-        th { background: #f8fafc; font-weight: 700; }
-        .total-box { background: #f0fdf4; border: 2px solid #00d26a; padding: 20px; border-radius: 8px; margin-top: 20px; }
-        .footer { margin-top: 50px; font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 20px; display: flex; justify-content: space-between; }
-        @media print { body { padding: 0; } }
+        th { background: #f1f5f9; font-weight: 700; }
+        .footer { margin-top: 50px; font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 20px; }
       </style>
     </head>
     <body>
       <div class="header">
         <div>
-          <div class="logo">JB <span>INTELLIGENT</span></div>
-          <div style="font-size:13px; color:#64748b;">Digital Engineering & AI Studio</div>
+          <div class="brand">JB INTELLIGENT</div>
+          <div>Dasturiy Muhandislik & Sun'iy Intellekt Studiyasi</div>
           <div style="font-size:13px; color:#64748b;">Telegram: @the_javohirbek | jb-intelligent.vercel.app</div>
         </div>
-        <div class="meta">
-          <div><strong>Hujjat №:</strong> ${code}</div>
-          <div><strong>Sana:</strong> ${new Date().toLocaleDateString("uz-UZ")}</div>
-          <div><strong>Mijoz:</strong> ${clientName}</div>
-          <div><strong>Aloqa:</strong> ${contact}</div>
+        <div style="text-align: right;">
+          <strong>Rasmiy Tijoriy Taklif</strong><br>
+          Hujjat: ${code}<br>
+          Sana: ${dateStr}
         </div>
       </div>
 
-      <h2 style="font-size:20px; margin-bottom:10px;">TIJORIY TAKLIF VA XIZMATLAR SMETASI</h2>
-      <p style="color:#475569; font-size:14px;">Ushbu hujjat JB Intelligent tomonidan mijozning talablariga muvofiq ishlab chiqiladigan dasturiy ta'minot ko'lami va hisoblangan smetasini tasdiqlaydi.</p>
+      <div class="quote-box">
+        <h2 style="margin: 0 0 10px 0;">Loyiha Smetasi va Shartlari</h2>
+        <div>Buyurtmachi: <strong>${orderState.name || "Mijoz"}</strong> (${orderState.contact || "Aloqa kutilmoqda"})</div>
+        <div class="price-total">Taxminiy Qiymat: ${formatPrice(orderState.calculatedMin)} – ${formatPrice(orderState.calculatedMax)}</div>
+        <div>Yetkazib berish muddati: <strong>${orderState.calculatedDays} ish kuni</strong></div>
+      </div>
 
       <table>
         <thead>
           <tr>
-            <th>Xizmat Nomi</th>
-            <th>Ko'lam / Standart</th>
-            <th>Qo'shimcha Imkoniyatlar</th>
-            <th>Ishlab Chiqish Muddati</th>
+            <th>Yo'nalish</th>
+            <th>Parametr</th>
+            <th>Tafsilot</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>${orderState.serviceName}</strong></td>
+            <td><strong>Asosiy Xizmat</strong></td>
+            <td>${orderState.serviceName}</td>
+            <td>Ishlab chiqish va integratsiya</td>
+          </tr>
+          <tr>
+            <td><strong>Loyiha Ko'lami</strong></td>
             <td>${orderState.scaleName}</td>
-            <td>${addonsText}</td>
-            <td>${orderState.calculatedDays} ish kuni</td>
+            <td>Arxitektura va funksionallik darajasi</td>
+          </tr>
+          <tr>
+            <td><strong>Qo'shimcha Modullar</strong></td>
+            <td colspan="2">
+              <ul style="margin: 0; padding-left: 20px;">
+                ${addonsList}
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Kafolat</strong></td>
+            <td>12 oy (1 yil)</td>
+            <td>Texnik qo'llab-quvvatlash va nosozliklarni bepul tuzatish</td>
+          </tr>
+          <tr>
+            <td><strong>Mulkchilik</strong></td>
+            <td>100% Manba Kodi</td>
+            <td>Litsenziyasiz to'liq mijoz egaligiga topshiriladi</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="total-box">
-        <div style="font-size:14px; text-transform:uppercase; color:#047857; font-weight:700;">Hisoblangan Loyiha Smeta Qiymati:</div>
-        <div style="font-size:28px; font-weight:800; color:#065f46; margin:6px 0;">${formatPrice(orderState.calculatedMin)} – ${formatPrice(orderState.calculatedMax)}</div>
-        <div style="font-size:13px; color:#047857;">* 100% Manba kodi (Full Source Code), 1 yillik kafolat va server sozlash bepul taqdim etiladi.</div>
-      </div>
-
       <div class="footer">
-        <div>JB Intelligent Muhandislik Studiyasi</div>
-        <div>Tasdiqlandi: Javohirbek / Bosh Muhandis</div>
+        Ushbu taklif 14 kun davomida haqiqiydir. Tasdiqlash va ishni boshlash uchun: <strong>Telegram: @the_javohirbek</strong>
       </div>
-
-      <script>
-        window.onload = function() { window.print(); }
-      </script>
+      <script>window.print();</script>
     </body>
     </html>
   `);
@@ -972,33 +1256,33 @@ function generatePrintableQuotation() {
 }
 
 /* ==========================================================
-   10. QUICK FLOATING DOCK
-   ========================================================== */
-function initQuickDock() {
-  const dockCalcBtn = document.getElementById("dock-calc-btn");
-  if (dockCalcBtn) {
-    dockCalcBtn.addEventListener("click", () => {
-      playClickSound(520);
-      document.getElementById("order-section")?.scrollIntoView({ behavior: "smooth" });
-    });
-  }
-}
-
-/* ==========================================================
-   11. FAQ ACCORDION
+   14. FAQ ACCORDION ENGINE
    ========================================================== */
 function initFaqAccordion() {
-  const faqItems = document.querySelectorAll(".faq-card-unit");
+  const faqItems = document.querySelectorAll(".faq-item-tile");
+
   faqItems.forEach(item => {
-    const query = item.querySelector(".faq-card-query");
-    if (!query) return;
-    query.addEventListener("click", () => {
-      const isOpen = item.classList.contains("open");
-      faqItems.forEach(f => f.classList.remove("open"));
+    const questionBtn = item.querySelector(".faq-question-btn");
+    const answerEl = item.querySelector(".faq-answer-block");
+
+    if (!questionBtn || !answerEl) return;
+
+    questionBtn.addEventListener("click", () => {
+      const isOpen = item.classList.contains("active");
+
+      faqItems.forEach(other => {
+        other.classList.remove("active");
+        const otherAns = other.querySelector(".faq-answer-block");
+        if (otherAns) otherAns.style.maxHeight = null;
+      });
+
       if (!isOpen) {
-        item.classList.add("open");
-        playClickSound(500);
+        item.classList.add("active");
+        answerEl.style.maxHeight = answerEl.scrollHeight + "px";
+        playClickSound(480);
       } else {
+        item.classList.remove("active");
+        answerEl.style.maxHeight = null;
         playClickSound(400);
       }
     });
@@ -1006,18 +1290,33 @@ function initFaqAccordion() {
 }
 
 /* ==========================================================
-   12. TOAST NOTIFICATION
+   15. FLOATING QUICK ACTION DOCK
    ========================================================== */
-function showToast(msg) {
-  let toast = document.getElementById("site-toast");
+function initQuickDock() {
+  const dockCalcBtn = document.getElementById("dock-calc-btn");
+  if (dockCalcBtn) {
+    dockCalcBtn.addEventListener("click", () => {
+      playClickSound(520);
+      const target = document.getElementById("order-section");
+      if (target) target.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+}
+
+/* ==========================================================
+   16. TOAST NOTIFICATION UTILITY
+   ========================================================== */
+function showToast(text) {
+  let toast = document.querySelector(".toast-beacon");
   if (!toast) {
     toast = document.createElement("div");
-    toast.id = "site-toast";
     toast.className = "toast-beacon";
     document.body.appendChild(toast);
   }
-  toast.textContent = msg;
+
+  toast.textContent = text;
   toast.classList.add("show");
+
   setTimeout(() => {
     toast.classList.remove("show");
   }, 3200);
