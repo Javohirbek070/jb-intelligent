@@ -89,6 +89,7 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
 
       <ul class="nav-links-deck">
         <li><a href="#showcase" class="nav-item-link" data-i18n="navProjects">Loyihalar</a></li>
+        <li><a href="#myos-desktop" class="nav-item-link" data-i18n="navMyOS">🖥 MyOS Desktop</a></li>
         <li><a href="#services" class="nav-item-link" data-i18n="navServices">Xizmatlar</a></li>
         <li><a href="#roi-section" class="nav-item-link" data-i18n="navRoi">ROI Kalkulyator</a></li>
         <li><a href="#order-section" class="nav-item-link" data-i18n="navCalculator">Zakaz Kalkulyatori</a></li>
@@ -202,6 +203,7 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
             <button class="aura-chip-pill" data-prompt="Shisha va metall ishlab chiqarish uchun 2D/3D CNC nesting dasturi">💎 Sanoat CNC Nesting</button>
             <button class="aura-chip-pill" data-prompt="Telegram orqali mijozlar bilan 24/7 ovozli gaplashuvchi AI agent">🎙 Ovozli AI Menejer</button>
             <button class="aura-chip-pill" data-prompt="Three.js WebGL 3D interaktiv premium zargarlik vitrinasi">✨ 3D WebGL Vitrina</button>
+            <button class="aura-chip-pill" data-prompt="Javohir Kamalov shaxsiy MyOS Framer desktop portfolio va WebOS ekotizimi">🖥 MyOS WebOS</button>
           </div>
 
           <!-- Generated Architecture Preview Drawer (Dynamic) -->
@@ -254,7 +256,8 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
         </div>
 
         <div class="hud-project-tabs">
-          <button class="hud-tab-chip active" data-hud-project="gymos">GymOS ERP</button>
+          <button class="hud-tab-chip active" data-hud-project="myos-desktop">🖥 MyOS Desktop</button>
+          <button class="hud-tab-chip" data-hud-project="gymos">GymOS ERP</button>
           <button class="hud-tab-chip" data-hud-project="apexcut">ApexCut CAD</button>
           <button class="hud-tab-chip" data-hud-project="lumen-roof">Lumen Roof 3D</button>
           <button class="hud-tab-chip" data-hud-project="ovozli-chat">Ovozli Chat AI</button>
@@ -310,7 +313,7 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
 
       <!-- Filter Tabs -->
       <div class="filter-tabs-strip">
-        <button class="filter-tab active" data-filter="all" data-i18n="filterAll">Barchasi (8)</button>
+        <button class="filter-tab active" data-filter="all" data-i18n="filterAll">Barchasi (9)</button>
         <button class="filter-tab" data-filter="saas" data-i18n="filterSaas">SaaS & ERP Tizimlar</button>
         <button class="filter-tab" data-filter="cad" data-i18n="filterCad">Sanoat & CAD Dasturlar</button>
         <button class="filter-tab" data-filter="web3d" data-i18n="filterWeb3d">3D & Yuqori Tajriba Veb</button>
@@ -320,6 +323,66 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
       <!-- Projects Deck Grid -->
       <div id="portfolio-grid" class="projects-deck-grid"></div>
     </section>
+
+    <!-- MYOS INTERACTIVE DESKTOP SECTION (Javohir Kamalov Framer OS) -->
+    <section id="myos-desktop" class="section-block">
+      <div class="section-lead">
+        <span class="lead-tag" data-i18n="myosBadge">FRAMER WEBOS EKOTIZIMI</span>
+        <h2 class="lead-title">Javohir Kamalov — <span class="gradient-headline">MyOS Desktop</span></h2>
+        <p class="lead-sub" data-i18n="myosSub">Framer arxitekturasi asosidagi to'liq interaktiv shaxsiy desktop tizimi. Sahifadan chiqmasdan darchalar, ilovalar, musiqa va loyihalarni boshqaring yoki to'liq ekranga yoying.</p>
+      </div>
+
+      <div class="myos-container spotlight-card border-beam-card">
+        <!-- Control Header -->
+        <div class="myos-window-header">
+          <div class="window-dots">
+            <button class="window-dot" style="background:#ef4444; border:none; cursor:pointer;" onclick="reloadMyOSFrame()" title="Qayta yuklash"></button>
+            <button class="window-dot" style="background:#eab308; border:none; cursor:pointer;" onclick="minimizeMyOSFrame()" title="Kichraytirish / Yig'ish"></button>
+            <button class="window-dot" style="background:#00ff87; border:none; cursor:pointer;" onclick="toggleMyOSFullscreen()" title="To'liq ekran"></button>
+          </div>
+
+          <div class="myos-url-bar">
+            <span class="lock-icon">🔒</span>
+            <span class="myos-url-text">https://inquisitive-pineapple-360783.framer.app/</span>
+            <button class="btn-copy-url" onclick="copyMyOSUrl()" title="Havolani nusxalash">📋</button>
+          </div>
+
+          <div class="myos-actions-deck">
+            <div class="device-switcher-deck">
+              <button class="device-btn-chip active" id="btn-myos-desktop" onclick="switchMyOSDevice('desktop')">💻 Desktop</button>
+              <button class="device-btn-chip" id="btn-myos-mobile" onclick="switchMyOSDevice('mobile')">📱 Mobile</button>
+            </div>
+            <button class="device-btn-chip" id="btn-myos-fs" onclick="toggleMyOSFullscreen()" title="Katta ekranda ko'rish">⛶ To'liq Ekran</button>
+            <a href="https://inquisitive-pineapple-360783.framer.app/" target="_blank" rel="noopener noreferrer" class="btn-cyber-primary btn-myos-open" onclick="playClickSound(640)">
+              <span>↗ Framerda Ochish</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Frame Body -->
+        <div class="myos-screen-wrapper" id="myos-screen-wrapper">
+          <div class="myos-phone-notch" id="myos-phone-notch" style="display:none;"></div>
+          <iframe 
+            id="myos-embed-frame" 
+            src="https://inquisitive-pineapple-360783.framer.app/" 
+            title="Javohir Kamalov — MyOS Desktop Framer Portfolio" 
+            class="myos-embed-frame" 
+            allow="fullscreen; autoplay; clipboard-write; encrypted-media" 
+            loading="lazy">
+          </iframe>
+        </div>
+
+        <!-- Quick Tips Footer Strip -->
+        <div class="myos-dock-hints">
+          <div class="myos-hint-pill">🍎 <span>Menyu paneli: <strong>Javohir Kamalov</strong></span></div>
+          <div class="myos-hint-pill">📁 <span>Desktop ilovalari: <strong>About Me, Projects, Services, Resume</strong></span></div>
+          <div class="myos-hint-pill">🎵 <span>Media: <strong>Musiqa pleyer &amp; Games</strong></span></div>
+          <div class="myos-hint-pill">🕹 <span>WebOS Dok: <strong>Kursor bilan ustiga keltiring</strong></span></div>
+        </div>
+      </div>
+    </section>
+
+
 
     <!-- SERVICES ARSENAL SECTION -->
     <section id="services" class="section-block">
@@ -1143,6 +1206,10 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
     <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="dock-pill-btn telegram-glow">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
       <span>@the_javohirbek</span>
+    </a>
+    <div class="dock-separator"></div>
+    <a href="#myos-desktop" class="dock-pill-btn">
+      <span>🖥 MyOS</span>
     </a>
     <div class="dock-separator"></div>
     <button id="dock-calc-btn" class="dock-pill-btn">

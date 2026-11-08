@@ -8,7 +8,12 @@ const USD_TO_UZS_RATE = 12850;
 const I18N = {
   uz: {
     navProjects: "Loyihalar",
+    navMyOS: "🖥 MyOS Desktop",
     navServices: "Xizmatlar",
+    myosBadge: "FRAMER WEBOS EKOTIZIMI",
+    myosTitle: "Javohir Kamalov — MyOS Desktop",
+    myosSub: "Framer arxitekturasi asosidagi to'liq interaktiv shaxsiy desktop tizimi. Sahifadan chiqmasdan darchalar, media va loyihalarni boshqaring.",
+    filterAll: "Barchasi (9)",
     navCalculator: "Zakaz Kalkulyatori",
     navWorkflow: "Ishlash Tartibi",
     navFaq: "Savollar",
@@ -57,7 +62,12 @@ const I18N = {
   },
   en: {
     navProjects: "Projects",
+    navMyOS: "🖥 MyOS Desktop",
     navServices: "Services",
+    myosBadge: "FRAMER WEBOS ECOSYSTEM",
+    myosTitle: "Javohir Kamalov — MyOS Desktop",
+    myosSub: "Fully interactive desktop operating system built on Framer. Explore windows, media, and projects directly inside the page.",
+    filterAll: "All Works (9)",
     navCalculator: "Order Calculator",
     navWorkflow: "Engineering Process",
     navFaq: "FAQ",
@@ -106,7 +116,12 @@ const I18N = {
   },
   ru: {
     navProjects: "Проекты",
+    navMyOS: "🖥 MyOS Desktop",
     navServices: "Услуги",
+    myosBadge: "ЭКОСИСТЕМА FRAMER WEBOS",
+    myosTitle: "Javohir Kamalov — MyOS Desktop",
+    myosSub: "Интерактивная десктопная операционная система на базе Framer. Открывайте окна, медиа и проекты прямо со страницы.",
+    filterAll: "Все проекты (9)",
     navCalculator: "Калькулятор Заказа",
     navWorkflow: "Процесс Разработки",
     navFaq: "Вопросы",
@@ -157,6 +172,38 @@ const I18N = {
 
 // Real projects completed by JB Intelligent / Javohirbek
 const PROJECTS_DATA = [
+  {
+    id: "myos-desktop",
+    title: "MyOS — Desktop Portfolio & WebOS Ekosistemasi",
+    category: "web3d",
+    categoryLabel: "WebOS & Framer",
+    badge: "FEATURED WEB-OS",
+    date: "Noyabr 2026",
+    summary: "Javohir Kamalovning macOS interfeysiga asoslangan interaktiv WebOS desktop portfolio tizimi. Dinamik darchalar, musiqa pleyer, animatsion dok va to'liq interaktiv vidjetlar.",
+    description: "MyOS — bu zamonaviy veb-arxitektura va Framer imkoniyatlarini birlashtirgan, to'liq interaktiv desktop operatsion tizimi ko'rinishidagi portfolio. Foydalanuvchilar brauzer orqali xuddi haqiqiy macOS yoki CyberOS darchalari kabi loyihalarni ochishi, musiqalarni boshqarishi, rezyume va xizmatlar bilan tanishishi mumkin.",
+    architecture: [
+      { name: "Frontend / OS Shell", tech: "Framer Motion, React 19, Rolldown Runtime" },
+      { name: "Desktop Windowing", tech: "Dynamic Drag & Drop Window Manager" },
+      { name: "Audio Engine", tech: "Web Audio API / Embedded Sound Controller" },
+      { name: "Deploy & CDN", tech: "Framer Global Edge Anycast Infrastructure" }
+    ],
+    metrics: [
+      { label: "Interaktiv Ilovalar", value: "10+ Darcha" },
+      { label: "Kadr chastotasi", value: "60 FPS GPU" },
+      { label: "Ekosistema", value: "Framer WebOS" }
+    ],
+    tech: ["Framer", "React 19", "WebOS", "Framer Motion", "Mona Sans", "Web Audio API"],
+    liveUrl: "https://inquisitive-pineapple-360783.framer.app/",
+    featured: true,
+    accentColor: "#00f0ff",
+    highlights: [
+      "macOS uslubidagi interaktiv yuqori menyu paneli va real-vaqt soati",
+      "Alohida ochiluvchi darchalar: About, Projects, Services, Resume, Music va Games",
+      "Silliq hover va magnitli kattalashish animatsiyasiga ega DockNav paneli",
+      "To'liq moslashuvchan (Responsive Desktop va Mobile) WebOS interfeysi",
+      "Sayt ichida jonli sandbox rejimida darhol ishga tushirish imkoniyati"
+    ]
+  },
   {
     id: "gymos",
     title: "GymOS — Fitness Club Management ERP",

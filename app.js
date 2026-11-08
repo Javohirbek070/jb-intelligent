@@ -603,7 +603,7 @@ function initHeroHudConsole() {
     });
   });
 
-  updateHudDisplay("gymos");
+  updateHudDisplay("myos-desktop");
 }
 
 function updateHudDisplay(projectId) {
@@ -880,7 +880,7 @@ window.openDeviceSandboxModal = function(id) {
         <div style="font-size:0.7rem; color:var(--text-dim); font-family:var(--font-mono);">60 FPS</div>
       </div>
       ${project.liveUrl.startsWith("http") ? `
-        <iframe src="${project.liveUrl}" class="laptop-screen" title="${project.title}" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+        <iframe src="${project.liveUrl}" class="laptop-screen" title="${project.title}" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-presentation"></iframe>
       ` : `
         <div style="height:360px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center;">
           <div style="width:60px; height:60px; border-radius:50%; background:rgba(0,255,135,0.15); color:var(--emerald); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
@@ -2296,7 +2296,20 @@ function initAuraPromptEngine() {
         ]
       };
 
-      if (text.includes("shisha") || text.includes("metall") || text.includes("cnc") || text.includes("nesting") || text.includes("cad")) {
+      if (text.includes("framer") || text.includes("myos") || text.includes("webos") || text.includes("desktop") || text.includes("kamalov")) {
+        bp = {
+          tag: "INTERACTIVE FRAMER WEB-OS",
+          time: "⏱ Muddat: ~ 10-18 kun",
+          title: "Javohir Kamalov — MyOS Desktop & WebOS Portfolio Ekosistemasi",
+          price: "$1,400 – $3,200",
+          specs: [
+            { title: "OS INTERFACING", val: "Framer Motion 60 FPS Drag & Windowing" },
+            { title: "DESKTOP WIDGETS", val: "Music Player, About, Projects & Terminal" },
+            { title: "ADAPTIVE LAYOUT", val: "Universal Responsive Desktop & iPhone Bezel" },
+            { title: "HOSTING ARXITEKTURASI", val: "Framer Global Edge Anycast Infrastructure" }
+          ]
+        };
+      } else if (text.includes("shisha") || text.includes("metall") || text.includes("cnc") || text.includes("nesting") || text.includes("cad")) {
         bp = {
           tag: "SANOAT CAD / WASM ENGINE",
           time: "⏱ Muddat: ~ 20-35 kun",
@@ -2412,3 +2425,99 @@ window.reloadSandboxIframe = function() {
     showToast("Sandbox: Qurilma oynasi qayta yuklandi.");
   }
 };
+
+
+/* ==========================================================
+   MYOS DESKTOP INTERACTIVE CONTROLLER
+   Javohir Kamalov — Framer WebOS Engine
+   ========================================================== */
+window.switchMyOSDevice = function(mode) {
+  const wrapper = document.getElementById("myos-screen-wrapper");
+  const notch = document.getElementById("myos-phone-notch");
+  const btnDesktop = document.getElementById("btn-myos-desktop");
+  const btnMobile = document.getElementById("btn-myos-mobile");
+
+  if (!wrapper) return;
+  if (typeof playClickSound === "function") playClickSound(580);
+
+  if (mode === "mobile") {
+    wrapper.classList.add("device-mobile");
+    if (notch) notch.style.display = "block";
+    if (btnMobile) btnMobile.classList.add("active");
+    if (btnDesktop) btnDesktop.classList.remove("active");
+    showToast("MyOS: iPhone 16 Pro mobil ko'rinishiga o'tkazildi.");
+  } else {
+    wrapper.classList.remove("device-mobile");
+    if (notch) notch.style.display = "none";
+    if (btnDesktop) btnDesktop.classList.add("active");
+    if (btnMobile) btnMobile.classList.remove("active");
+    showToast("MyOS: MacBook Desktop keng ko'rinishiga qaytarildi.");
+  }
+};
+
+window.toggleMyOSFullscreen = function() {
+  const container = document.querySelector(".myos-container");
+  const fsBtn = document.getElementById("btn-myos-fs");
+  if (!container) return;
+
+  if (typeof playClickSound === "function") playClickSound(640);
+  const isFs = container.classList.toggle("fullscreen-mode");
+
+  if (isFs) {
+    if (fsBtn) fsBtn.textContent = "✕ Chiqish (ESC)";
+    showToast("MyOS: To'liq ekran rejimi faollashdi. Chiqish uchun ESC bosing.");
+  } else {
+    if (fsBtn) fsBtn.textContent = "⛶ To'liq Ekran";
+    showToast("MyOS: Standart ko'rinishga qaytildi.");
+  }
+};
+
+window.reloadMyOSFrame = function() {
+  const iframe = document.getElementById("myos-embed-frame");
+  if (iframe) {
+    if (typeof playClickSound === "function") playClickSound(680);
+    const src = iframe.src;
+    iframe.src = "";
+    setTimeout(() => iframe.src = src, 120);
+    showToast("MyOS: Tizim darchasi qayta yuklandi.");
+  }
+};
+
+window.copyMyOSUrl = function() {
+  const url = "https://inquisitive-pineapple-360783.framer.app/";
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      if (typeof playClickSound === "function") playClickSound(720);
+      showToast("Nusxalandi: inquisitive-pineapple-360783.framer.app");
+    }).catch(() => {
+      prompt("Havolani nusxalang:", url);
+    });
+  } else {
+    prompt("Havolani nusxalang:", url);
+  }
+};
+
+window.minimizeMyOSFrame = function() {
+  const wrapper = document.getElementById("myos-screen-wrapper");
+  if (!wrapper) return;
+  if (typeof playClickSound === "function") playClickSound(420);
+  if (wrapper.style.display === "none") {
+    wrapper.style.display = "block";
+    showToast("MyOS: Darcha tiklandi.");
+  } else {
+    wrapper.style.display = "none";
+    showToast("MyOS: Darcha yig'ildi. Qayta ochish uchun sariq tugmani bosing.");
+  }
+};
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const container = document.querySelector(".myos-container");
+    if (container && container.classList.contains("fullscreen-mode")) {
+      container.classList.remove("fullscreen-mode");
+      const fsBtn = document.getElementById("btn-myos-fs");
+      if (fsBtn) fsBtn.textContent = "⛶ To'liq Ekran";
+      showToast("MyOS: To'liq ekran yopildi.");
+    }
+  }
+});
