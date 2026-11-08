@@ -1,6 +1,6 @@
 /* ==========================================================
-   JB INTELLIGENT — Master Controller & Interactive Engine v2.0
-   Anti-Slop, High-Craft Digital Architecture
+   JB INTELLIGENT — Master Controller & Interactive Engine v3.0
+   Award-Grade / Anti-Slop / Peak UX Controller
    ========================================================== */
 
 let currentLang = localStorage.getItem("jb_lang") || "uz";
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   init3DCoreCanvas();
   initSoundEngine();
   initI18nAndCurrency();
+  initHeroHudConsole();
   initPortfolioShowcase();
   initOrderEngine();
   initFaqAccordion();
@@ -32,7 +33,7 @@ function init3DCoreCanvas() {
   window.addEventListener("resize", resize);
   resize();
 
-  // 3D Icosahedron Vertices & Geometry
+  // 3D Icosahedron Geometry
   const phi = (1 + Math.sqrt(5)) / 2;
   const rawVertices = [
     [-1,  phi, 0], [ 1,  phi, 0], [-1, -phi, 0], [ 1, -phi, 0],
@@ -58,7 +59,7 @@ function init3DCoreCanvas() {
   });
 
   // Ambient Starfield
-  const starCount = window.innerWidth < 768 ? 40 : 80;
+  const starCount = window.innerWidth < 768 ? 35 : 75;
   const stars = [];
   for (let i = 0; i < starCount; i++) {
     stars.push({
@@ -74,14 +75,13 @@ function init3DCoreCanvas() {
   function render() {
     ctx.clearRect(0, 0, width, height);
 
-    // Smooth mouse interpolation
     mouse.x += (mouse.targetX - mouse.x) * 0.05;
     mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
     rotX += 0.003 + (mouse.y - height / 2) * 0.00001;
     rotY += 0.004 + (mouse.x - width / 2) * 0.00001;
 
-    // Draw ambient starfield
+    // Draw starfield
     for (let i = 0; i < stars.length; i++) {
       const s = stars[i];
       s.x += s.vx;
@@ -91,7 +91,7 @@ function init3DCoreCanvas() {
 
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(16, 185, 129, ${s.alpha})`;
+      ctx.fillStyle = `rgba(0, 255, 135, ${s.alpha})`;
       ctx.fill();
 
       // Connecting lines
@@ -102,24 +102,22 @@ function init3DCoreCanvas() {
           ctx.beginPath();
           ctx.moveTo(s.x, s.y);
           ctx.lineTo(s2.x, s2.y);
-          ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - dist / 110) * 0.12})`;
+          ctx.strokeStyle = `rgba(0, 255, 135, ${(1 - dist / 110) * 0.12})`;
           ctx.lineWidth = 0.6;
           ctx.stroke();
         }
       }
     }
 
-    // 3D Wireframe projection in upper right corner / hero
-    const coreCenterX = width > 991 ? width * 0.8 : width * 0.5;
+    // 3D Wireframe projection in background
+    const coreCenterX = width > 991 ? width * 0.82 : width * 0.5;
     const coreCenterY = height * 0.28;
-    const scale = Math.min(width, height) * 0.12;
+    const scale = Math.min(width, height) * 0.11;
 
     const projected = rawVertices.map(v => {
-      // Rotation around X
       let y1 = v[1] * Math.cos(rotX) - v[2] * Math.sin(rotX);
       let z1 = v[1] * Math.sin(rotX) + v[2] * Math.cos(rotX);
 
-      // Rotation around Y
       let x2 = v[0] * Math.cos(rotY) + z1 * Math.sin(rotY);
       let z2 = -v[0] * Math.sin(rotY) + z1 * Math.cos(rotY);
 
@@ -132,27 +130,25 @@ function init3DCoreCanvas() {
       };
     });
 
-    // Draw 3D wireframe edges
     edges.forEach(([i1, i2]) => {
       const p1 = projected[i1];
       const p2 = projected[i2];
       const avgZ = (p1.z + p2.z) / 2;
-      const alpha = Math.max(0.08, Math.min(0.4, 0.25 + avgZ * 0.08));
+      const alpha = Math.max(0.08, Math.min(0.4, 0.22 + avgZ * 0.08));
 
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
       ctx.lineTo(p2.x, p2.y);
-      ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+      ctx.strokeStyle = `rgba(0, 255, 135, ${alpha})`;
       ctx.lineWidth = 1.2;
       ctx.stroke();
     });
 
-    // Draw glowing nodes on 3D vertices
     projected.forEach(p => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#34d399";
-      ctx.shadowColor = "#10b981";
+      ctx.fillStyle = "#00ff87";
+      ctx.shadowColor = "#00ff87";
       ctx.shadowBlur = 8;
       ctx.fill();
       ctx.shadowBlur = 0;
@@ -164,7 +160,7 @@ function init3DCoreCanvas() {
 }
 
 /* ==========================================================
-   2. SOUND ENGINE v2 (MULTI-TONE SYNTHESIZER)
+   2. SOUND ENGINE v3
    ========================================================== */
 let audioCtx = null;
 let soundEnabled = false;
@@ -199,14 +195,14 @@ function initSoundEngine() {
 
 function enableSoundUI() {
   soundEnabled = true;
-  document.querySelectorAll(".sound-btn").forEach(btn => btn.classList.add("is-active"));
+  document.querySelectorAll(".audio-btn, #dock-sound-btn").forEach(btn => btn.classList.add("is-active"));
   const label = document.getElementById("sound-btn-text");
   if (label) label.textContent = "FX: ON";
 }
 
 function disableSoundUI() {
   soundEnabled = false;
-  document.querySelectorAll(".sound-btn").forEach(btn => btn.classList.remove("is-active"));
+  document.querySelectorAll(".audio-btn, #dock-sound-btn").forEach(btn => btn.classList.remove("is-active"));
   const label = document.getElementById("sound-btn-text");
   if (label) label.textContent = "FX: OFF";
 }
@@ -249,7 +245,6 @@ function playSuccessChord() {
    3. I18N & CURRENCY CONTROLLER
    ========================================================== */
 function initI18nAndCurrency() {
-  // Language buttons
   document.querySelectorAll("[data-lang-btn]").forEach(btn => {
     btn.addEventListener("click", () => {
       currentLang = btn.dataset.langBtn;
@@ -262,11 +257,9 @@ function initI18nAndCurrency() {
     });
   });
 
-  // Set active language button
   const activeLangBtn = document.querySelector(`[data-lang-btn="${currentLang}"]`);
   if (activeLangBtn) activeLangBtn.classList.add("active");
 
-  // Currency buttons
   document.querySelectorAll("[data-curr-btn]").forEach(btn => {
     btn.addEventListener("click", () => {
       currentCurrency = btn.dataset.currBtn;
@@ -278,7 +271,6 @@ function initI18nAndCurrency() {
     });
   });
 
-  // Set active currency button
   const activeCurrBtn = document.querySelector(`[data-curr-btn="${currentCurrency}"]`);
   if (activeCurrBtn) activeCurrBtn.classList.add("active");
 
@@ -294,7 +286,6 @@ function applyTranslations() {
     }
   });
 
-  // Input placeholders
   const nameInput = document.getElementById("order-client-name");
   const contactInput = document.getElementById("order-client-contact");
   const briefInput = document.getElementById("order-client-brief");
@@ -313,11 +304,60 @@ function formatPrice(valInUsd) {
 }
 
 /* ==========================================================
-   4. PORTFOLIO SHOWCASE RENDERING & FILTERING
+   4. HERO HUD CONSOLE CONTROLLER
+   ========================================================== */
+function initHeroHudConsole() {
+  const tabs = document.querySelectorAll(".hud-tab-chip");
+  if (!tabs.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      playClickSound(620);
+      updateHeroHudProject(tab.dataset.hudProject);
+    });
+  });
+
+  updateHeroHudProject("gymos");
+}
+
+function updateHeroHudProject(projectId) {
+  const p = PROJECTS_DATA.find(x => x.id === projectId) || PROJECTS_DATA[0];
+  const headline = document.getElementById("hud-project-title");
+  const desc = document.getElementById("hud-project-desc");
+  const metricsBox = document.getElementById("hud-metrics-container");
+  const demoBtn = document.getElementById("hud-btn-demo");
+  const sandboxBtn = document.getElementById("hud-btn-sandbox");
+
+  if (headline) headline.textContent = p.title;
+  if (desc) desc.textContent = p.summary;
+
+  if (metricsBox && p.metrics) {
+    metricsBox.innerHTML = p.metrics.map(m => `
+      <div class="hud-metric-box">
+        <div class="hud-metric-val">${m.value}</div>
+        <div class="hud-metric-lbl">${m.label}</div>
+      </div>
+    `).join("");
+  }
+
+  if (demoBtn) {
+    demoBtn.href = p.liveUrl;
+    demoBtn.onclick = () => playClickSound(660);
+  }
+
+  if (sandboxBtn) {
+    sandboxBtn.onclick = () => openDeviceSandboxModal(p.id);
+  }
+}
+
+/* ==========================================================
+   5. PORTFOLIO SHOWCASE RENDERING & FILTERING
    ========================================================== */
 function initPortfolioShowcase() {
   const grid = document.getElementById("portfolio-grid");
-  const filterBtns = document.querySelectorAll(".filter-btn");
+  const filterBtns = document.querySelectorAll(".filter-tab");
   if (!grid || !window.PROJECTS_DATA) return;
 
   function renderProjects(filter = "all") {
@@ -329,42 +369,42 @@ function initPortfolioShowcase() {
     const dict = I18N[currentLang] || I18N.uz;
 
     filtered.forEach((p) => {
-      const card = document.createElement("div");
-      card.className = "project-card";
-      card.dataset.id = p.id;
+      const tile = document.createElement("div");
+      tile.className = "project-tile";
+      tile.dataset.id = p.id;
 
-      const techBadges = p.tech.map(t => `<span class="tech-pill">${t}</span>`).join("");
+      const techBadges = p.tech.map(t => `<span class="tile-tag-pill">${t}</span>`).join("");
       const metricsHtml = p.metrics.map(m => `
-        <div class="project-metric">
-          <div class="project-metric-val">${m.value}</div>
-          <div class="project-metric-lbl">${m.label}</div>
+        <div class="tile-metric-item">
+          <div class="tile-metric-val">${m.value}</div>
+          <div class="tile-metric-lbl">${m.label}</div>
         </div>
       `).join("");
 
-      card.innerHTML = `
-        <div class="project-header-visual">
-          <div class="visual-pattern"></div>
-          <span class="visual-badge-top">${p.badge}</span>
-          <span class="visual-date-top">${p.date}</span>
-          <div class="project-symbol">
+      tile.innerHTML = `
+        <div class="tile-visual-banner">
+          <div class="tile-pattern"></div>
+          <span class="tile-badge">${p.badge}</span>
+          <span class="tile-date">${p.date}</span>
+          <div class="tile-icon-circle">
             ${getProjectIconSvg(p.category)}
           </div>
         </div>
-        <div class="project-body">
-          <h3 class="project-card-title">${p.title}</h3>
-          <p class="project-card-summary">${p.summary}</p>
+        <div class="tile-content-body">
+          <h3 class="tile-title">${p.title}</h3>
+          <p class="tile-summary">${p.summary}</p>
           
-          <div class="project-metrics-row">
+          <div class="tile-metrics-box">
             ${metricsHtml}
           </div>
 
-          <div class="project-tech-pills">
+          <div class="tile-tags-deck">
             ${techBadges}
           </div>
 
-          <div class="project-card-actions">
+          <div class="tile-actions-row">
             ${p.liveUrl.startsWith("http") ? `
-              <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-demo" onclick="playClickSound(640)">
+              <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="tile-btn-demo" onclick="playClickSound(640)">
                 <span>${dict.liveDemoBtn}</span>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -373,20 +413,20 @@ function initPortfolioShowcase() {
                 </svg>
               </a>
             ` : `
-              <a href="#order-section" class="btn-demo" onclick="playClickSound(640)">
+              <a href="#order-section" class="tile-btn-demo" onclick="playClickSound(640)">
                 <span>Konfigurator</span>
               </a>
             `}
-            <button class="btn-sandbox" onclick="openDeviceSandboxModal('${p.id}')">
+            <button class="tile-btn-monitor" onclick="openDeviceSandboxModal('${p.id}')">
               <span>🖥 ${dict.sandboxBtn}</span>
             </button>
-            <button class="btn-detail" onclick="openProjectModal('${p.id}')">
+            <button class="tile-btn-details" onclick="openProjectModal('${p.id}')">
               ${dict.detailsBtn}
             </button>
           </div>
         </div>
       `;
-      grid.appendChild(card);
+      grid.appendChild(tile);
     });
   }
 
@@ -418,7 +458,7 @@ function getProjectIconSvg(cat) {
 }
 
 /* ==========================================================
-   5. DEVICE SANDBOX MODAL (LIVE MONITOR VIEWPORT)
+   6. DEVICE SANDBOX MODAL (LIVE MONITOR VIEWPORT)
    ========================================================== */
 window.openDeviceSandboxModal = function(id) {
   playChimeSound();
@@ -430,8 +470,8 @@ window.openDeviceSandboxModal = function(id) {
   if (!modal || !modalContent) return;
 
   const archNodes = project.architecture ? project.architecture.map(a => `
-    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:10px 14px;">
-      <div style="font-size:0.75rem; font-family:var(--font-mono); color:var(--emerald-light); font-weight:700;">${a.name}</div>
+    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:var(--radius-inner); padding:10px 14px;">
+      <div style="font-size:0.75rem; font-family:var(--font-mono); color:var(--emerald); font-weight:700;">${a.name}</div>
       <div style="font-size:0.85rem; color:var(--text-secondary);">${a.tech}</div>
     </div>
   `).join("") : "";
@@ -439,28 +479,28 @@ window.openDeviceSandboxModal = function(id) {
   modalContent.innerHTML = `
     <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:flex-start;">
       <div>
-        <span class="visual-badge-top" style="position:static; display:inline-block; margin-bottom:8px;">${project.badge}</span>
-        <h2 style="font-size:1.6rem; font-weight:800; line-height:1.2;">${project.title}</h2>
+        <span class="tile-badge" style="position:static; display:inline-block; margin-bottom:8px;">${project.badge}</span>
+        <h2 style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; line-height:1.2;">${project.title}</h2>
       </div>
-      <span class="mono" style="color:var(--emerald-light); font-weight:700; font-size:0.9rem;">MONITOR v2.4</span>
+      <span class="mono" style="color:var(--emerald); font-weight:700; font-size:0.9rem;">MONITOR v3.0</span>
     </div>
 
-    <!-- Device Frame -->
-    <div class="device-mockup-frame">
-      <div class="device-top-bar">
-        <div class="device-dots">
-          <div class="device-dot" style="background:#ef4444;"></div>
-          <div class="device-dot" style="background:#eab308;"></div>
-          <div class="device-dot" style="background:#10b981;"></div>
+    <!-- Laptop Frame -->
+    <div class="laptop-bezel">
+      <div class="laptop-bar">
+        <div class="window-dots">
+          <div class="window-dot" style="background:#ef4444;"></div>
+          <div class="window-dot" style="background:#eab308;"></div>
+          <div class="window-dot" style="background:#00ff87;"></div>
         </div>
-        <div class="device-url-bar">${project.liveUrl}</div>
+        <div class="laptop-url">${project.liveUrl}</div>
         <div style="font-size:0.7rem; color:var(--text-dim); font-family:var(--font-mono);">60 FPS</div>
       </div>
       ${project.liveUrl.startsWith("http") ? `
-        <iframe src="${project.liveUrl}" class="device-screen-view" title="${project.title}" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+        <iframe src="${project.liveUrl}" class="laptop-screen" title="${project.title}" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
       ` : `
         <div style="height:360px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center;">
-          <div style="width:60px; height:60px; border-radius:50%; background:rgba(16,185,129,0.15); color:var(--emerald-light); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+          <div style="width:60px; height:60px; border-radius:50%; background:rgba(0,255,135,0.15); color:var(--emerald); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
             ${getProjectIconSvg(project.category)}
           </div>
           <h3 style="font-size:1.2rem; margin-bottom:8px;">${project.title}</h3>
@@ -479,15 +519,15 @@ window.openDeviceSandboxModal = function(id) {
 
     <div style="display:flex; gap:12px; margin-top:24px; padding-top:16px; border-top:1px solid var(--border-subtle);">
       ${project.liveUrl.startsWith("http") ? `
-        <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="flex:1;">
+        <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-cyber-primary" style="flex:1;">
           <span>To'liq Ekran Rejimida Ochish</span>
         </a>
       ` : `
-        <a href="#order-section" class="btn-primary" style="flex:1;" onclick="closeModals()">
+        <a href="#order-section" class="btn-cyber-primary" style="flex:1;" onclick="closeModals()">
           <span>Ushbu Loyihani Buyurtma Qilish</span>
         </a>
       `}
-      <button class="btn-secondary" onclick="closeModals()">Yopish</button>
+      <button class="btn-cyber-secondary" onclick="closeModals()">Yopish</button>
     </div>
   `;
 
@@ -495,7 +535,7 @@ window.openDeviceSandboxModal = function(id) {
 };
 
 /* ==========================================================
-   6. PROJECT DETAIL SPEC MODAL
+   7. PROJECT DETAIL SPEC MODAL
    ========================================================== */
 window.openProjectModal = function(id) {
   playClickSound(520);
@@ -513,17 +553,17 @@ window.openProjectModal = function(id) {
     </li>
   `).join("");
 
-  const techBadges = project.tech.map(t => `<span class="tech-pill">${t}</span>`).join("");
+  const techBadges = project.tech.map(t => `<span class="tile-tag-pill">${t}</span>`).join("");
 
   modalContent.innerHTML = `
     <div style="margin-bottom:20px;">
-      <span class="visual-badge-top" style="position:static; margin-bottom:10px; display:inline-block;">${project.badge}</span>
-      <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:8px;">${project.title}</h2>
+      <span class="tile-badge" style="position:static; margin-bottom:10px; display:inline-block;">${project.badge}</span>
+      <h2 style="font-family:var(--font-display); font-size:1.8rem; font-weight:800; margin-bottom:8px;">${project.title}</h2>
       <p style="font-size:0.95rem; color:var(--text-secondary); line-height:1.6;">${project.description}</p>
     </div>
 
-    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:18px; margin-bottom:24px;">
-      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:12px; color:var(--emerald-light);">Asosiy Imkoniyatlar va Yechimlar:</h4>
+    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle); border-radius:var(--radius-inner); padding:18px; margin-bottom:24px;">
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:12px; color:var(--emerald);">Asosiy Imkoniyatlar va Yechimlar:</h4>
       <ul style="list-style:none;">
         ${highlightsList}
       </ul>
@@ -538,15 +578,15 @@ window.openProjectModal = function(id) {
 
     <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center; border-top:1px solid var(--border-subtle); padding-top:20px;">
       ${project.liveUrl.startsWith("http") ? `
-        <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="flex:1;">
+        <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-cyber-primary" style="flex:1;">
           <span>Jonli Saytni Ochish</span>
         </a>
       ` : `
-        <a href="#order-section" class="btn-primary" style="flex:1;" onclick="closeModals()">
+        <a href="#order-section" class="btn-cyber-primary" style="flex:1;" onclick="closeModals()">
           <span>Buyurtma Berish</span>
         </a>
       `}
-      <button class="btn-secondary" onclick="closeModals()">Yopish</button>
+      <button class="btn-cyber-secondary" onclick="closeModals()">Yopish</button>
     </div>
   `;
 
@@ -555,7 +595,7 @@ window.openProjectModal = function(id) {
 
 window.closeModals = function() {
   playClickSound(400);
-  document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("open"));
+  document.querySelectorAll(".modal-overlay-deck").forEach(m => m.classList.remove("open"));
 };
 
 document.addEventListener("keydown", (e) => {
@@ -563,7 +603,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ==========================================================
-   7. ORDER ENGINE & REAL-TIME CALCULATOR v2.0
+   8. ORDER ENGINE: LINEAR-GRADE CONFIGURATOR
    ========================================================== */
 let orderState = {
   serviceId: "landing",
@@ -577,9 +617,9 @@ let orderState = {
 };
 
 function initOrderEngine() {
-  const serviceOptions = document.querySelectorAll(".service-option-card");
-  const scaleCards = document.querySelectorAll(".scale-card");
-  const addonCards = document.querySelectorAll(".addon-card");
+  const serviceOptions = document.querySelectorAll(".service-choice-card");
+  const scaleCards = document.querySelectorAll(".tier-card");
+  const addonCards = document.querySelectorAll(".addon-pill-row");
   
   const nameInput = document.getElementById("order-client-name");
   const contactInput = document.getElementById("order-client-contact");
@@ -590,7 +630,6 @@ function initOrderEngine() {
   const btnSubmitSite = document.getElementById("btn-submit-site");
   const btnPrintQuote = document.getElementById("btn-print-quote");
 
-  // Service Selection
   serviceOptions.forEach(opt => {
     opt.addEventListener("click", () => {
       serviceOptions.forEach(s => s.classList.remove("selected"));
@@ -601,7 +640,6 @@ function initOrderEngine() {
     });
   });
 
-  // Scale Selection
   scaleCards.forEach(card => {
     card.addEventListener("click", () => {
       scaleCards.forEach(c => c.classList.remove("selected"));
@@ -613,7 +651,6 @@ function initOrderEngine() {
     });
   });
 
-  // Addons Selection
   addonCards.forEach(card => {
     card.addEventListener("click", () => {
       const addonId = card.dataset.addon;
@@ -630,7 +667,6 @@ function initOrderEngine() {
     });
   });
 
-  // Input Listeners
   if (nameInput) nameInput.addEventListener("input", (e) => orderState.name = e.target.value.trim());
   if (contactInput) contactInput.addEventListener("input", (e) => orderState.contact = e.target.value.trim());
   if (timingSelect) timingSelect.addEventListener("change", (e) => orderState.timing = e.target.value);
@@ -662,14 +698,12 @@ function recalculateOrder() {
   const baseP = currentService.basePrice;
   const baseD = currentService.baseDays;
 
-  // Calculation formula
   const calculatedMinUsd = Math.round(baseP * orderState.scaleMultiplier + addonPriceTotal);
   const calculatedMaxUsd = Math.round(calculatedMinUsd * 1.25);
   const calculatedDays = Math.round(baseD * (orderState.scaleMultiplier >= 1.5 ? 1.35 : 1.0) + addonDaysTotal);
 
   const dict = I18N[currentLang] || I18N.uz;
 
-  // Update DOM Elements
   const priceDisplay = document.getElementById("calc-price-display");
   const daysDisplay = document.getElementById("calc-days-display");
   const specService = document.getElementById("spec-service-name");
@@ -691,20 +725,19 @@ function recalculateOrder() {
 
   // Dynamic stack architecture generator
   if (stackNodesEl) {
-    const stack = ["Client App", "Cloudflare Edge", "Next.js / Node.js"];
-    if (orderState.serviceId === "cad_industry") stack.push("C++ / WASM Core");
+    const stack = ["Client Web/App", "Cloudflare Edge", "Next.js / Node Core"];
+    if (orderState.serviceId === "cad_industry") stack.push("C++ / Rust WASM");
     if (orderState.addons.has("ai_integration") || orderState.serviceId === "ai_bot") stack.push("LLM Voice Engine");
     if (orderState.addons.has("payments")) stack.push("Payment Gateway");
     if (orderState.addons.has("telegram_sync")) stack.push("Telegram Bot API");
     stack.push("Database & Logs");
 
     stackNodesEl.innerHTML = stack.map((node, i) => `
-      <span class="stack-node-pill">${node}</span>
-      ${i < stack.length - 1 ? '<span class="stack-node-arrow">➔</span>' : ''}
+      <span class="stack-chip">${node}</span>
+      ${i < stack.length - 1 ? '<span class="stack-arrow">➔</span>' : ''}
     `).join("");
   }
 
-  // Store computed values in state
   orderState.calculatedMin = calculatedMinUsd;
   orderState.calculatedMax = calculatedMaxUsd;
   orderState.calculatedDays = calculatedDays;
@@ -811,17 +844,17 @@ function openOrderReceiptModal(code, summaryText) {
 
   modalContent.innerHTML = `
     <div style="text-align:center; margin-bottom:24px;">
-      <div style="width:64px; height:64px; border-radius:50%; background:rgba(16,185,129,0.15); border:1px solid var(--emerald); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; color:var(--emerald-light);">
+      <div style="width:64px; height:64px; border-radius:50%; background:rgba(0,255,135,0.15); border:1px solid var(--emerald); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; color:var(--emerald);">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
       </div>
-      <h2 style="font-size:1.6rem; font-weight:800; margin-bottom:6px;">Buyurtmangiz Qabul Qilindi!</h2>
+      <h2 style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; margin-bottom:6px;">Buyurtmangiz Qabul Qilindi!</h2>
       <p style="font-size:0.9rem; color:var(--text-secondary);">Mutaxassis 15 daqiqa ichida siz bilan bog'lanadi.</p>
     </div>
 
-    <div style="background:rgba(0,0,0,0.4); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:16px; margin-bottom:20px; font-family:var(--font-mono); font-size:0.85rem;">
-      <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--emerald-light); font-weight:700;">
+    <div style="background:rgba(0,0,0,0.4); border:1px solid var(--border-subtle); border-radius:var(--radius-inner); padding:16px; margin-bottom:20px; font-family:var(--font-mono); font-size:0.85rem;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--emerald); font-weight:700;">
         <span>Chipta Kodi:</span>
         <span>${code}</span>
       </div>
@@ -829,13 +862,13 @@ function openOrderReceiptModal(code, summaryText) {
     </div>
 
     <div style="display:flex; gap:12px; flex-direction:column;">
-      <button class="btn-primary" onclick="copyReceiptText('${encodeURIComponent(summaryText)}')">
+      <button class="btn-cyber-primary" onclick="copyReceiptText('${encodeURIComponent(summaryText)}')">
         <span>📋 Chiptani Nusxa Olish</span>
       </button>
-      <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-order-telegram" style="width:100%; text-decoration:none;">
+      <a href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-dispatch-telegram" style="width:100%; text-decoration:none;">
         <span>Telegramda Javohirbek bilan Bog'lanish (@the_javohirbek)</span>
       </a>
-      <button class="btn-secondary" onclick="closeModals()">Yopish</button>
+      <button class="btn-cyber-secondary" onclick="closeModals()">Yopish</button>
     </div>
   `;
 
@@ -851,7 +884,7 @@ window.copyReceiptText = function(encoded) {
 };
 
 /* ==========================================================
-   8. PRINTABLE OFFICIAL COMMERCIAL QUOTE (PDF READY)
+   9. PRINTABLE OFFICIAL COMMERCIAL QUOTE (PDF READY)
    ========================================================== */
 function generatePrintableQuotation() {
   playClickSound(640);
@@ -869,14 +902,14 @@ function generatePrintableQuotation() {
       <title>JB Intelligent — Rasmiy Tijoriy Taklif ${code}</title>
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #111; padding: 40px; line-height: 1.6; }
-        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #10b981; padding-bottom: 20px; margin-bottom: 30px; }
+        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #00ff87; padding-bottom: 20px; margin-bottom: 30px; }
         .logo { font-size: 24px; font-weight: 800; color: #0f172a; }
-        .logo span { color: #10b981; }
+        .logo span { color: #00d26a; }
         .meta { text-align: right; font-size: 14px; color: #64748b; }
         table { width: 100%; border-collapse: collapse; margin: 25px 0; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
         th { background: #f8fafc; font-weight: 700; }
-        .total-box { background: #f0fdf4; border: 2px solid #10b981; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .total-box { background: #f0fdf4; border: 2px solid #00d26a; padding: 20px; border-radius: 8px; margin-top: 20px; }
         .footer { margin-top: 50px; font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 20px; display: flex; justify-content: space-between; }
         @media print { body { padding: 0; } }
       </style>
@@ -939,7 +972,7 @@ function generatePrintableQuotation() {
 }
 
 /* ==========================================================
-   9. QUICK FLOATING DOCK
+   10. QUICK FLOATING DOCK
    ========================================================== */
 function initQuickDock() {
   const dockCalcBtn = document.getElementById("dock-calc-btn");
@@ -952,14 +985,14 @@ function initQuickDock() {
 }
 
 /* ==========================================================
-   10. FAQ ACCORDION
+   11. FAQ ACCORDION
    ========================================================== */
 function initFaqAccordion() {
-  const faqItems = document.querySelectorAll(".faq-item");
+  const faqItems = document.querySelectorAll(".faq-card-unit");
   faqItems.forEach(item => {
-    const question = item.querySelector(".faq-question");
-    if (!question) return;
-    question.addEventListener("click", () => {
+    const query = item.querySelector(".faq-card-query");
+    if (!query) return;
+    query.addEventListener("click", () => {
       const isOpen = item.classList.contains("open");
       faqItems.forEach(f => f.classList.remove("open"));
       if (!isOpen) {
@@ -973,14 +1006,14 @@ function initFaqAccordion() {
 }
 
 /* ==========================================================
-   11. TOAST NOTIFICATION
+   12. TOAST NOTIFICATION
    ========================================================== */
 function showToast(msg) {
   let toast = document.getElementById("site-toast");
   if (!toast) {
     toast = document.createElement("div");
     toast.id = "site-toast";
-    toast.className = "toast-notice";
+    toast.className = "toast-beacon";
     document.body.appendChild(toast);
   }
   toast.textContent = msg;
