@@ -9,6 +9,8 @@ let currentCurrency = localStorage.getItem("jb_currency") || "usd";
 document.addEventListener("DOMContentLoaded", () => {
   initCyberCursor();
   initStudioClock();
+  initAuraKineticMesh();
+  initAuraPromptEngine();
   init3DCoreCanvas();
   initSoundEngine();
   initI18nAndCurrency();
@@ -852,6 +854,18 @@ window.openDeviceSandboxModal = function(id) {
         <h2 style="font-family:var(--font-display); font-size:1.6rem; font-weight:800; line-height:1.2;">${project.title}</h2>
       </div>
       <span class="mono" style="color:var(--emerald); font-weight:700; font-size:0.9rem;">MONITOR v3.5</span>
+    </div>
+
+    <!-- Multi-Device Viewport Toolbar -->
+    <div class="device-viewport-bar">
+      <div class="device-switcher-deck">
+        <button class="device-btn-chip active" onclick="switchSandboxViewport('desktop', this)">💻 MacBook</button>
+        <button class="device-btn-chip" onclick="switchSandboxViewport('mobile', this)">📱 iPhone 16</button>
+        <button class="device-btn-chip" onclick="switchSandboxViewport('ultrawide', this)">🖥 4K Ultra</button>
+      </div>
+      <div>
+        <button class="device-btn-chip" onclick="reloadSandboxIframe()">⟳ Qayta Yuklash</button>
+      </div>
     </div>
 
     <!-- Laptop Frame -->
@@ -2190,6 +2204,16 @@ function initTokensExplorer() {
           <span>CSS Variablelarni Ochish</span>
         </a>
       </div>
+    `,
+    designmd: `
+      <div style="background:rgba(0,0,0,0.5); border:1px solid var(--border-subtle); border-radius:var(--radius-mid); padding:20px; line-height:1.6; font-family:var(--font-mono); font-size:0.8rem; color:var(--text-secondary); max-height:260px; overflow-y:auto;">
+        <h4 style="color:var(--emerald); margin-bottom:8px;"># DESIGN.md — JB INTELLIGENT SPECIFICATION v3.5</h4>
+        <p><strong>1. Architectural Aesthetics:</strong> Cyber-Luxury Obsidian (#05070a), Neon Emerald (#00ff87), Electric Cyan (#60efff).</p>
+        <p><strong>2. Spatial Scale:</strong> Pure 8pt Harmonic Grid (4px, 8px, 16px, 24px, 32px, 40px, 48px). Zero arbitrary pixel values.</p>
+        <p><strong>3. Motion & Physics:</strong> Spring Easing (cubic-bezier(0.16, 1, 0.3, 1)), 60 FPS Three.js WebGL GPU Acceleration.</p>
+        <p><strong>4. Typography Scale:</strong> Ratio 1.25 Modular Scale with Syne Headings and JetBrains Mono Telemetry.</p>
+        <p><strong>5. Zero-Slop Guarantee:</strong> Real interactive device sandboxes, active hardware simulators, instant Telegram routing to @the_javohirbek.</p>
+      </div>
     `
   };
 
@@ -2206,3 +2230,185 @@ function initTokensExplorer() {
     });
   });
 }
+
+/* ==========================================================
+   23. AURA BUILD: AI ARCHITECTURE PROMPT & KINETIC HALO MESH
+   ========================================================== */
+function initAuraPromptEngine() {
+  const inputEl = document.getElementById("aura-prompt-input");
+  const generateBtn = document.getElementById("aura-btn-generate");
+  const chips = document.querySelectorAll(".aura-chip-pill");
+  const resultPanel = document.getElementById("aura-blueprint-result");
+
+  const headlineEl = document.getElementById("blueprint-headline");
+  const tagEl = document.getElementById("blueprint-tag");
+  const timeEl = document.getElementById("blueprint-time");
+  const specsGrid = document.getElementById("blueprint-specs");
+  const priceEl = document.getElementById("blueprint-estimate");
+  const ctaBtn = document.getElementById("blueprint-cta");
+
+  if (!inputEl || !generateBtn || !resultPanel) return;
+
+  chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      inputEl.value = chip.dataset.prompt;
+      if (typeof playClickSound === "function") playClickSound(520);
+      generateBlueprint(inputEl.value);
+    });
+  });
+
+  generateBtn.addEventListener("click", () => {
+    generateBlueprint(inputEl.value.trim());
+  });
+
+  inputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      generateBlueprint(inputEl.value.trim());
+    }
+  });
+
+  function generateBlueprint(promptText) {
+    if (!promptText) {
+      inputEl.focus();
+      return;
+    }
+
+    generateBtn.innerHTML = "<span>⏳ Generatsiya...</span>";
+    generateBtn.disabled = true;
+    if (typeof playClickSound === "function") playClickSound(680);
+
+    setTimeout(() => {
+      generateBtn.innerHTML = "<span>✨ Yaratish</span>";
+      generateBtn.disabled = false;
+      if (typeof playSuccessChord === "function") playSuccessChord();
+
+      const text = promptText.toLowerCase();
+      let bp = {
+        tag: "SaaS / ERP ARXITEKTURASI",
+        time: "⏱ Muddat: ~ 16-24 kun",
+        title: promptText,
+        price: "$1,800 – $3,500",
+        specs: [
+          { title: "FRONTEND STACK", val: "Next.js 16 (Turbopack) + React 19" },
+          { title: "BACKEND & DB", val: "FastAPI / Node + PostgreSQL 16 ACID" },
+          { title: "IN-MEMORY CACHE", val: "Redis Cluster (< 0.8ms PubSub)" },
+          { title: "INTEGRATSIYA", val: "Telegram Webhook & AI Copilot" }
+        ]
+      };
+
+      if (text.includes("shisha") || text.includes("metall") || text.includes("cnc") || text.includes("nesting") || text.includes("cad")) {
+        bp = {
+          tag: "SANOAT CAD / WASM ENGINE",
+          time: "⏱ Muddat: ~ 20-35 kun",
+          title: "Sanoat Korxonalari Uchun WASM 2D/3D Nesting & G-Code Dasturi",
+          price: "$2,500 – $5,200",
+          specs: [
+            { title: "ALGORITMIK YADRO", val: "Rust WASM Genetic Nesting (96.8% Yield)" },
+            { title: "FAYL INTEGRATSIYASI", val: "DXF, DWG, SVG Import/Export Parser" },
+            { title: "STANOK FORMATLARI", val: "CNC G-Code Generator & Toolpath" },
+            { title: "PLATFORMA", val: "Cross-Platform Electron + WebGL" }
+          ]
+        };
+      } else if (text.includes("ovoz") || text.includes("ai") || text.includes("bot") || text.includes("chat") || text.includes("menejer")) {
+        bp = {
+          tag: "AI VOICE & TELEGRAM AGENT",
+          time: "⏱ Muddat: ~ 8-15 kun",
+          title: "24/7 Mijozlarga Xizmat Ko'rsatuvchi Avtonom Ovozli AI Menejer",
+          price: "$950 – $2,400",
+          specs: [
+            { title: "OVOZ PROTOKOLI", val: "Opus 48kHz WebRTC Real-Time Streaming" },
+            { title: "LLM BRAIN", val: "Fine-Tuned GPT-4o / Claude 3.5 Sonnet" },
+            { title: "CRM INTEGRATSIYA", val: "AmoCRM, Bitrix24 & 1C 2-tomonlama Sync" },
+            { title: "TELEFONIYA", val: "SIP / Asterisk & Telegram Bot Voice" }
+          ]
+        };
+      } else if (text.includes("3d") || text.includes("webgl") || text.includes("vitrina") || text.includes("sayt")) {
+        bp = {
+          tag: "3D CYBER-LUXURY VEB-SAYT",
+          time: "⏱ Muddat: ~ 12-18 kun",
+          title: "Awwwards SOTD Darajasidagi Interaktiv 3D WebGL Mahsulot Vitrinasi",
+          price: "$1,200 – $2,800",
+          specs: [
+            { title: "3D GRAFIKA", val: "Three.js r128 WebGL Core (60 FPS GPU)" },
+            { title: "SHADERS & POST", val: "Custom GLSL Bloom & Kinetic Noise" },
+            { title: "OPTIMIZATSIYA", val: "Google Lighthouse 98+ PageSpeed" },
+            { title: "HOSTING & CDN", val: "Vercel Edge Anycast Global CDN" }
+          ]
+        };
+      }
+
+      tagEl.textContent = bp.tag;
+      timeEl.textContent = bp.time;
+      headlineEl.textContent = bp.title;
+      priceEl.textContent = bp.price;
+
+      specsGrid.innerHTML = bp.specs.map(s => `
+        <div class="blueprint-spec-card">
+          <div class="blueprint-spec-title">${s.title}</div>
+          <div class="blueprint-spec-val">${s.val}</div>
+        </div>
+      `).join("");
+
+      const msg = `Assalomu alaykum Javohirbek! JB Intelligent saytidagi Aura AI Blueprint orqali arxitekturani shakllantirdim:%0A- Yo'nalish: ${bp.tag}%0A- Loyiha: ${bp.title}%0A- Taxminiy smeta: ${bp.price}%0A- Kutilayotgan muddat: ${bp.time}%0ALoyihani batafsil muhokama qila olamizmi?`;
+      ctaBtn.href = `https://t.me/the_javohirbek?text=${msg}`;
+
+      resultPanel.style.display = "block";
+      resultPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      showToast("Aura AI: Yangi tizim arxitekturasi va smetasi tayyorlandi!");
+    }, 450);
+  }
+}
+
+function initAuraKineticMesh() {
+  const mesh = document.getElementById("aura-glow-mesh");
+  if (!mesh) return;
+
+  const blobs = mesh.querySelectorAll(".aura-blob");
+  let mouseX = 0;
+  let mouseY = 0;
+
+  window.addEventListener("mousemove", (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 60;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 60;
+
+    blobs.forEach((blob, i) => {
+      const factor = (i + 1) * 0.4;
+      blob.style.transform = `translate(${mouseX * factor}px, ${mouseY * factor}px)`;
+    });
+  });
+}
+
+window.switchSandboxViewport = function(mode, btn) {
+  const bezel = document.querySelector(".laptop-bezel");
+  const buttons = document.querySelectorAll(".device-btn-chip");
+  if (!bezel) return;
+
+  buttons.forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  if (typeof playClickSound === "function") playClickSound(580);
+
+  if (mode === "mobile") {
+    bezel.className = "laptop-bezel device-mobile";
+    bezel.style.maxWidth = "390px";
+    bezel.style.height = "680px";
+  } else if (mode === "ultrawide") {
+    bezel.className = "laptop-bezel";
+    bezel.style.maxWidth = "100%";
+    bezel.style.height = "560px";
+  } else {
+    bezel.className = "laptop-bezel";
+    bezel.style.maxWidth = "960px";
+    bezel.style.height = "480px";
+  }
+};
+
+window.reloadSandboxIframe = function() {
+  const iframe = document.querySelector(".laptop-screen");
+  if (iframe) {
+    if (typeof playClickSound === "function") playClickSound(640);
+    const src = iframe.src;
+    iframe.src = "";
+    setTimeout(() => iframe.src = src, 100);
+    showToast("Sandbox: Qurilma oynasi qayta yuklandi.");
+  }
+};

@@ -24,6 +24,13 @@
   <!-- Cinematic Procedural Noise Overlay -->
   <div class="noise-overlay"></div>
 
+  <!-- AURA BUILD: ETHEREAL KINETIC LIGHT HALOS -->
+  <div class="aura-glow-canvas" id="aura-glow-mesh">
+    <div class="aura-blob aura-blob-emerald"></div>
+    <div class="aura-blob aura-blob-cyan"></div>
+    <div class="aura-blob aura-blob-purple"></div>
+  </div>
+
   <!-- Custom Cyber Magnetic Cursor -->
   <div id="cyber-cursor" class="cyber-cursor"></div>
   <div id="cyber-cursor-follower" class="cyber-cursor-follower"></div>
@@ -169,6 +176,50 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
             </svg>
             <span data-i18n="heroCtaTelegram">Telegram: @the_javohirbek</span>
           </a>
+        </div>
+
+        <!-- AURA BUILD SIGNATURE: AI PROMPT & BLUEPRINT ENGINE -->
+        <div class="aura-prompt-console spotlight-card border-beam-card">
+          <div class="aura-prompt-header">
+            <div class="aura-header-left">
+              <span class="aura-sparkle-glyph">✨</span>
+              <span class="aura-prompt-title">AURA AI // TIZIM ARXITEKTURASI GENERATORI</span>
+            </div>
+            <span class="aura-prompt-badge">GPT-4o & WASM Engine Active</span>
+          </div>
+
+          <div class="aura-prompt-input-row">
+            <input type="text" id="aura-prompt-input" class="aura-prompt-field" placeholder="G'oyangizni yozing: masalan, Fitnes klubi uchun avtonom turniket va mobil ERP..." spellcheck="false" autocomplete="off" />
+            <button id="aura-btn-generate" class="aura-generate-btn btn-shimmer">
+              <span>✨ Yaratish</span>
+            </button>
+          </div>
+
+          <!-- Quick Suggestion Pills -->
+          <div class="aura-chips-row">
+            <span class="aura-chips-lbl">Tezkor namunalar:</span>
+            <button class="aura-chip-pill" data-prompt="Fitnes klubi uchun QR turniket, a'zolik va real-vaqt kassa ERP">⚡ Fitnes Klub ERP</button>
+            <button class="aura-chip-pill" data-prompt="Shisha va metall ishlab chiqarish uchun 2D/3D CNC nesting dasturi">💎 Sanoat CNC Nesting</button>
+            <button class="aura-chip-pill" data-prompt="Telegram orqali mijozlar bilan 24/7 ovozli gaplashuvchi AI agent">🎙 Ovozli AI Menejer</button>
+            <button class="aura-chip-pill" data-prompt="Three.js WebGL 3D interaktiv premium zargarlik vitrinasi">✨ 3D WebGL Vitrina</button>
+          </div>
+
+          <!-- Generated Architecture Preview Drawer (Dynamic) -->
+          <div id="aura-blueprint-result" class="aura-blueprint-panel" style="display:none;">
+            <div class="blueprint-meta-bar">
+              <span id="blueprint-tag" class="blueprint-tag">SaaS / ERP ARXITEKTURASI</span>
+              <span id="blueprint-time" class="blueprint-time">⏱ Muddat: ~ 16-22 kun</span>
+            </div>
+            <h4 id="blueprint-headline" class="blueprint-headline">Fitnes Klublari Boshqaruvi Uchun Avtonom ERP Tizimi</h4>
+            <div id="blueprint-specs" class="blueprint-specs-grid"></div>
+            <div class="blueprint-action-row">
+              <div id="blueprint-estimate" class="blueprint-price">$1,800 - $3,200</div>
+              <a id="blueprint-cta" href="https://t.me/the_javohirbek" target="_blank" rel="noopener noreferrer" class="btn-cyber-primary">
+                <span>Ushbu Loyihani Boshlash (@the_javohirbek)</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
         </div>
 
         <!-- Telemetry Row -->
@@ -859,6 +910,7 @@ Barcha buyruqlarni ko'rish uchun <span class="cmd-highlight">'help'</span> deb y
           <button class="token-tab-btn" data-token-view="spacing">📐 8pt Spacing & Setka</button>
           <button class="token-tab-btn" data-token-view="typography">🔤 Tipografiya Shkalasi</button>
           <button class="token-tab-btn" data-token-view="export">📦 Handoff Export (CSS/JSON)</button>
+          <button class="token-tab-btn" data-token-view="designmd">📑 DESIGN.md Spetsifikatsiya</button>
         </div>
 
         <div id="tokens-display-area" class="tokens-content-body">
